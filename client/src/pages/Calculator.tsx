@@ -1,9 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { Navbar } from "@/components/Navbar";
+import { jsPDF } from "jspdf";
 import {
   ArrowRight,
   Calculator as CalculatorIcon,
   CircleDollarSign,
+  FileDown,
   Info,
   Landmark,
   Minus,
@@ -12,6 +14,7 @@ import {
   ShieldCheck,
   WalletCards,
 } from "lucide-react";
+import { toast } from "sonner";
 
 const CurrencyInput = ({
   value,
@@ -109,6 +112,133 @@ export default function Calculator() {
       currency: "EUR",
       maximumFractionDigits: 0,
     }).format(value);
+
+  const exportReport = () => {
+    const reportDate = new Intl.DateTimeFormat("es-ES", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }).format(new Date());
+    const reportDateForFile = new Intl.DateTimeFormat("sv-SE").format(new Date());
+    const doc = new jsPDF({ unit: "mm", format: "a4" });
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    const forest: [number, number, number] = [15, 58, 45];
+    const cream: [number, number, number] = [245, 241, 231];
+    const ink: [number, number, number] = [23, 58, 46];
+    const moss: [number, number, number] = [94, 128, 110];
+    const lime: [number, number, number] = [217, 255, 43];
+    const line: [number, number, number] = [220, 212, 196];
+
+    const currency = (value: number) => formatCurrency(value).replace(" ", " ");
+    const text = (copy: string, x: number, y: number, size = 10, color: [number, number, number] = ink, style: "normal" | "bold" = "normal") => {
+      doc.setFont("helvetica", style);
+      doc.setFontSize(size);
+      doc.setTextColor(...color);
+      doc.text(copy, x, y);
+    };
+    const wrapped = (copy: string, x: number, y: number, width: number, size = 9, color: [number, number, number] = moss) => {
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(size);
+      doc.setTextColor(...color);
+      const lines = doc.splitTextToSize(copy, width) as string[];
+      doc.text(lines, x, y, { lineHeightFactor: 1.45 });
+      return y + lines.length * size * 0.51;
+    };
+    const divider = (y: number) => {
+      doc.setDrawColor(...line);
+      doc.setLineWidth(0.35);
+      doc.line(18, y, pageWidth - 18, y);
+    };
+    const metric = (label: string, value: string, x: number, y: number, width: number, fill: [number, number, number], valueColor: [number, number, number]) => {
+      doc.setFillColor(...fill);
+      doc.roundedRect(x, y, width, 31, 3, 3, "F");
+      text(label.toUpperCase(), x + 4.5, y + 8, 6.7, fill === forest ? cream : moss, "bold");
+      text(value, x + 4.5, y + 19, 16, valueColor, "bold");
+    };
+
+    doc.setFillColor(...cream);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
+    doc.setFillColor(...forest);
+    doc.rect(0, 0, pageWidth, 43, "F");
+    doc.setFillColor(...lime);
+    doc.circle(pageWidth - 19, 16, 8, "F");
+    text("K", pageWidth - 21.6, 20.5, 11, forest, "bold");
+    text("KUREVA", 18, 15, 10, cream, "bold");
+    text("AUTONOMÍA DIGITAL · SAN MIGUEL DE SALINAS, ALICANTE", 18, 22, 7, [191, 213, 202], "bold");
+    text("INFORME DE COSTES", 18, 36, 7.5, lime, "bold");
+
+    text("Estimación para decidir", 18, 61, 22, forest, "bold");
+    text("con más contexto.", 18, 70, 22, forest, "bold");
+    wrapped("Resumen generado desde la calculadora de costes ocultos de Kureva. Es una estimación de trabajo: no constituye una oferta, un presupuesto ni una garantía de ahorro.", 18, 81, 143, 9.5);
+    text(`Generado el ${reportDate}`, 18, 104, 8, moss, "bold");
+    divider(112);
+
+    text("La comparación", 18, 127, 13, forest, "bold");
+    metric("Coste actual cada mes", currency(results.currentMonthly), 18, 135, 84, cream, forest);
+    metric("Infraestructura propia / mes", currency(kurevaRecurring), 108, 135, 84, forest, cream);
+    metric("Diferencia estimada a 1 año", currency(results.firstYearDifference), 18, 174, 84, forest, cream);
+    metric("Diferencia estimada a 2 años", currency(results.twoYearDifference), 108, 174, 84, lime, forest);
+
+    text("Punto de retorno", 18, 224, 12, forest, "bold");
+    wrapped(
+      results.paybackMonths
+        ? `Con estas cifras, la inversión inicial podría compensarse alrededor del mes ${results.paybackMonths}. A partir de ese punto, la diferencia anual estimada entre ambos modelos es de ${currency(results.continuingSavings)}.`
+        : "Con estas cifras, la inversión inicial no se compensa dentro del modelo comparado. Conviene revisar el alcance, los costes recurrentes y los beneficios no económicos antes de tomar una decisión.",
+      18,
+      233,
+      174,
+      9.5,
+      ink,
+    );
+
+    doc.addPage();
+    doc.setFillColor(...cream);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
+    text("KUREVA", 18, 16, 9, forest, "bold");
+    text("INFORME DE COSTES · DETALLE DE SUPUESTOS", pageWidth - 18, 16, 7, moss, "bold");
+    divider(22);
+    text("Supuestos introducidos", 18, 39, 16, forest, "bold");
+    wrapped("Las cifras siguientes se han introducido manualmente en la calculadora. Llévalas a una conversación con socios, dirección o un proveedor para contrastarlas con facturas, procesos y necesidades reales.", 18, 49, 171, 9.5);
+
+    const rows = [
+      ["Cuota mensual de agencia", currency(agencyFee), "Modelo actual"],
+      ["Herramientas y complementos", currency(toolsFee), "Modelo actual"],
+      ["Horas manuales al mes", `${manualHours} h`, "Modelo actual"],
+      ["Coste estimado de la hora interna", currency(hourValue), "Modelo actual"],
+      ["Inversión de construcción", currency(kurevaBuild), "Modelo propio"],
+      ["Infraestructura mensual propia", currency(kurevaRecurring), "Modelo propio"],
+    ];
+    let rowY = 75;
+    rows.forEach((row, index) => {
+      if (index % 2 === 0) {
+        doc.setFillColor(255, 253, 248);
+        doc.roundedRect(18, rowY - 6, 174, 12, 1.5, 1.5, "F");
+      }
+      text(row[0], 22, rowY, 9, ink, "bold");
+      text(row[2], 123, rowY, 7.2, moss, "normal");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(...forest);
+      doc.text(row[1], 187, rowY, { align: "right" });
+      rowY += 14;
+    });
+
+    text("Lectura responsable", 18, 172, 14, forest, "bold");
+    const responsibleEnd = wrapped("Esta simulación compara euros y tiempo visible. No incluye impuestos, migraciones complejas, cambios de alcance, costes de formación, riesgos operativos ni el valor cualitativo de tener acceso a tus activos. La conveniencia de un modelo propio depende de tu caso, no solo del resultado mostrado.", 18, 182, 174, 9.2, ink);
+
+    doc.setFillColor(...forest);
+    doc.roundedRect(18, responsibleEnd + 9, 174, 34, 3, 3, "F");
+    text("Siguiente conversación útil", 24, responsibleEnd + 19, 8, lime, "bold");
+    wrapped("Contrasta este informe con tus facturas actuales y pregunta por propiedad de cuentas, exportación de datos, documentación, soporte y condiciones de salida. La autonomía no consiste en asumir cada tarea internamente: consiste en poder elegir con claridad.", 24, responsibleEnd + 27, 157, 8.7, cream);
+
+    text("kureva.es · Lo digital, en tus manos.", 18, pageHeight - 15, 7.5, moss, "bold");
+    text("Página 2 de 2", pageWidth - 18, pageHeight - 15, 7.5, moss, "normal");
+    doc.setProperties({ title: "Informe de costes · Kureva", subject: "Estimación de autonomía digital", author: "Kureva" });
+    doc.save(`Kureva_informe_costes_${reportDateForFile}.pdf`);
+    toast.success("Informe PDF descargado. Compártelo como estimación, no como presupuesto.");
+  };
 
   return (
     <div className="min-h-screen bg-[#F5F1E7] text-[#173A2E]">
@@ -247,6 +377,10 @@ export default function Calculator() {
                   </div>
                 </div>
 
+                <button onClick={exportReport} className="kureva-btn-secondary w-full justify-center text-sm">
+                  Descargar informe PDF
+                  <FileDown className="w-4 h-4" />
+                </button>
                 <a href="/#contacto" className="kureva-btn-primary w-full justify-center">
                   Convertir esta estimación en un plan real
                   <ArrowRight className="w-4 h-4" />

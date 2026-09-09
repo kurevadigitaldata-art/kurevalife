@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Navbar } from "@/components/Navbar";
+import { KurevaLifeDemo } from "@/components/KurevaLifeDemo";
 import {
   ArrowRight,
   BellRing,
@@ -66,6 +67,9 @@ export default function KurevaLife() {
                   <a href="#como-funciona" className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-white border border-white/20 hover:bg-white/10 transition-colors">
                     Ver cómo funciona
                   </a>
+                  <a href="#demo" className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-[#D9FF2B] border border-[#D9FF2B]/35 hover:bg-white/10 transition-colors">
+                    Probar la vista diaria
+                  </a>
                 </div>
 
                 <div className="flex flex-wrap gap-x-6 gap-y-3 pt-3 text-xs text-white/70">
@@ -118,6 +122,8 @@ export default function KurevaLife() {
             </div>
           </div>
         </section>
+
+        <KurevaLifeDemo />
 
         {/* Local first */}
         <section className="py-18 md:py-24 bg-[#F5F1E7] border-b border-[#DCD4C4]">

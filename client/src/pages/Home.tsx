@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { DiagnosticModal } from "@/components/DiagnosticModal";
+import { TransitionCases } from "@/components/TransitionCases";
 import {
   ArrowRight,
   Shield,
@@ -416,6 +417,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <TransitionCases />
 
       {/* =========================================================================
           KUREVALIFE SECTION: The future product ecosystem (Clear distinction)

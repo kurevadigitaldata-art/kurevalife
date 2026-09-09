@@ -72,7 +72,7 @@ export const Navbar = () => {
         {/* CTAs */}
         <div className="hidden lg:flex items-center gap-4">
           <a
-            href="#contacto"
+            href="/#contacto"
             className="kureva-btn-primary text-xs py-2.5 px-5 shadow-xs"
           >
             <span>Iniciar diagnóstico</span>
@@ -111,7 +111,7 @@ export const Navbar = () => {
             ))}
             <div className="pt-4 flex flex-col gap-3">
               <a
-                href="#contacto"
+                href="/#contacto"
                 onClick={() => setMobileMenuOpen(false)}
                 className="kureva-btn-primary text-center justify-center"
               >
