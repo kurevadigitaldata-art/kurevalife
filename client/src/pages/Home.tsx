@@ -142,8 +142,8 @@ export default function Home() {
 
                 <div className="space-y-3 bg-[#09241B]/80 rounded-2xl p-4 border border-white/5 text-xs">
                   <div className="flex justify-between items-center text-white/60">
-                    <span>Marca matriz:</span>
-                    <strong className="text-white font-medium">Kureva España</strong>
+                    <span>Base:</span>
+                    <strong className="text-white font-medium">San Miguel de Salinas</strong>
                   </div>
                   <div className="flex justify-between items-center text-white/60">
                     <span>Ecosistema futuro:</span>
@@ -480,10 +480,10 @@ export default function Home() {
 
               <div className="pt-4 flex items-center gap-4">
                 <a
-                  href="#contacto"
+                  href="/kurevalife"
                   className="kureva-btn-primary text-xs"
                 >
-                  <span>Unirme a la lista de espera de KurevaLife</span>
+                  <span>Conocer la beta de KurevaLife</span>
                   <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
@@ -904,7 +904,7 @@ export default function Home() {
                 Agencia y escuela de autonomía digital. Impulsamos la soberanía tecnológica de empresas y creadores.
               </p>
               <div className="text-[11px] font-mono text-[#D9FF2B]">
-                Sistema K Fluida · Madrid, España
+                Sistema K Fluida · San Miguel de Salinas, Alicante
               </div>
             </div>
 
@@ -915,7 +915,9 @@ export default function Home() {
               <ul className="space-y-2">
                 <li><a href="#servicios" className="hover:text-white transition-colors">Kureva Digital</a></li>
                 <li><a href="#servicios" className="hover:text-white transition-colors">KurevaMentoría</a></li>
-                <li><a href="#kurevalife" className="hover:text-[#D9FF2B] transition-colors">KurevaLife (App)</a></li>
+                <li><a href="/kurevalife" className="hover:text-[#D9FF2B] transition-colors">KurevaLife (Beta)</a></li>
+                <li><a href="/calculadora" className="hover:text-white transition-colors">Calculadora de costes</a></li>
+                <li><a href="/recursos" className="hover:text-white transition-colors">Recursos abiertos</a></li>
                 <li><a href="#identidad" className="hover:text-white transition-colors">Manual de Marca</a></li>
               </ul>
             </div>
