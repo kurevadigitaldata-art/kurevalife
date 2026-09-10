@@ -11,7 +11,7 @@ curl --fail-with-body -sS -o /tmp/kureva-feedback-response.txt -w '%{http_code}\
   -H "Authorization: Bearer $KEY" \
   -H "Content-Type: application/json" \
   -H "Prefer: return=minimal" \
-  --data "{\"ticket_code\":\"$TICKET\",\"experience_area\":\"kurevalife_simulator\",\"feedback_type\":\"observation\",\"message\":\"Validación técnica del envío anónimo de prueba de Kureva.\",\"accessibility_context\":\"not_shared\",\"consent_privacy\":true}"
+  --data "{\"ticket_code\":\"$TICKET\",\"experience_area\":\"kurevalife_simulator\",\"feedback_type\":\"observation\",\"feedback_category\":\"clarity\",\"rating\":5,\"message\":\"Validación técnica del envío anónimo de prueba de KurevaLife.\",\"accessibility_context\":\"not_shared\",\"is_anonymous\":true,\"sender_name\":null,\"consent_privacy\":true}"
 
 curl --fail-with-body -sS -o /tmp/kureva-interest-response.txt -w '%{http_code}\n' \
   -X POST "$API_URL/rest/v1/pilot_interest" \

@@ -3,6 +3,18 @@ const PILOT_PUBLISHABLE_KEY = "sb_publishable_uVi6uJwOgzHrbEg6AkgBTA_FhDWk358";
 
 export type ExperienceArea = "kurevalife_simulator" | "calculator_report" | "accessibility" | "general";
 export type FeedbackType = "observation" | "problem" | "idea" | "accessibility" | "encouragement";
+export type FeedbackCategory =
+  | "clarity"
+  | "daily_blocks"
+  | "reminders"
+  | "medical_organization"
+  | "nutrition"
+  | "accessibility"
+  | "privacy"
+  | "kivi_support"
+  | "family_mode"
+  | "community"
+  | "other";
 export type AccessibilityContext =
   | "not_shared"
   | "screen_reader"
@@ -16,8 +28,12 @@ export type PilotFeedbackPayload = {
   ticket_code: string;
   experience_area: ExperienceArea;
   feedback_type: FeedbackType;
+  feedback_category: FeedbackCategory;
+  rating: number;
   message: string;
   accessibility_context: AccessibilityContext;
+  is_anonymous: boolean;
+  sender_name: string | null;
   consent_privacy: true;
 };
 

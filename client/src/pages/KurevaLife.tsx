@@ -43,15 +43,15 @@ export default function KurevaLife() {
                 </div>
 
                 <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl leading-[1.04] text-white max-w-2xl">
-                  Tu día en orden. <span className="text-[#D9FF2B]">Tu voz en el proceso.</span>
+                  Tu vida en orden. <span className="text-[#D9FF2B]">Tus decisiones cerca.</span>
                 </h1>
                 <p className="text-lg md:text-xl text-white/75 leading-relaxed max-w-xl">
-                  Antes de crear la app definitiva, abrimos este simulacro para escuchar a personas reales. Prueba con ejemplos ficticios, sin crear una cuenta ni guardar tus notas, y cuéntanos qué haría esta experiencia más clara, accesible y humana.
+                  KurevaLife quiere reunir tus citas, preguntas, recordatorios y documentos en un espacio sencillo para que no tengas que recordarlo todo de memoria. Antes de crear la app definitiva, este simulacro escucha a personas reales con ejemplos ficticios y sin crear una cuenta.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                  <a href="#beta" className="kureva-btn-accent text-sm">
-                    Participar en el simulacro <ArrowRight className="w-4 h-4" />
+                  <a href="#demo" className="kureva-btn-accent text-sm">
+                    Entrar al simulacro <ArrowRight className="w-4 h-4" />
                   </a>
                   <a href="#como-funciona" className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-white border border-white/20 hover:bg-white/10 transition-colors">
                     Conocer el proceso
@@ -62,7 +62,7 @@ export default function KurevaLife() {
                 </div>
 
                 <div className="flex flex-wrap gap-x-6 gap-y-3 pt-3 text-xs text-white/70">
-                  <span className="inline-flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-[#D9FF2B]" /> Sin cuenta ni datos de prueba guardados</span>
+                  <span className="inline-flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-[#D9FF2B]" /> Sin cuenta ni datos reales durante la prueba</span>
                   <span className="inline-flex items-center gap-2"><Eye className="w-4 h-4 text-[#D9FF2B]" /> Diseño accesible</span>
                   <span className="inline-flex items-center gap-2"><HeartHandshake className="w-4 h-4 text-[#D9FF2B]" /> Tu sugerencia mejora el camino</span>
                 </div>
@@ -92,14 +92,14 @@ export default function KurevaLife() {
             <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
               <span className="kureva-badge">Una herramienta de organización personal</span>
               <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#0F3A2D]">Una pantalla clara para lo que importa hoy</h2>
-              <p className="text-[#5E806E] text-base sm:text-lg leading-relaxed">KurevaLife no intenta sustituir conversaciones importantes ni tomar decisiones por ti. Te ofrece un espacio personal para llegar a ellas con tus cosas en orden.</p>
+              <p className="text-[#5E806E] text-base sm:text-lg leading-relaxed">KurevaLife no interpreta pruebas ni sustituye conversaciones con profesionales. Quiere ofrecer un espacio personal para llegar a ellas con tus cosas en orden.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { icon: Clock3, title: "Organiza tu día por bloques", desc: "Reserva espacio para citas, tareas y recordatorios sin llenar tu pantalla de opciones." },
-                { icon: FileClock, title: "Prepara tus consultas", desc: "Guarda preguntas, notas y documentos que quieras tener a mano antes de una conversación importante." },
-                { icon: BellRing, title: "Recuerda sin perseguirte", desc: "Configura avisos claros y modificables. Elige la frecuencia y apágalos cuando no los necesites." },
+                { icon: Clock3, title: "Ordena tus recordatorios", desc: "Reserva espacio para citas, tareas y recordatorios sin llenar tu pantalla de avisos." },
+                { icon: FileClock, title: "Prepara tus consultas", desc: "Reúne preguntas, notas y documentos que quieras tener a mano para hablar con tu médico." },
+                { icon: BellRing, title: "Recuerda sin perseguirte", desc: "Configura avisos claros de medicación, citas o registros. Elige la frecuencia y apágalos cuando no los necesites." },
               ].map((item) => {
                 const Icon = item.icon;
                 return (
@@ -122,14 +122,14 @@ export default function KurevaLife() {
             <div className="rounded-3xl bg-[#0F3A2D] p-7 sm:p-10 text-[#F5F1E7] shadow-xl overflow-hidden relative">
               <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-[#D9FF2B]/10 blur-3xl" />
               <div className="relative space-y-7">
-                <div className="inline-flex items-center gap-2 text-[#D9FF2B] text-xs font-bold uppercase tracking-wider"><LockKeyhole className="w-4 h-4" /> Local-first por diseño</div>
+                <div className="inline-flex items-center gap-2 text-[#D9FF2B] text-xs font-bold uppercase tracking-wider"><LockKeyhole className="w-4 h-4" /> Privacidad como requisito</div>
                 <h2 className="font-display text-3xl font-bold text-white leading-tight">Tus notas no son el producto.</h2>
-                <p className="text-white/75 leading-relaxed">KurevaLife empieza guardando los datos en tu dispositivo. La sincronización, cuando exista, será opcional, visible y controlada por ti. La app está diseñada para que puedas exportar y conservar tus datos.</p>
+                <p className="text-white/75 leading-relaxed">La versión final debe diseñarse para que puedas entender dónde se guardan tus datos, elegir qué compartes, exportarlo y revocar accesos. Este simulacro todavía no guarda información personal ni clínica.</p>
                 <div className="space-y-3">
                   {[
-                    "Almacenamiento local y exportable",
+                    "Diseño con almacenamiento y exportación explicados",
                     "Sin venta de perfiles personales",
-                    "Sin publicidad basada en tu información",
+                    "Sin publicidad basada en información personal",
                     "Configuración de privacidad comprensible",
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-3 text-sm"><span className="w-5 h-5 rounded-full bg-[#D9FF2B] text-[#0F3A2D] flex items-center justify-center"><Check className="w-3.5 h-3.5" /></span>{item}</div>
@@ -141,12 +141,12 @@ export default function KurevaLife() {
             <div className="space-y-6">
               <span className="kureva-badge">Arquitectura explicada sin jerga</span>
               <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#0F3A2D] leading-tight">Lo importante está cerca de ti.</h2>
-              <p className="text-[#5E806E] leading-relaxed">Pensamos KurevaLife como una libreta digital con inteligencia práctica, no como una plataforma que absorbe información. La arquitectura se publicará por capas para que cada persona sepa qué ocurre con sus datos.</p>
+              <p className="text-[#5E806E] leading-relaxed">Pensamos KurevaLife como una libreta digital con inteligencia práctica, no como una plataforma que absorbe información. Antes de guardar datos reales, la arquitectura y las medidas de privacidad deberán estar implementadas, explicadas y revisadas.</p>
               <div className="space-y-4">
                 {[
-                  { icon: Smartphone, title: "1. Tu dispositivo", desc: "La agenda, tus notas y los ajustes viven primero en tu móvil o navegador." },
-                  { icon: Layers3, title: "2. Copia bajo tu control", desc: "Podrás elegir exportar o guardar una copia. La app te lo explica antes de activar una conexión." },
-                  { icon: KeyRound, title: "3. Accesos claros", desc: "Los permisos no quedan escondidos: se ven, se modifican y se pueden revocar." },
+                  { icon: Smartphone, title: "1. Primero tu dispositivo", desc: "El objetivo es que la agenda, las notas y los ajustes estén cerca de ti y se expliquen con claridad." },
+                  { icon: Layers3, title: "2. Copia bajo tu control", desc: "La versión final deberá permitir exportar o guardar una copia antes de activar cualquier conexión." },
+                  { icon: KeyRound, title: "3. Accesos claros", desc: "Los permisos no deben quedar escondidos: deben verse, modificarse y poder revocarse." },
                 ].map((item) => {
                   const Icon = item.icon;
                   return (
