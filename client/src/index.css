@@ -218,3 +218,38 @@
     transform: translateY(-1px);
   }
 }
+
+@keyframes kureva-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes kureva-orbit-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes kureva-breathe {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.08); }
+}
+
+.kureva-k-orbit {
+  animation: kureva-orbit 12s linear infinite;
+}
+
+.kureva-k-orbit-reverse {
+  animation: kureva-orbit-reverse 8s linear infinite;
+}
+
+.kureva-k-breathe {
+  animation: kureva-breathe 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kureva-k-orbit,
+  .kureva-k-orbit-reverse,
+  .kureva-k-breathe {
+    animation: none;
+  }
+}
