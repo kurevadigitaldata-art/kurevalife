@@ -40,8 +40,8 @@ export function PilotInterestForm() {
     return (
       <div className="rounded-3xl bg-[#FFFDF8] p-7 sm:p-9 text-[#173A2E] shadow-2xl border border-white/20 text-center space-y-4" role="status">
         <div className="w-15 h-15 rounded-full bg-[#D9FF2B] text-[#0F3A2D] flex items-center justify-center mx-auto"><Check className="w-8 h-8" /></div>
-        <h3 className="font-display text-2xl font-bold text-[#0F3A2D]">Gracias por caminar cerca.</h3>
-        <p className="text-sm text-[#5E806E] max-w-sm mx-auto">Te avisaremos de los avances de Kureva en <strong>{email}</strong>. Tu correo está en una lista separada de las sugerencias anónimas que puedas dejar durante el simulacro.</p>
+        <h3 className="font-display text-2xl font-bold text-[#0F3A2D]">Tu correo ya está en la lista privada.</h3>
+        <p className="text-sm text-[#5E806E] max-w-sm mx-auto">Hemos registrado <strong>{email}</strong> de forma separada de las sugerencias anónimas. La confirmación automática por correo se activará desde la cuenta oficial de Kureva antes de abrir la beta.</p>
         <button onClick={() => { setSent(false); setEmail(""); }} className="kureva-btn-secondary text-xs">Registrar otro correo</button>
       </div>
     );
@@ -51,8 +51,8 @@ export function PilotInterestForm() {
     <form onSubmit={submit} className="rounded-3xl bg-[#FFFDF8] p-7 sm:p-9 text-[#173A2E] shadow-2xl border border-white/20 space-y-5" aria-labelledby="updates-title">
       <div>
         <div className="text-xs font-mono uppercase tracking-wider text-[#5E806E] mb-2">Acompaña el proceso</div>
-        <h3 id="updates-title" className="font-display text-2xl font-bold text-[#0F3A2D]">Recibe avances y los futuros kits de Kureva.</h3>
-        <p className="mt-2 text-sm text-[#5E806E] leading-relaxed">Dejar tu correo es opcional. No lo vinculamos a tu código ni a tus sugerencias anónimas.</p>
+        <h3 id="updates-title" className="font-display text-2xl font-bold text-[#0F3A2D]">Apúntate a los avances y futuros kits de Kureva.</h3>
+        <p className="mt-2 text-sm text-[#5E806E] leading-relaxed">Dejar tu correo es opcional. No lo vinculamos a tu código ni a tus sugerencias anónimas. El envío automático de confirmación se activará desde la cuenta oficial antes de abrir la beta.</p>
       </div>
       <div>
         <label className="block text-xs font-bold uppercase tracking-wider text-[#0F3A2D] mb-2" htmlFor="pilot-interest-email">Tu correo</label>
