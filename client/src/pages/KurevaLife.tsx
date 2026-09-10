@@ -1,8 +1,9 @@
 import React from "react";
 import { Navbar } from "@/components/Navbar";
 import { KurevaLifeDemo } from "@/components/KurevaLifeDemo";
+import { KurevaLifeOnboarding } from "@/components/KurevaLifeOnboarding";
 import { PilotInterestForm } from "@/components/PilotInterestForm";
-import { PilotWelcome } from "@/components/PilotWelcome";
+import { PilotCommunity } from "@/components/PilotCommunity";
 import {
   ArrowRight,
   BellRing,
@@ -30,6 +31,9 @@ export default function KurevaLife() {
         {/* Hero */}
         <section className="relative overflow-hidden bg-[#0F3A2D] text-[#F5F1E7] border-b border-[#164D3C]">
           <div className="absolute inset-0 opacity-[0.10] pointer-events-none" style={{ backgroundImage: "url('/manus-storage/kureva-pattern_6aabb19d.svg')", backgroundSize: "520px 520px", filter: "brightness(0) invert(1)" }} />
+          <div aria-hidden="true" className="absolute right-[-3rem] top-[-2rem] w-40 h-40 sm:w-56 sm:h-56 rounded-full border border-[#D9FF2B]/25 pointer-events-none motion-safe:animate-[spin_18s_linear_infinite]">
+            <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-[#D9FF2B] text-[#0F3A2D] flex items-center justify-center font-display font-bold text-2xl shadow-lg">K</div>
+          </div>
           <div className="container relative z-10 py-16 md:py-24 lg:py-28">
             <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-center">
               <div className="space-y-6">
@@ -50,8 +54,8 @@ export default function KurevaLife() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                  <a href="#demo" className="kureva-btn-accent text-sm">
-                    Entrar al simulacro <ArrowRight className="w-4 h-4" />
+                  <a href="#inicio" className="kureva-btn-accent text-sm">
+                    Comenzar la prueba guiada <ArrowRight className="w-4 h-4" />
                   </a>
                   <a href="#como-funciona" className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-white border border-white/20 hover:bg-white/10 transition-colors">
                     Conocer el proceso
@@ -84,7 +88,7 @@ export default function KurevaLife() {
           </div>
         </section>
 
-        <PilotWelcome />
+        <KurevaLifeOnboarding onStart={() => document.getElementById("demo")?.scrollIntoView({ behavior: "smooth", block: "start" })} />
 
         {/* What it is */}
         <section id="como-funciona" className="py-18 md:py-24 bg-[#FFFDF8] border-b border-[#DCD4C4]">
@@ -115,6 +119,8 @@ export default function KurevaLife() {
         </section>
 
         <KurevaLifeDemo />
+
+        <PilotCommunity />
 
         {/* Local first */}
         <section className="py-18 md:py-24 bg-[#F5F1E7] border-b border-[#DCD4C4]">

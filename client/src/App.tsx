@@ -17,6 +17,7 @@ function Router() {
       <Route path={"/calculadora"} component={Calculator} />
       <Route path={"/recursos"} component={Resources} />
       <Route path={"/kurevalife"} component={KurevaLife} />
+      <Route path={"/vida"} component={KurevaLife} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

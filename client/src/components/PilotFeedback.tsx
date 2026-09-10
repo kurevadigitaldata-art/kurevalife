@@ -176,8 +176,8 @@ export function PilotFeedback({ defaultArea = "kurevalife_simulator", compact = 
         </label>
         {!anonymous && (
           <div className="motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-1 duration-200">
-            <label className="block text-xs font-bold uppercase tracking-wider text-white/80 mb-2" htmlFor="pilot-name">Nombre que deseas asociar a esta sugerencia</label>
-            <input id="pilot-name" value={senderName} onChange={(event) => setSenderName(event.target.value)} maxLength={100} required={!anonymous} placeholder="Tu nombre" className="w-full h-11 px-3 rounded-xl bg-white text-[#173A2E] text-sm focus:outline-hidden focus:ring-2 focus:ring-[#D9FF2B]" />
+            <label className="block text-xs font-bold uppercase tracking-wider text-white/80 mb-2" htmlFor="pilot-name">Nombre y apellidos que deseas asociar a esta sugerencia</label>
+            <input id="pilot-name" value={senderName} onChange={(event) => setSenderName(event.target.value)} maxLength={100} required={!anonymous} placeholder="Tu nombre y apellidos" className="w-full h-11 px-3 rounded-xl bg-white text-[#173A2E] text-sm focus:outline-hidden focus:ring-2 focus:ring-[#D9FF2B]" />
             <p className="mt-2 text-[11px] text-white/55">El nombre solo queda en el registro privado del piloto. No se publica en la futura comunidad.</p>
           </div>
         )}
@@ -185,7 +185,7 @@ export function PilotFeedback({ defaultArea = "kurevalife_simulator", compact = 
 
       <label className="flex items-start gap-3 text-xs text-white/70 leading-relaxed cursor-pointer">
         <input checked={privacyAccepted} onChange={(event) => setPrivacyAccepted(event.target.checked)} type="checkbox" required className="mt-0.5 size-4 accent-[#D9FF2B]" />
-        <span>Entiendo que Kureva guardará esta valoración, mi sugerencia y el código de prueba para mejorar el simulacro. Si elijo identificarme, también guardará el nombre que he escrito. No se asociará a las notas creadas dentro de la demo.</span>
+        <span><strong className="text-white">Quiero que esta sugerencia quede en el registro privado del piloto.</strong> Kureva guardará la valoración, el comentario y el código de prueba para mejorar el simulacro. Si elijo identificarme, también guardará el nombre y apellidos escritos. Esta sugerencia no se publica ni se asocia a las notas creadas dentro de la demo.</span>
       </label>
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">

@@ -17,7 +17,7 @@ export const Navbar = () => {
     { label: "Servicios", href: "/#servicios" },
     { label: "Calculadora", href: "/calculadora" },
     { label: "Recursos", href: "/recursos" },
-    { label: "Probar KurevaLife", href: "/kurevalife#simulacro", tag: "Piloto" },
+    { label: "Probar KurevaLife", href: "/vida#inicio", tag: "Piloto" },
     { label: "Método", href: "/#metodo" },
   ];
 

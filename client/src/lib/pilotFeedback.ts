@@ -23,6 +23,7 @@ export type AccessibilityContext =
   | "motor_or_dexterity"
   | "cognitive_or_attention"
   | "other";
+export type CommunityCategory = "daily_blocks" | "medical_organization" | "nutrition" | "accessibility" | "privacy" | "kivi_support" | "family_mode" | "general";
 
 export type PilotFeedbackPayload = {
   ticket_code: string;
@@ -45,20 +46,43 @@ export type PilotInterestPayload = {
   consent_privacy: true;
 };
 
+export type CommunityMessage = {
+  id: string;
+  display_name: string;
+  is_anonymous: boolean;
+  category: CommunityCategory;
+  message: string;
+  created_at: string;
+  visible_until: string;
+};
+
+export type CommunityMessagePayload = {
+  display_name: string;
+  is_anonymous: boolean;
+  category: CommunityCategory;
+  message: string;
+  consent_public: true;
+  visible_until: string;
+};
+
 function getErrorMessage(body: unknown) {
   if (typeof body === "object" && body !== null && "message" in body && typeof body.message === "string") return body.message;
   return "No se ha podido registrar ahora. Revisa tu conexión e inténtalo de nuevo.";
 }
 
-async function postToPilotTable(table: "pilot_feedback" | "pilot_interest", payload: PilotFeedbackPayload | PilotInterestPayload) {
+function headers(prefer = "return=minimal") {
+  return {
+    apikey: PILOT_PUBLISHABLE_KEY,
+    Authorization: `Bearer ${PILOT_PUBLISHABLE_KEY}`,
+    "Content-Type": "application/json",
+    Prefer: prefer,
+  };
+}
+
+async function postToPilotTable(table: "pilot_feedback" | "pilot_interest" | "pilot_community_messages", payload: PilotFeedbackPayload | PilotInterestPayload | CommunityMessagePayload) {
   const response = await fetch(`${PILOT_API_URL}/rest/v1/${table}`, {
     method: "POST",
-    headers: {
-      apikey: PILOT_PUBLISHABLE_KEY,
-      Authorization: `Bearer ${PILOT_PUBLISHABLE_KEY}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
-    },
+    headers: headers(),
     body: JSON.stringify(payload),
   });
 
@@ -75,6 +99,36 @@ export async function submitPilotFeedback(payload: PilotFeedbackPayload) {
 
 export async function submitPilotInterest(payload: PilotInterestPayload) {
   await postToPilotTable("pilot_interest", payload);
+}
+
+export async function submitCommunityMessage(payload: CommunityMessagePayload) {
+  await postToPilotTable("pilot_community_messages", payload);
+}
+
+export async function loadCommunityMessages() {
+  const now = encodeURIComponent(new Date().toISOString());
+  const response = await fetch(`${PILOT_API_URL}/rest/v1/pilot_community_messages?select=id,display_name,is_anonymous,category,message,created_at,visible_until&visible_until=gt.${now}&order=created_at.desc&limit=30`, {
+    headers: headers(),
+  });
+  if (!response.ok) {
+    let body: unknown = null;
+    try { body = await response.json(); } catch { /* No structured response available. */ }
+    throw new Error(getErrorMessage(body));
+  }
+  return response.json() as Promise<CommunityMessage[]>;
+}
+
+export async function loadPilotWindow() {
+  const response = await fetch(`${PILOT_API_URL}/rest/v1/pilot_windows?select=starts_at,ends_at&window_key=eq.kurevalife_24h&limit=1`, {
+    headers: headers(),
+  });
+  if (!response.ok) {
+    let body: unknown = null;
+    try { body = await response.json(); } catch { /* No structured response available. */ }
+    throw new Error(getErrorMessage(body));
+  }
+  const windows = await response.json() as { starts_at: string; ends_at: string }[];
+  return windows[0] ?? null;
 }
 
 export function getPilotTicket() {
