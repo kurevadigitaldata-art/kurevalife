@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { DiagnosticModal } from "@/components/DiagnosticModal";
+import { FounderStory } from "@/components/FounderStory";
 import { TransitionCases } from "@/components/TransitionCases";
 import {
   ArrowRight,
@@ -45,6 +46,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#F5F1E7] text-[#173A2E] flex flex-col selection:bg-[#D9FF2B] selection:text-[#0F3A2D]">
       <Navbar />
       <DiagnosticModal isOpen={isDiagnosticOpen} onClose={() => setIsDiagnosticOpen(false)} />
+      <main id="contenido-principal">
 
       {/* =========================================================================
           HERO SECTION: High-impact typography, asymmetric grid, real brand tokens
@@ -243,6 +245,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <FounderStory />
 
       {/* =========================================================================
           SERVICES SECTION: Kureva Digital offerings
@@ -889,6 +893,8 @@ export default function Home() {
       {/* =========================================================================
           FOOTER
          ========================================================================= */}
+      </main>
+
       <footer className="bg-[#09241B] text-[#F5F1E7]/70 py-16 text-xs border-t border-white/10">
         <div className="container space-y-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">

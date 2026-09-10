@@ -17,18 +17,20 @@ export const Navbar = () => {
     { label: "Servicios", href: "/#servicios" },
     { label: "Calculadora", href: "/calculadora" },
     { label: "Recursos", href: "/recursos" },
-    { label: "KurevaLife", href: "/kurevalife", tag: "Beta" },
+    { label: "Probar KurevaLife", href: "/kurevalife#simulacro", tag: "Piloto" },
     { label: "Método", href: "/#metodo" },
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[#FAF7F0]/90 backdrop-blur-md border-b border-[#DCD4C4] py-3.5 shadow-xs"
-          : "bg-transparent py-5"
-      }`}
-    >
+    <>
+      <a href="#contenido-principal" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[#D9FF2B] focus:px-4 focus:py-3 focus:text-sm focus:font-bold focus:text-[#0F3A2D] focus:shadow-xl">Saltar al contenido principal</a>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-[#FAF7F0]/90 backdrop-blur-md border-b border-[#DCD4C4] py-3.5 shadow-xs"
+            : "bg-transparent py-5"
+        }`}
+      >
       <div className="container flex items-center justify-between">
         {/* Brand logo */}
         <a href="/" className="flex items-center gap-3 group">
@@ -122,6 +124,7 @@ export const Navbar = () => {
           </nav>
         </div>
       )}
-    </header>
+      </header>
+    </>
   );
 };

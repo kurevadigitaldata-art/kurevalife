@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Navbar } from "@/components/Navbar";
 import { KurevaLifeDemo } from "@/components/KurevaLifeDemo";
+import { PilotInterestForm } from "@/components/PilotInterestForm";
+import { PilotWelcome } from "@/components/PilotWelcome";
 import {
   ArrowRight,
   BellRing,
@@ -18,26 +20,13 @@ import {
   ShieldCheck,
   Smartphone,
   Sparkles,
-  UserRoundCheck,
 } from "lucide-react";
-import { toast } from "sonner";
 
 export default function KurevaLife() {
-  const [joined, setJoined] = useState(false);
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("persona");
-
-  const joinBeta = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    setJoined(true);
-    toast.success("Tu interés por la beta de KurevaLife ha quedado registrado.");
-  };
-
   return (
     <div className="min-h-screen bg-[#F5F1E7] text-[#173A2E] selection:bg-[#D9FF2B] selection:text-[#0F3A2D]">
       <Navbar />
-      <main className="pt-24">
+      <main id="contenido-principal" className="pt-24">
         {/* Hero */}
         <section className="relative overflow-hidden bg-[#0F3A2D] text-[#F5F1E7] border-b border-[#164D3C]">
           <div className="absolute inset-0 opacity-[0.10] pointer-events-none" style={{ backgroundImage: "url('/manus-storage/kureva-pattern_6aabb19d.svg')", backgroundSize: "520px 520px", filter: "brightness(0) invert(1)" }} />
@@ -46,7 +35,7 @@ export default function KurevaLife() {
               <div className="space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-[#D9FF2B] text-xs font-semibold">
                   <Sparkles className="w-3.5 h-3.5" />
-                  Beta cerrada · producto propio de Kureva
+                  Simulacro de prueba · antes de la beta cerrada
                 </div>
 
                 <div className="w-62 max-w-full">
@@ -54,18 +43,18 @@ export default function KurevaLife() {
                 </div>
 
                 <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl leading-[1.04] text-white max-w-2xl">
-                  Tu día en orden. <span className="text-[#D9FF2B]">Tu consulta más clara.</span>
+                  Tu día en orden. <span className="text-[#D9FF2B]">Tu voz en el proceso.</span>
                 </h1>
                 <p className="text-lg md:text-xl text-white/75 leading-relaxed max-w-xl">
-                  KurevaLife te ayuda a organizar tus consultas, recordatorios y notas de forma sencilla. Diseñada para personas que quieren menos ruido, más claridad y control de sus propios datos.
+                  Antes de crear la app definitiva, abrimos este simulacro para escuchar a personas reales. Prueba con ejemplos ficticios, sin crear una cuenta ni guardar tus notas, y cuéntanos qué haría esta experiencia más clara, accesible y humana.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <a href="#beta" className="kureva-btn-accent text-sm">
-                    Solicitar acceso a la beta <ArrowRight className="w-4 h-4" />
+                    Participar en el simulacro <ArrowRight className="w-4 h-4" />
                   </a>
                   <a href="#como-funciona" className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-white border border-white/20 hover:bg-white/10 transition-colors">
-                    Ver cómo funciona
+                    Conocer el proceso
                   </a>
                   <a href="#demo" className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold text-[#D9FF2B] border border-[#D9FF2B]/35 hover:bg-white/10 transition-colors">
                     Probar la vista diaria
@@ -73,9 +62,9 @@ export default function KurevaLife() {
                 </div>
 
                 <div className="flex flex-wrap gap-x-6 gap-y-3 pt-3 text-xs text-white/70">
-                  <span className="inline-flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-[#D9FF2B]" /> Datos locales primero</span>
+                  <span className="inline-flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-[#D9FF2B]" /> Sin cuenta ni datos de prueba guardados</span>
                   <span className="inline-flex items-center gap-2"><Eye className="w-4 h-4 text-[#D9FF2B]" /> Diseño accesible</span>
-                  <span className="inline-flex items-center gap-2"><HeartHandshake className="w-4 h-4 text-[#D9FF2B]" /> Sin lenguaje clínico</span>
+                  <span className="inline-flex items-center gap-2"><HeartHandshake className="w-4 h-4 text-[#D9FF2B]" /> Tu sugerencia mejora el camino</span>
                 </div>
               </div>
 
@@ -84,7 +73,7 @@ export default function KurevaLife() {
                 <div className="relative rounded-3xl bg-[#FFFDF8] p-3 sm:p-5 border border-white/15 shadow-2xl">
                   <div className="flex items-center justify-between px-2 pb-4 text-xs">
                     <div className="flex items-center gap-2 text-[#0F3A2D] font-semibold"><span className="w-2.5 h-2.5 rounded-full bg-[#0F3A2D]" /> Vista diaria por bloques</div>
-                    <span className="font-mono text-[#5E806E]">EARLY BUILD</span>
+                    <span className="font-mono text-[#5E806E]">SIMULACRO 01</span>
                   </div>
                   <div className="rounded-2xl overflow-hidden border border-[#DCD4C4] bg-[#F5F1E7]">
                     <img src="/manus-storage/kureva-ui-direction_89c54ed0.png" alt="Vista conceptual de KurevaLife con paneles por bloques" className="w-full h-auto" />
@@ -94,6 +83,8 @@ export default function KurevaLife() {
             </div>
           </div>
         </section>
+
+        <PilotWelcome />
 
         {/* What it is */}
         <section id="como-funciona" className="py-18 md:py-24 bg-[#FFFDF8] border-b border-[#DCD4C4]">
@@ -183,59 +174,24 @@ export default function KurevaLife() {
           </div>
         </section>
 
-        {/* Beta form */}
+        {/* Pilot updates */}
         <section id="beta" className="py-18 md:py-24 bg-[#0F3A2D] text-[#F5F1E7] relative overflow-hidden">
           <div className="absolute inset-0 opacity-[0.08] pointer-events-none" style={{ backgroundImage: "url('/manus-storage/kureva-pattern_6aabb19d.svg')", backgroundSize: "500px 500px", filter: "brightness(0) invert(1)" }} />
           <div className="container relative">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_0.9fr] gap-12 items-center">
               <div className="space-y-5">
-                <span className="inline-flex items-center gap-2 text-[#D9FF2B] text-xs font-bold uppercase tracking-wider"><Sparkles className="w-4 h-4" /> Beta cerrada · primeras conversaciones</span>
-                <h2 className="font-display text-4xl sm:text-5xl font-bold text-white leading-[1.08]">Ayúdanos a construir una app que no te trate como un dato.</h2>
-                <p className="text-lg text-white/75 leading-relaxed max-w-xl">Buscamos personas que quieran probar el enfoque, señalar lo que sobra y ayudarnos a mantener el producto simple, humano y respetuoso.</p>
+                <span className="inline-flex items-center gap-2 text-[#D9FF2B] text-xs font-bold uppercase tracking-wider"><Sparkles className="w-4 h-4" /> Grupo de confianza · simulacro 01</span>
+                <h2 className="font-display text-4xl sm:text-5xl font-bold text-white leading-[1.08]">No vienes a probar una pantalla. Vienes a construir con nosotros.</h2>
+                <p className="text-lg text-white/75 leading-relaxed max-w-xl">Kureva crece cuando las experiencias reales marcan el camino. Si decides dejarnos tu correo, te contaremos qué hemos aprendido, cuándo se abre el siguiente paso y cómo recibir los futuros materiales de Kureva.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-white/80">
-                  <div className="flex items-center gap-2"><Check className="w-4 h-4 text-[#D9FF2B]" /> Acceso temprano sin coste</div>
-                  <div className="flex items-center gap-2"><Check className="w-4 h-4 text-[#D9FF2B]" /> Sesiones de feedback voluntarias</div>
-                  <div className="flex items-center gap-2"><Check className="w-4 h-4 text-[#D9FF2B]" /> Datos de prueba, sin obligación</div>
-                  <div className="flex items-center gap-2"><Check className="w-4 h-4 text-[#D9FF2B]" /> Cancelación sencilla</div>
+                  <div className="flex items-center gap-2"><Check className="w-4 h-4 text-[#D9FF2B]" /> Sin coste ni obligación</div>
+                  <div className="flex items-center gap-2"><Check className="w-4 h-4 text-[#D9FF2B]" /> Feedback voluntario y anónimo</div>
+                  <div className="flex items-center gap-2"><Check className="w-4 h-4 text-[#D9FF2B]" /> Datos de ejemplo, no una cuenta</div>
+                  <div className="flex items-center gap-2"><Check className="w-4 h-4 text-[#D9FF2B]" /> Baja sencilla en cualquier momento</div>
                 </div>
               </div>
 
-              <div className="rounded-3xl bg-[#FFFDF8] p-7 sm:p-9 text-[#173A2E] shadow-2xl">
-                {!joined ? (
-                  <form onSubmit={joinBeta} className="space-y-5">
-                    <div>
-                      <div className="text-xs font-mono uppercase tracking-wider text-[#5E806E] mb-2">Acceso anticipado</div>
-                      <h3 className="font-display text-2xl font-bold text-[#0F3A2D]">Solicita tu plaza beta</h3>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-[#0F3A2D] mb-2">Tu correo</label>
-                      <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required placeholder="tu@correo.es" className="w-full h-12 px-4 rounded-xl border border-[#DCD4C4] bg-white text-sm focus:outline-hidden focus:border-[#0F3A2D]" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-[#0F3A2D] mb-2">¿Cómo te gustaría participar?</label>
-                      <select value={role} onChange={(e) => setRole(e.target.value)} className="w-full h-12 px-4 rounded-xl border border-[#DCD4C4] bg-white text-sm focus:outline-hidden focus:border-[#0F3A2D]">
-                        <option value="persona">Como persona usuaria</option>
-                        <option value="cuidador">Como familiar o persona de apoyo</option>
-                        <option value="profesional">Como profesional interesado en organización accesible</option>
-                        <option value="comunidad">Como parte de una asociación o comunidad local</option>
-                      </select>
-                    </div>
-                    <label className="flex items-start gap-2.5 text-xs text-[#5E806E] leading-relaxed">
-                      <input required type="checkbox" className="mt-0.5 accent-[#0F3A2D]" />
-                      <span>Acepto que Kureva use este correo únicamente para responder a mi solicitud de beta. Podré solicitar su eliminación cuando quiera.</span>
-                    </label>
-                    <button type="submit" className="kureva-btn-primary w-full justify-center">Solicitar acceso a KurevaLife <ArrowRight className="w-4 h-4" /></button>
-                    <p className="text-[11px] text-[#5E806E] text-center">La beta se activa por grupos pequeños. Responderemos con los siguientes pasos cuando abramos plazas.</p>
-                  </form>
-                ) : (
-                  <div className="text-center py-10 space-y-4">
-                    <div className="w-15 h-15 rounded-full bg-[#D9FF2B] text-[#0F3A2D] flex items-center justify-center mx-auto"><Check className="w-8 h-8" /></div>
-                    <h3 className="font-display text-2xl font-bold text-[#0F3A2D]">Solicitud recibida</h3>
-                    <p className="text-sm text-[#5E806E] max-w-sm mx-auto">Gracias. Cuando abramos el siguiente grupo, te escribiremos a <strong>{email}</strong> con el proceso y las condiciones de participación.</p>
-                    <button onClick={() => setJoined(false)} className="kureva-btn-secondary text-xs">Registrar otro correo</button>
-                  </div>
-                )}
-              </div>
+              <PilotInterestForm />
             </div>
           </div>
         </section>

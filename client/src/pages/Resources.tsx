@@ -62,7 +62,7 @@ export default function Resources() {
   return (
     <div className="min-h-screen bg-[#F5F1E7] text-[#173A2E]">
       <Navbar />
-      <main className="pt-28 md:pt-32">
+      <main id="contenido-principal" className="pt-28 md:pt-32">
         <section className="relative overflow-hidden border-b border-[#DCD4C4] bg-[#0F3A2D] text-[#F5F1E7]">
           <div className="absolute inset-0 opacity-[0.12] pointer-events-none" style={{ backgroundImage: "url('/manus-storage/kureva-pattern_6aabb19d.svg')", backgroundSize: "460px 460px", filter: "brightness(0) invert(1)" }} />
           <div className="container relative py-18 md:py-24">

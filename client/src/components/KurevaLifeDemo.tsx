@@ -1,22 +1,18 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
+import { PilotFeedback } from "@/components/PilotFeedback";
 import {
-  BellRing,
   Check,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Circle,
   ClipboardPenLine,
-  Coffee,
   HeartHandshake,
   Lightbulb,
-  ListTodo,
   LockKeyhole,
-  MessageSquareText,
   MoreHorizontal,
   Plus,
   RotateCcw,
-  Send,
   Sparkles,
   X,
 } from "lucide-react";
@@ -78,7 +74,6 @@ export function KurevaLifeDemo() {
   const [showComposer, setShowComposer] = useState(false);
   const [newBlock, setNewBlock] = useState({ title: "", time: "18:30", detail: "" });
   const [note, setNote] = useState("Recordar preguntar por las opciones y escribir la respuesta con mis palabras.");
-  const [feedback, setFeedback] = useState("");
 
   const currentBlocks = blocks[selectedDay];
   const activeBlock = currentBlocks.find((block) => block.id === activeId) ?? currentBlocks[0];
@@ -124,21 +119,13 @@ export function KurevaLifeDemo() {
     toast.success("Demostración restablecida.");
   };
 
-  const feedbackEmail = useMemo(() => {
-    const subject = encodeURIComponent("Feedback piloto KurevaLife · vista diaria");
-    const body = encodeURIComponent(
-      `Hola,\n\nHe probado la vista diaria de KurevaLife.\n\nLo que me resultó claro:\n\n${feedback || "[Escribe aquí tu comentario]"}\n\nLo que cambiaría o echaría de menos:\n\n¿Pude entender que esto es una demo y que no se guardan datos? Sí / No\n\nGracias.`
-    );
-    return `mailto:hola@kureva.es?subject=${subject}&body=${body}`;
-  }, [feedback]);
-
   return (
     <section id="demo" className="py-18 md:py-24 bg-[#F5F1E7] border-y border-[#DCD4C4]">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center space-y-4 mb-10 md:mb-14">
-          <span className="kureva-badge"><Sparkles className="w-3.5 h-3.5" /> Prototipo navegable</span>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#0F3A2D]">Prueba una vista diaria por bloques.</h2>
-          <p className="text-[#5E806E] text-base sm:text-lg leading-relaxed">Esta es una demostración funcional del enfoque, no la app final. Puedes recorrer días, marcar bloques, crear un ejemplo y dejar una observación sin usar datos personales.</p>
+          <span className="kureva-badge"><Sparkles className="w-3.5 h-3.5" /> Simulacro navegable</span>
+          <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#0F3A2D]">Prueba la vista diaria. Ayúdanos a hacerla más humana.</h2>
+          <p className="text-[#5E806E] text-base sm:text-lg leading-relaxed">Nada de lo que escribas dentro del simulacro se convierte en una cuenta ni se guarda como dato de la app. Puedes recorrer días, marcar bloques y crear ejemplos ficticios. Al final eliges si deseas enviar una sugerencia anónima.</p>
         </div>
 
         <div className="rounded-3xl border border-[#DCD4C4] bg-[#FFFDF8] shadow-xl overflow-hidden">
@@ -147,11 +134,11 @@ export function KurevaLifeDemo() {
               <div className="w-9 h-9 rounded-xl bg-[#0F3A2D] flex items-center justify-center text-[#D9FF2B]"><Sparkles className="w-4 h-4" /></div>
               <div>
                 <div className="font-display font-bold text-sm text-[#0F3A2D]">KurevaLife · vista diaria</div>
-                <div className="text-[11px] text-[#5E806E]">Entorno de prueba con contenido ficticio</div>
+                <div className="text-[11px] text-[#5E806E]">Simulacro con contenido ficticio · no es una cuenta</div>
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-[#F5F1E7] text-[11px] font-semibold text-[#0F3A2D]"><LockKeyhole className="w-3.5 h-3.5" /> Nada se guarda</span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-[#F5F1E7] text-[11px] font-semibold text-[#0F3A2D]"><LockKeyhole className="w-3.5 h-3.5" /> Tus bloques no se guardan</span>
               <button onClick={resetDemo} className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-[11px] font-semibold text-[#5E806E] hover:bg-[#F5F1E7] transition-colors"><RotateCcw className="w-3.5 h-3.5" /> Restablecer</button>
             </div>
           </div>
@@ -267,13 +254,7 @@ export function KurevaLifeDemo() {
               <li><strong className="block font-display text-[#0F3A2D] mb-1">03 · Cuéntanos</strong> Señala algo confuso, incómodo o que echarías de menos.</li>
             </ol>
           </div>
-          <div className="rounded-2xl bg-[#0F3A2D] p-6 sm:p-7 text-[#F5F1E7] space-y-4">
-            <div className="flex items-center gap-2 text-[#D9FF2B]"><MessageSquareText className="w-4 h-4" /><span className="text-xs font-bold uppercase tracking-wider">Comentario de la prueba</span></div>
-            <label className="sr-only" htmlFor="demo-feedback">Comentario de la demostración</label>
-            <textarea id="demo-feedback" value={feedback} onChange={(event) => setFeedback(event.target.value)} rows={3} placeholder="Ej.: No entendí qué ocurre cuando un bloque se repite; necesitaría letras más grandes..." className="w-full resize-none rounded-xl bg-white/10 border border-white/15 px-3 py-3 text-sm text-white placeholder:text-white/45 focus:outline-hidden focus:border-[#D9FF2B]" />
-            <a href={feedbackEmail} className="kureva-btn-accent text-xs"><Send className="w-3.5 h-3.5" /> Preparar correo de feedback</a>
-            <p className="text-[10px] text-white/55">Se abrirá tu cliente de correo con una plantilla. Kureva no recoge automáticamente este comentario en la demo.</p>
-          </div>
+          <PilotFeedback defaultArea="kurevalife_simulator" compact />
         </div>
       </div>
     </section>

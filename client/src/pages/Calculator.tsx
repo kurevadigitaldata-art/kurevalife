@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Navbar } from "@/components/Navbar";
+import { PilotFeedback } from "@/components/PilotFeedback";
 import { jsPDF } from "jspdf";
 import {
   ArrowRight,
@@ -167,11 +168,11 @@ export default function Calculator() {
     text("K", pageWidth - 21.6, 20.5, 11, forest, "bold");
     text("KUREVA", 18, 15, 10, cream, "bold");
     text("AUTONOMÍA DIGITAL · SAN MIGUEL DE SALINAS, ALICANTE", 18, 22, 7, [191, 213, 202], "bold");
-    text("INFORME DE COSTES", 18, 36, 7.5, lime, "bold");
+    text("INFORME DE SIMULACIÓN DE COSTES", 18, 36, 7.5, lime, "bold");
 
     text("Estimación para decidir", 18, 61, 22, forest, "bold");
     text("con más contexto.", 18, 70, 22, forest, "bold");
-    wrapped("Resumen generado desde la calculadora de costes ocultos de Kureva. Es una estimación de trabajo: no constituye una oferta, un presupuesto ni una garantía de ahorro.", 18, 81, 143, 9.5);
+    wrapped("Resumen generado desde el simulacro de costes de Kureva. Es una estimación de trabajo: no constituye una oferta, un presupuesto ni una garantía de ahorro.", 18, 81, 143, 9.5);
     text(`Generado el ${reportDate}`, 18, 104, 8, moss, "bold");
     divider(112);
 
@@ -197,7 +198,7 @@ export default function Calculator() {
     doc.setFillColor(...cream);
     doc.rect(0, 0, pageWidth, pageHeight, "F");
     text("KUREVA", 18, 16, 9, forest, "bold");
-    text("INFORME DE COSTES · DETALLE DE SUPUESTOS", pageWidth - 18, 16, 7, moss, "bold");
+    text("SIMULACIÓN · DETALLE DE SUPUESTOS", pageWidth - 18, 16, 7, moss, "bold");
     divider(22);
     text("Supuestos introducidos", 18, 39, 16, forest, "bold");
     wrapped("Las cifras siguientes se han introducido manualmente en la calculadora. Llévalas a una conversación con socios, dirección o un proveedor para contrastarlas con facturas, procesos y necesidades reales.", 18, 49, 171, 9.5);
@@ -235,30 +236,30 @@ export default function Calculator() {
 
     text("kureva.es · Lo digital, en tus manos.", 18, pageHeight - 15, 7.5, moss, "bold");
     text("Página 2 de 2", pageWidth - 18, pageHeight - 15, 7.5, moss, "normal");
-    doc.setProperties({ title: "Informe de costes · Kureva", subject: "Estimación de autonomía digital", author: "Kureva" });
-    doc.save(`Kureva_informe_costes_${reportDateForFile}.pdf`);
-    toast.success("Informe PDF descargado. Compártelo como estimación, no como presupuesto.");
+    doc.setProperties({ title: "Informe de simulación de costes · Kureva", subject: "Estimación de autonomía digital", author: "Kureva" });
+    doc.save(`Kureva_simulacion_costes_${reportDateForFile}.pdf`);
+    toast.success("Informe de simulación descargado. Úsalo para conversar, no como presupuesto.");
   };
 
   return (
     <div className="min-h-screen bg-[#F5F1E7] text-[#173A2E]">
       <Navbar />
 
-      <main className="pt-30 md:pt-36 pb-20">
+      <main id="contenido-principal" className="pt-30 md:pt-36 pb-20">
         <section className="relative overflow-hidden border-b border-[#DCD4C4] bg-[#FFFDF8]">
           <div className="absolute inset-0 opacity-[0.035] pointer-events-none" style={{ backgroundImage: "url('/manus-storage/kureva-pattern_6aabb19d.svg')", backgroundSize: "430px 430px" }} />
           <div className="container relative py-16 md:py-22">
             <div className="max-w-3xl space-y-5">
-              <span className="kureva-badge"><CalculatorIcon className="w-3.5 h-3.5" /> Calculadora de costes ocultos</span>
+              <span className="kureva-badge"><CalculatorIcon className="w-3.5 h-3.5" /> Simulacro de costes y autonomía</span>
               <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-[#0F3A2D] leading-[1.04]">
                 ¿Cuánto te cuesta realmente no tener el control?
               </h1>
               <p className="text-lg md:text-xl text-[#5E806E] max-w-2xl leading-relaxed">
-                Compara tu modelo actual de agencia, herramientas y trabajo manual con una infraestructura propia, documentada y transferible. Ajusta las cifras a tu contexto.
+                Este es un simulacro de conversación: compara un modelo actual de agencia, herramientas y trabajo manual con una infraestructura propia, documentada y transferible. Ajusta cifras ficticias o cercanas a tu contexto, sin introducir datos sensibles.
               </p>
               <div className="flex items-start gap-2 text-xs text-[#5E806E] max-w-2xl">
                 <Info className="w-4 h-4 mt-0.5 shrink-0" />
-                <span>Estimación orientativa, no presupuesto ni promesa de ahorro. El valor final depende del alcance, procesos, proveedores y decisiones de cada proyecto.</span>
+                <span>La calculadora no guarda las cifras que introduces. La estimación es orientativa: no es un presupuesto ni una promesa de ahorro. El valor final depende del alcance, procesos, proveedores y decisiones de cada proyecto.</span>
               </div>
             </div>
           </div>
@@ -378,7 +379,7 @@ export default function Calculator() {
                 </div>
 
                 <button onClick={exportReport} className="kureva-btn-secondary w-full justify-center text-sm">
-                  Descargar informe PDF
+                  Descargar informe de simulación
                   <FileDown className="w-4 h-4" />
                 </button>
                 <a href="/#contacto" className="kureva-btn-primary w-full justify-center">
@@ -387,6 +388,12 @@ export default function Calculator() {
                 </a>
               </div>
             </aside>
+          </div>
+        </section>
+
+        <section className="container pb-12 md:pb-18">
+          <div className="max-w-4xl mx-auto">
+            <PilotFeedback defaultArea="calculator_report" />
           </div>
         </section>
       </main>
