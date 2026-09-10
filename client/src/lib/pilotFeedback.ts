@@ -43,6 +43,9 @@ export type PilotInterestPayload = {
   participation_role: "persona" | "apoyo" | "profesional" | "comunidad" | "otro";
   consent_updates: true;
   consent_kit_updates: boolean;
+  consent_launch_notifications: boolean;
+  consent_project_updates: boolean;
+  consent_gift_updates: boolean;
   consent_privacy: true;
 };
 

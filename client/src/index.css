@@ -234,6 +234,11 @@
   50% { transform: translate(-50%, -50%) scale(1.08); }
 }
 
+@keyframes kureva-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.055); }
+}
+
 .kureva-k-orbit {
   animation: kureva-orbit 12s linear infinite;
 }
@@ -246,10 +251,47 @@
   animation: kureva-breathe 2.4s ease-in-out infinite;
 }
 
+.kureva-k-pulse {
+  animation: kureva-pulse 2.4s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .kureva-k-orbit,
   .kureva-k-orbit-reverse,
-  .kureva-k-breathe {
+  .kureva-k-breathe,
+  .kureva-k-pulse {
     animation: none;
   }
+}
+
+/* KurevaLife uses an explicit night surface instead of inheriting a site-wide
+   theme. Inputs retain a pale surface and dark text for reliable readability. */
+.kureva-night-content [class*="bg-white"],
+.kureva-night-content [class*="bg-[#F5F1E7]"],
+.kureva-night-content [class*="bg-[#FAF7F0]"],
+.kureva-night-content [class*="bg-[#FFFDF8]"] {
+  background-color: #12382b !important;
+  border-color: rgba(245, 241, 231, 0.18) !important;
+}
+
+.kureva-night-content [class*="bg-[#DCE8DD]"] {
+  background-color: #1a4c3a !important;
+  border-color: rgba(217, 255, 43, 0.28) !important;
+}
+
+.kureva-night-content [class*="text-[#0F3A2D]"],
+.kureva-night-content [class*="text-[#173A2E]"] {
+  color: #f5f1e7 !important;
+}
+
+.kureva-night-content [class*="text-[#5E806E]"] {
+  color: #c2d3c5 !important;
+}
+
+.kureva-night-content input:not([type="checkbox"]),
+.kureva-night-content select,
+.kureva-night-content textarea {
+  background-color: #fffdf8 !important;
+  color: #173a2e !important;
+  border-color: #dcd4c4 !important;
 }
