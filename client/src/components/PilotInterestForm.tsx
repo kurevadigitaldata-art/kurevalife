@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { ArrowRight, Check, Gift, LoaderCircle, Mail, Rocket, ShieldCheck, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { submitPilotInterest } from "@/lib/pilotFeedback";
+import { type EntrySource, submitPilotInterest } from "@/lib/pilotFeedback";
 
 export function PilotInterestForm() {
   const [email, setEmail] = useState("");
@@ -9,6 +9,7 @@ export function PilotInterestForm() {
   const [launchNotifications, setLaunchNotifications] = useState(false);
   const [projectUpdates, setProjectUpdates] = useState(false);
   const [giftUpdates, setGiftUpdates] = useState(false);
+  const [entrySource, setEntrySource] = useState<EntrySource>("directo");
   const [privacy, setPrivacy] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -35,6 +36,7 @@ export function PilotInterestForm() {
         consent_launch_notifications: launchNotifications,
         consent_project_updates: projectUpdates,
         consent_gift_updates: giftUpdates,
+        entry_source: entrySource,
         consent_privacy: true,
       });
       setSent(true);
@@ -88,6 +90,14 @@ export function PilotInterestForm() {
           <option value="profesional">Como profesional</option>
           <option value="comunidad">Como parte de una comunidad o asociación</option>
           <option value="otro">De otra manera</option>
+        </select>
+      </div>
+      <div>
+        <label className="block text-xs font-bold uppercase tracking-wider text-[#0F3A2D] mb-2" htmlFor="pilot-interest-source">Cómo llegaste a la prueba</label>
+        <select id="pilot-interest-source" value={entrySource} onChange={(event) => setEntrySource(event.target.value as EntrySource)} className="w-full h-12 px-4 rounded-xl border border-[#DCD4C4] bg-white text-sm focus:outline-hidden focus:border-[#0F3A2D]">
+          <option value="invitacion_directa">Recibí una invitación directa</option>
+          <option value="referido">Me lo compartió otra persona</option>
+          <option value="directo">Entré por mi cuenta</option>
         </select>
       </div>
       <fieldset className="space-y-3">

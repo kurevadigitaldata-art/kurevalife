@@ -3,6 +3,7 @@ import { Check, HeartHandshake, MessageSquareText, ShieldCheck, Sparkles, Star }
 import { toast } from "sonner";
 import {
   type AccessibilityContext,
+  type EntrySource,
   type ExperienceArea,
   type FeedbackCategory,
   type FeedbackType,
@@ -56,6 +57,7 @@ export function PilotFeedback({ defaultArea = "kurevalife_simulator", compact = 
   const [message, setMessage] = useState("");
   const [anonymous, setAnonymous] = useState(true);
   const [senderName, setSenderName] = useState("");
+  const [entrySource, setEntrySource] = useState<EntrySource>("directo");
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -91,6 +93,7 @@ export function PilotFeedback({ defaultArea = "kurevalife_simulator", compact = 
         accessibility_context: accessibilityContext,
         is_anonymous: anonymous,
         sender_name: anonymous ? null : senderName.trim(),
+        entry_source: entrySource,
         consent_privacy: true,
       });
       setSent(true);
@@ -155,6 +158,15 @@ export function PilotFeedback({ defaultArea = "kurevalife_simulator", compact = 
             {feedbackKinds.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
           </select>
         </div>
+      </div>
+
+      <div>
+        <label className="block text-xs font-bold uppercase tracking-wider text-white/80 mb-2" htmlFor="pilot-entry-source">Cómo llegaste a la prueba</label>
+        <select id="pilot-entry-source" value={entrySource} onChange={(event) => setEntrySource(event.target.value as EntrySource)} className="w-full h-11 px-3 rounded-xl bg-white text-[#173A2E] border border-white/10 text-sm focus:outline-hidden focus:ring-2 focus:ring-[#D9FF2B]">
+          <option value="invitacion_directa">Recibí una invitación directa</option>
+          <option value="referido">Me lo compartió otra persona</option>
+          <option value="directo">Entré por mi cuenta</option>
+        </select>
       </div>
 
       <div>

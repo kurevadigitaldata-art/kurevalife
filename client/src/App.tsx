@@ -18,6 +18,8 @@ function Router() {
       <Route path={"/recursos"} component={Resources} />
       <Route path={"/kurevalife"} component={KurevaLife} />
       <Route path={"/vida"} component={KurevaLife} />
+      <Route path={"/functions/v1/kurevalife-piloto"} component={KurevaLife} />
+      <Route path={"/functions/v1/kurevalife-piloto/vida"} component={KurevaLife} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

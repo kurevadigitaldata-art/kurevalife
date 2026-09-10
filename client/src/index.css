@@ -295,3 +295,27 @@
   color: #173a2e !important;
   border-color: #dcd4c4 !important;
 }
+
+
+/* KurevaLife prioritises readable controls and prevents browser zoom on mobile. */
+@media (max-width: 640px) {
+  #kurevalife-app { overflow-x: clip; }
+  #kurevalife-app input,
+  #kurevalife-app select,
+  #kurevalife-app textarea {
+    font-size: 16px !important;
+    min-height: 46px;
+  }
+  #kurevalife-app button {
+    min-height: 42px;
+  }
+  #kurevalife-app .text-\[10px\],
+  #kurevalife-app .text-\[11px\] {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  #kurevalife-app .text-xs {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+}

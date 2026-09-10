@@ -24,6 +24,7 @@ export type AccessibilityContext =
   | "cognitive_or_attention"
   | "other";
 export type CommunityCategory = "daily_blocks" | "medical_organization" | "nutrition" | "accessibility" | "privacy" | "kivi_support" | "family_mode" | "general";
+export type EntrySource = "invitacion_directa" | "referido" | "directo";
 
 export type PilotFeedbackPayload = {
   ticket_code: string;
@@ -35,6 +36,7 @@ export type PilotFeedbackPayload = {
   accessibility_context: AccessibilityContext;
   is_anonymous: boolean;
   sender_name: string | null;
+  entry_source: EntrySource;
   consent_privacy: true;
 };
 
@@ -46,6 +48,7 @@ export type PilotInterestPayload = {
   consent_launch_notifications: boolean;
   consent_project_updates: boolean;
   consent_gift_updates: boolean;
+  entry_source: EntrySource;
   consent_privacy: true;
 };
 
@@ -122,7 +125,7 @@ export async function loadCommunityMessages() {
 }
 
 export async function loadPilotWindow() {
-  const response = await fetch(`${PILOT_API_URL}/rest/v1/pilot_windows?select=starts_at,ends_at&window_key=eq.kurevalife_24h&limit=1`, {
+  const response = await fetch(`${PILOT_API_URL}/rest/v1/pilot_windows?select=starts_at,ends_at&window_key=eq.kurevalife_72h&limit=1`, {
     headers: headers(),
   });
   if (!response.ok) {
@@ -142,4 +145,13 @@ export function getPilotTicket() {
   const ticket = `KUREVA-${Array.from(values, (value) => alphabet[value % alphabet.length]).join("")}`;
   sessionStorage.setItem("kureva-pilot-ticket", ticket);
   return ticket;
+}
+
+export function getPilotEntrySource(): EntrySource {
+  const storedSource = sessionStorage.getItem("kureva-pilot-entry-source") as EntrySource | null;
+  if (storedSource === "invitacion_directa" || storedSource === "referido" || storedSource === "directo") return storedSource;
+  const source = new URLSearchParams(window.location.search).get("origen");
+  const resolved: EntrySource = source === "referido" ? "referido" : source === "invitacion" ? "invitacion_directa" : "directo";
+  sessionStorage.setItem("kureva-pilot-entry-source", resolved);
+  return resolved;
 }

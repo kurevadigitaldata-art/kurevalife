@@ -1,0 +1,19 @@
+{
+  "name": "KurevaLife · simulador de prueba",
+  "short_name": "KurevaLife",
+  "description": "Simulador inclusivo de organización personal y recordatorios de KurevaLife.",
+  "lang": "es-ES",
+  "start_url": "/vida",
+  "display": "standalone",
+  "background_color": "#F5F1E7",
+  "theme_color": "#0F3A2D",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/manus-storage/kureva-isotipo_24d6eb8a.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
