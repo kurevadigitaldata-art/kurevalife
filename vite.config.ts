@@ -79,7 +79,7 @@ function vitePluginManusDebugCollector(): Plugin {
     name: "manus-debug-collector",
 
     transformIndexHtml(html) {
-      if (process.env.NODE_ENV === "production" || process.env.GITHUB_PAGES === "true") {
+      if (process.env.NODE_ENV === "production" || process.env.GITHUB_PAGES === "true" || process.env.GITHUB_CDN === "true") {
         return html;
       }
       return {
@@ -206,7 +206,7 @@ function vitePluginStorageProxy(): Plugin {
 const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
 
 export default defineConfig({
-  base: process.env.GITHUB_PAGES === "true" ? "/kurevalife/" : "/",
+  base: process.env.GITHUB_CDN === "true" ? "./" : process.env.GITHUB_PAGES === "true" ? "/kurevalife/" : "/",
   plugins,
   resolve: {
     alias: {

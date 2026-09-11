@@ -24,8 +24,8 @@ function AppRouter() {
       <Route path={"/functions/v1/kurevalife-piloto"} component={KurevaLife} />
       <Route path={"/functions/v1/kurevalife-piloto/vida"} component={KurevaLife} />
       <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
+      {/* A static CDN URL can include the GitHub folder path before /vida. */}
+      <Route component={() => window.location.pathname.includes("/vida") ? <KurevaLife /> : <NotFound />} />
     </Switch>
     </Router>
   );
