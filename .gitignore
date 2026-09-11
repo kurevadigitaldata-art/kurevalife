@@ -132,3 +132,4 @@ prepare_github_pages.py
 vite.single.config.ts
 capture_mobile_screens.py
 mobile-interaction-verification.txt
+inspect_pages_preview.py

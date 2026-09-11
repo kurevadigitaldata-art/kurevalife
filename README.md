@@ -21,6 +21,10 @@ pnpm dev
 
 La aplicación estará disponible en `http://localhost:3000/vida`.
 
+## Enlace del piloto
+
+La publicación de GitHub Pages genera un enlace directo de prueba en `https://kurevadigitaldata-art.github.io/kurevalife/vida`. La configuración de Pages añade una recuperación de la aplicación para que el enlace directo funcione también cuando una persona lo abre desde WhatsApp, correo o un navegador móvil.
+
 ### Verificaciones
 
 ```bash
