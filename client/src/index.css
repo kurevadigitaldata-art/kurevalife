@@ -319,3 +319,217 @@
     line-height: 1.5;
   }
 }
+
+
+/* KurevaLife mobile-first safety layer.
+   The device-width clause keeps the app usable even if a visitor accidentally
+   enables “desktop site” in a mobile browser. */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body, #root {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 640px), (max-device-width: 640px) {
+  html, body, #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  #kurevalife-app,
+  #kurevalife-app * {
+    box-sizing: border-box;
+  }
+
+  #kurevalife-app {
+    width: 100%;
+    min-height: 100svh;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  #kurevalife-app .kureva-app-header {
+    padding: max(1rem, env(safe-area-inset-top)) 1rem 1rem;
+  }
+
+  #kurevalife-app .kureva-app-header > div:first-child {
+    align-items: flex-start;
+  }
+
+  #kurevalife-app .kureva-app-actions {
+    display: grid !important;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  #kurevalife-app .kureva-app-actions > div:first-child,
+  #kurevalife-app .kureva-app-actions > button:last-child {
+    grid-column: 1 / -1;
+  }
+
+  #kurevalife-app .kureva-app-actions > * {
+    min-width: 0;
+    min-height: 44px;
+    justify-content: center;
+    padding: 0.65rem 0.45rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  #kurevalife-app .kureva-app-nav {
+    padding: 0.9rem 1rem 1rem;
+  }
+
+  #kurevalife-app .kureva-app-nav-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+
+  #kurevalife-app .kureva-app-nav-grid > button {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 76px !important;
+    padding: 0.8rem !important;
+    white-space: normal;
+  }
+
+  #kurevalife-app .kureva-app-main {
+    padding: 1.25rem 1rem max(1.5rem, env(safe-area-inset-bottom)) !important;
+  }
+
+  #kurevalife-app .sm\:grid-cols-2,
+  #kurevalife-app .sm\:grid-cols-3,
+  #kurevalife-app .xl\:grid-cols-4 {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  #kurevalife-app input,
+  #kurevalife-app select,
+  #kurevalife-app textarea {
+    font-size: 16px !important;
+    min-height: 48px;
+  }
+
+  #kurevalife-app button,
+  #kurevalife-app a {
+    touch-action: manipulation;
+  }
+
+  #kurevalife-app .kureva-onboarding,
+  #kurevalife-app .kureva-onboarding-shell,
+  #kurevalife-app .kureva-onboarding-card {
+    width: 100%;
+    max-width: none;
+    min-height: 100svh;
+  }
+
+  #kurevalife-app .kureva-onboarding-card {
+    display: block !important;
+    border-radius: 0 !important;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  #kurevalife-app .kureva-onboarding-form,
+  #kurevalife-app .kureva-onboarding-guide {
+    padding: 1.5rem 1.25rem !important;
+  }
+
+  #kurevalife-app .kureva-onboarding-form h1 {
+    font-size: 2rem !important;
+    line-height: 1.15 !important;
+  }
+
+  #kurevalife-app .kureva-onboarding-guide {
+    gap: 2rem !important;
+    padding-bottom: max(2rem, env(safe-area-inset-bottom)) !important;
+  }
+}
+
+
+/* Keep actions compact and reachable on small touch screens. */
+@media (max-width: 640px), (max-device-width: 640px) {
+  #kurevalife-app .kureva-app-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #kurevalife-app .kureva-app-actions > div:first-child {
+    grid-column: span 1;
+  }
+
+  #kurevalife-app .kureva-app-actions > button:last-child {
+    grid-column: span 1;
+  }
+
+  #kurevalife-app .kureva-app-actions > * {
+    font-size: 0.72rem !important;
+  }
+
+  #kurevalife-app .kureva-extra-tools {
+    grid-column: 1 / -1;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  #kurevalife-app .kureva-extra-tools > button {
+    min-height: 44px;
+  }
+
+  #kurevalife-app .kureva-app-nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    box-shadow: 0 8px 16px rgba(15, 58, 45, 0.08);
+  }
+
+  #kurevalife-app .kureva-app-nav-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #kurevalife-app .kureva-app-nav-grid > button {
+    min-height: 68px !important;
+    padding: 0.6rem !important;
+  }
+
+  #kurevalife-app .kureva-app-nav-grid > button > div > span {
+    display: inline !important;
+    font-size: 0.73rem;
+    line-height: 1.2;
+  }
+
+  #kurevalife-app .kureva-app-nav-grid > button > span:last-child {
+    display: none;
+  }
+
+  #kurevalife-app .kureva-app-main {
+    padding-bottom: max(6rem, calc(env(safe-area-inset-bottom) + 5rem)) !important;
+  }
+
+  #kurevalife-app .kureva-app-main [class*="bg-[#0F3A2D]"] input,
+  #kurevalife-app .kureva-app-main [class*="bg-[#0F3A2D]"] select,
+  #kurevalife-app .kureva-app-main [class*="bg-[#0F3A2D]"] textarea {
+    background-color: #fffdf8 !important;
+    color: #173a2e !important;
+    border-color: rgba(245, 241, 231, 0.35) !important;
+  }
+
+  #kurevalife-app .kureva-app-main [class*="bg-[#0F3A2D]"] input::placeholder,
+  #kurevalife-app .kureva-app-main [class*="bg-[#0F3A2D]"] textarea::placeholder {
+    color: #5e806e !important;
+    opacity: 1;
+  }
+
+  #kurevalife-app .kureva-app-main [class*="bg-[#0F3A2D]"] label {
+    color: rgba(255, 255, 255, 0.92);
+  }
+}

@@ -111,3 +111,24 @@ temp/
 # Manus version file (auto-generated, not part of source)
 client/public/__manus__/version.json
 .project-config.json
+
+# Local deployment diagnostics and generated review artifacts
+.manus-logs/
+dist-single/
+mobile-checks/
+kurevalife-edge/
+kurevalife-edge-deploy.json
+*-deploy-payload.json
+*-deploy-result.json
+vercel-*.json
+vercel_*.json
+assemble_single_kurevalife.py
+build_kurevalife_edge.py
+create_corrected_vercel_payload.py
+create_edge_deploy_payload.py
+create_vercel_payload.py
+deploy_kurevalife_vercel.sh
+prepare_github_pages.py
+vite.single.config.ts
+capture_mobile_screens.py
+mobile-interaction-verification.txt
