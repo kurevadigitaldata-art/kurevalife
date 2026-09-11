@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./components/kurevalife/screens.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -333,7 +334,7 @@
     padding: 0.75rem 1rem;
     font-weight: 800;
   }
-  .kl-skip-link:focus {
+  .kl-skip-link:focus-visible {
     transform: translateY(0);
   }
   .kl-app-header {

@@ -18,6 +18,7 @@ export function AppShell({
   nightMode,
   largeText,
   highContrast,
+  onOpenKivi,
 }: {
   activeTab: KurevaTab;
   onTabChange: (tab: KurevaTab) => void;
@@ -26,6 +27,7 @@ export function AppShell({
   nightMode: boolean;
   largeText: boolean;
   highContrast: boolean;
+  onOpenKivi: () => void;
 }) {
   return (
     <div
@@ -46,6 +48,15 @@ export function AppShell({
             Hola, {userName || "amiga"}
           </span>
         </div>
+        <button
+          type="button"
+          className="kl-kivi-launcher kl-kivi-launcher--header"
+          aria-label="Abrir Kivi, asistente de organización"
+          onClick={onOpenKivi}
+        >
+          <KurevaMark size="sm" label="Kivi, asistente de organización" />
+          <span>Kivi</span>
+        </button>
       </header>
 
       <main id="contenido-kurevalife" className="kl-app-content" tabIndex={-1}>
@@ -73,19 +84,6 @@ export function AppShell({
           );
         })}
       </nav>
-
-      <button
-        type="button"
-        className="kl-kivi-launcher"
-        aria-label="Abrir Kivi, asistente de organización"
-        disabled
-      >
-        <KurevaMark
-          size="sm"
-          label="Kivi estará disponible en la siguiente fase"
-        />
-        <span>Kivi</span>
-      </button>
     </div>
   );
 }

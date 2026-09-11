@@ -1,51 +1,30 @@
 import React, { useState } from "react";
-import {
-  ArrowRight,
-  CheckCircle2,
-  CircleHelp,
-  Moon,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, CircleHelp, RotateCcw } from "lucide-react";
 import { AppShell } from "@/components/kurevalife/AppShell";
-import type { KurevaTab } from "@/components/kurevalife/types";
-import { useKurevaLifeState } from "@/components/kurevalife/types";
+import { FeedbackScreen } from "@/components/kurevalife/FeedbackScreen";
+import {
+  KiviPanel,
+  ProfileScreen,
+  RegisterScreen,
+  ReportsScreen,
+  TodayScreen,
+} from "@/components/kurevalife/Screens";
+import {
+  createLocalId,
+  DEFAULT_KUREVALIFE_STATE,
+  type KurevaTab,
+  useKurevaLifeState,
+} from "@/components/kurevalife/types";
 import {
   BrandSignature,
   KurevaButton,
   KurevaCard,
   LocalStatus,
-  SectionHeading,
 } from "@/components/kurevalife/ui";
-
-const VIEW_COPY: Record<
-  KurevaTab,
-  { eyebrow: string; title: string; text: string }
-> = {
-  hoy: {
-    eyebrow: "HOY",
-    title: "Tu día en orden.",
-    text: "Aquí verás tu progreso, la siguiente acción y tus rutinas de hoy.",
-  },
-  registrar: {
-    eyebrow: "REGISTRAR",
-    title: "Guarda lo que quieres tener presente.",
-    text: "Datos, notas y archivos se organizarán localmente en tu dispositivo.",
-  },
-  informes: {
-    eyebrow: "INFORMES",
-    title: "Tu información, más clara.",
-    text: "Aquí reunirás tus registros para preparar una conversación o una consulta.",
-  },
-  perfil: {
-    eyebrow: "PERFIL",
-    title: "Tu app, a tu manera.",
-    text: "Desde aquí ajustarás apariencia, accesibilidad y preferencias locales.",
-  },
-};
+import { getPilotTicket } from "@/lib/pilotFeedback";
 
 function EntryScreen({ onContinue }: { onContinue: (name: string) => void }) {
   const [name, setName] = useState("");
-
   return (
     <section
       className="kl-entry-screen"
@@ -60,8 +39,9 @@ function EntryScreen({ onContinue }: { onContinue: (name: string) => void }) {
           Tu consulta más clara.
         </h1>
         <p>
-          Bienvenida a la prueba de KurevaLife. Puedes explorarla sin cuenta:
-          tus datos de prueba se guardan localmente en este dispositivo.
+          Bienvenida a KurevaLife. Esta prueba te permite recorrer una app
+          local-first: puedes registrar, organizar y generar un resumen sin
+          crear una cuenta ni enviar tus notas personales.
         </p>
         <label className="kl-field" htmlFor="kl-alias">
           <span>¿Cómo quieres que te llamemos?</span>
@@ -78,11 +58,12 @@ function EntryScreen({ onContinue }: { onContinue: (name: string) => void }) {
           variant="accent"
           onClick={() => onContinue(name.trim())}
         >
-          Continuar sin cuenta <ArrowRight size={18} aria-hidden="true" />
+          Empezar simulacro <ArrowRight size={18} aria-hidden="true" />
         </KurevaButton>
         <p className="kl-entry-screen__note">
-          <CheckCircle2 size={16} aria-hidden="true" /> No se crea una cuenta ni
-          se envían tus registros durante esta prueba.
+          <CheckCircle2 size={16} aria-hidden="true" /> Tus registros de prueba
+          se guardarán solo en este dispositivo. KurevaLife no diagnostica ni
+          sustituye a profesionales sanitarios.
         </p>
       </div>
       <aside
@@ -95,8 +76,8 @@ function EntryScreen({ onContinue }: { onContinue: (name: string) => void }) {
         <div>
           <h2>Una experiencia que acompaña.</h2>
           <p>
-            Organiza rutinas, registros y preguntas con una estructura clara y
-            accesible.
+            Organiza rutinas, registros, avisos y preguntas con una estructura
+            clara, accesible y sin juicios.
           </p>
         </div>
         <div className="kl-entry-screen__features">
@@ -109,51 +90,15 @@ function EntryScreen({ onContinue }: { onContinue: (name: string) => void }) {
   );
 }
 
-function StructurePanel({
-  tab,
-  onOpenProfile,
-}: {
-  tab: KurevaTab;
-  onOpenProfile: () => void;
-}) {
-  const copy = VIEW_COPY[tab];
-  return (
-    <div className="kl-phase-panel">
-      <SectionHeading
-        eyebrow={copy.eyebrow}
-        title={copy.title}
-        description={copy.text}
-      />
-      <KurevaCard className="kl-phase-panel__card">
-        <span className="kl-phase-panel__icon" aria-hidden="true">
-          <Sparkles size={22} />
-        </span>
-        <h2>Estructura preparada</h2>
-        <p>
-          Esta sección ya utiliza la jerarquía, los tokens, las superficies y la
-          navegación aprobadas. Su contenido funcional se integra en la fase
-          específica del Prompt Maestro.
-        </p>
-        {tab === "perfil" ? (
-          <KurevaButton
-            type="button"
-            variant="secondary"
-            onClick={onOpenProfile}
-          >
-            Abrir preferencias
-          </KurevaButton>
-        ) : null}
-      </KurevaCard>
-    </div>
-  );
-}
-
 export function KurevaLifeApp() {
   const [state, setState] = useKurevaLifeState();
   const [entered, setEntered] = useState(
     Boolean(state.preferences.displayName)
   );
   const [activeTab, setActiveTab] = useState<KurevaTab>("hoy");
+  const [kiviOpen, setKiviOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [ticket] = useState(() => getPilotTicket());
 
   const continueWithoutAccount = (name: string) => {
     setState(current => ({
@@ -163,16 +108,105 @@ export function KurevaLifeApp() {
     setEntered(true);
   };
 
+  const updatePreferences = (patch: Partial<typeof state.preferences>) => {
+    setState(current => ({
+      ...current,
+      preferences: { ...current.preferences, ...patch },
+    }));
+  };
+
+  const resetSimulation = () => {
+    const confirmation = window.confirm(
+      "¿Quieres reiniciar los datos locales de esta simulación? Esta acción solo afecta a este dispositivo."
+    );
+    if (!confirmation) return;
+    setState(JSON.parse(JSON.stringify(DEFAULT_KUREVALIFE_STATE)));
+    setEntered(false);
+    setActiveTab("hoy");
+    setFeedbackOpen(false);
+    setKiviOpen(false);
+  };
+
   if (!entered) return <EntryScreen onContinue={continueWithoutAccount} />;
+
+  const page = () => {
+    if (feedbackOpen) return <FeedbackScreen ticket={ticket} />;
+    if (activeTab === "hoy")
+      return (
+        <TodayScreen
+          name={state.preferences.displayName}
+          state={state}
+          onToggleRoutine={id =>
+            setState(current => ({
+              ...current,
+              routines: current.routines.map(routine =>
+                routine.id === id
+                  ? { ...routine, completed: !routine.completed }
+                  : routine
+              ),
+            }))
+          }
+          onOpenRegister={() => setActiveTab("registrar")}
+        />
+      );
+    if (activeTab === "registrar")
+      return (
+        <RegisterScreen
+          records={state.records}
+          reminders={state.reminders}
+          hydration={state.hydration}
+          onAddRecord={record =>
+            setState(current => ({
+              ...current,
+              records: [record, ...current.records],
+            }))
+          }
+          onAddReminder={reminder =>
+            setState(current => ({
+              ...current,
+              reminders: [reminder, ...current.reminders],
+            }))
+          }
+          onUpdateHydration={hydration =>
+            setState(current => ({ ...current, hydration }))
+          }
+        />
+      );
+    if (activeTab === "informes") return <ReportsScreen state={state} />;
+    return (
+      <ProfileScreen
+        preferences={state.preferences}
+        questions={state.consultationQuestions}
+        onUpdatePreferences={updatePreferences}
+        onToggleQuestion={id =>
+          setState(current => ({
+            ...current,
+            consultationQuestions: current.consultationQuestions.map(
+              question =>
+                question.id === id
+                  ? { ...question, selected: !question.selected }
+                  : question
+            ),
+          }))
+        }
+        onOpenFeedback={() => setFeedbackOpen(true)}
+      />
+    );
+  };
 
   return (
     <AppShell
       activeTab={activeTab}
-      onTabChange={setActiveTab}
+      onTabChange={tab => {
+        setActiveTab(tab);
+        setFeedbackOpen(false);
+        setKiviOpen(false);
+      }}
       userName={state.preferences.displayName}
       nightMode={state.preferences.nightMode}
       largeText={state.preferences.largeText}
       highContrast={state.preferences.highContrast}
+      onOpenKivi={() => setKiviOpen(true)}
     >
       <div className="kl-simulator-strip" role="status">
         <span>
@@ -181,15 +215,39 @@ export function KurevaLifeApp() {
         </span>
         <LocalStatus />
       </div>
-      <StructurePanel
-        tab={activeTab}
-        onOpenProfile={() => setActiveTab("perfil")}
-      />
-      <div className="kl-app-footer-note">
-        <Moon size={17} aria-hidden="true" /> El modo nocturno y los controles
-        de accesibilidad se activarán desde Perfil conforme al recorrido
-        aprobado.
-      </div>
+      {feedbackOpen ? (
+        <button
+          type="button"
+          className="kl-back-link"
+          onClick={() => setFeedbackOpen(false)}
+        >
+          ← Volver a Perfil
+        </button>
+      ) : null}
+      {page()}
+      <KurevaCard className="kl-simulator-footer" labelledBy="simulacro-local">
+        <div>
+          <p className="kl-card-label">SIMULACRO LOCAL</p>
+          <h2 id="simulacro-local">Puedes explorar con tranquilidad.</h2>
+          <p>
+            Lo que anotas se conserva en este dispositivo durante la prueba. No
+            se sincroniza ni se interpreta clínicamente.
+          </p>
+        </div>
+        <KurevaButton type="button" variant="quiet" onClick={resetSimulation}>
+          <RotateCcw size={17} aria-hidden="true" /> Reiniciar prueba
+        </KurevaButton>
+      </KurevaCard>
+      {kiviOpen ? (
+        <KiviPanel
+          onClose={() => setKiviOpen(false)}
+          state={state}
+          onOpenTab={tab => {
+            setActiveTab(tab);
+            setKiviOpen(false);
+          }}
+        />
+      ) : null}
     </AppShell>
   );
 }

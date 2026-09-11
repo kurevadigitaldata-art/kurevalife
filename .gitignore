@@ -133,3 +133,6 @@ vite.single.config.ts
 capture_mobile_screens.py
 mobile-interaction-verification.txt
 inspect_pages_preview.py
+
+__pycache__/
+*.pyc
