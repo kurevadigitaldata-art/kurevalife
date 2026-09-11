@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Bell,
   CalendarDays,
@@ -1127,10 +1127,16 @@ export function KiviPanel({
   state: KurevaLifeState;
   onOpenTab: (tab: "registrar" | "informes") => void;
 }) {
+  const panelRef = useRef<HTMLElement>(null);
   const [message, setMessage] = useState("");
   const [reply, setReply] = useState(
     "Elige una opción o escribe una pregunta. Puedo ayudarte a ordenar, no a diagnosticar."
   );
+  useEffect(() => {
+    if (panelRef.current) {
+      panelRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
   const respond = (prompt: string) => {
     setMessage(prompt);
     if (prompt.toLowerCase().includes("consulta"))
@@ -1153,7 +1159,11 @@ export function KiviPanel({
       );
   };
   return (
-    <section className="kl-kivi-panel" aria-labelledby="kivi-title">
+    <section
+      ref={panelRef}
+      className="kl-kivi-panel"
+      aria-labelledby="kivi-title"
+    >
       <div className="kl-kivi-panel__header">
         <div>
           <p className="kl-eyebrow">KIVI</p>
