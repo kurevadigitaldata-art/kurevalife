@@ -3,6 +3,8 @@ import { ArrowRight, Check, Gift, LoaderCircle, Mail, Rocket, ShieldCheck, Spark
 import { toast } from "sonner";
 import { type EntrySource, submitPilotInterest } from "@/lib/pilotFeedback";
 
+const KUREVA_HOME_URL = "https://kurevadigitaldata.manus.space/";
+
 export function PilotInterestForm() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<"persona" | "apoyo" | "profesional" | "comunidad" | "otro">("persona");
@@ -13,12 +15,30 @@ export function PilotInterestForm() {
   const [privacy, setPrivacy] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [deliveryFallback, setDeliveryFallback] = useState<string | null>(null);
 
   const chosen = useMemo(() => ({
     launch: launchNotifications,
     projects: projectUpdates,
     gifts: giftUpdates,
   }), [launchNotifications, projectUpdates, giftUpdates]);
+
+  const prepareInterestFallback = () => {
+    const options = [
+      launchNotifications && "Fecha de lanzamiento de KurevaLife",
+      projectUpdates && "Avances y futuros proyectos de Kureva",
+      giftUpdates && "Regalos Kureva y primeras 30 personas",
+    ].filter(Boolean).join(" · ");
+    const body = [
+      "KurevaLife · consentimiento de novedades",
+      `Correo de contacto: ${email.trim()}`,
+      `Participación: ${role}`,
+      `Origen: ${entrySource}`,
+      `Autorizaciones: ${options}`,
+      "Privacidad aceptada: sí",
+    ].join("\n");
+    return `mailto:kurevadigitaldata@gmail.com?subject=${encodeURIComponent("KurevaLife · nuevas preferencias de contacto")}&body=${encodeURIComponent(body)}`;
+  };
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -27,6 +47,7 @@ export function PilotInterestForm() {
       return;
     }
     setIsSending(true);
+    setDeliveryFallback(null);
     try {
       await submitPilotInterest({
         email: email.trim(),
@@ -41,8 +62,9 @@ export function PilotInterestForm() {
       });
       setSent(true);
       toast.success("Tus preferencias de novedades se han guardado correctamente.");
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "No se ha podido registrar el correo.");
+    } catch {
+      setDeliveryFallback(prepareInterestFallback());
+      toast.message("El correo de respaldo está preparado para enviar tus elecciones a Kureva.");
     } finally {
       setIsSending(false);
     }
@@ -63,7 +85,7 @@ export function PilotInterestForm() {
           <p className="text-xs text-[#5E806E] max-w-md mx-auto leading-relaxed mt-3">No habrá mensajes innecesarios. Solo recibirás lo que autorizaste: lanzamiento, avances de Kureva y/o información sobre regalos de participación.</p>
         </div>
         <div className="relative flex flex-col sm:flex-row justify-center gap-3">
-          <a href="/#metodo" className="kureva-btn-primary text-xs">Conocer Kureva <ArrowRight className="w-3.5 h-3.5" /></a>
+          <a href={KUREVA_HOME_URL} className="kureva-btn-primary text-xs">Conocer Kureva <ArrowRight className="w-3.5 h-3.5" /></a>
           <button onClick={() => { setSent(false); setEmail(""); }} className="kureva-btn-secondary text-xs">Registrar otro correo</button>
         </div>
       </div>
@@ -107,8 +129,9 @@ export function PilotInterestForm() {
         <label className="flex items-start gap-2.5 text-xs text-[#5E806E] leading-relaxed cursor-pointer"><input checked={giftUpdates} onChange={(event) => setGiftUpdates(event.target.checked)} type="checkbox" className="mt-0.5 size-4 accent-[#0F3A2D]" /><span><strong className="text-[#173A2E]">Regalos Kureva.</strong> Quiero información sobre los regalos por participar y sobre las primeras 30 personas que se registren cuando esta acción sea oficial.</span></label>
         <label className="flex items-start gap-2.5 text-xs text-[#5E806E] leading-relaxed cursor-pointer pt-1 border-t border-[#E5DFD1]"><input checked={privacy} onChange={(event) => setPrivacy(event.target.checked)} required type="checkbox" className="mt-2.5 size-4 accent-[#0F3A2D]" /><span className="pt-2"><strong className="text-[#173A2E]">Privacidad.</strong> Entiendo que este correo se guarda solo para las comunicaciones elegidas y que puedo solicitar su eliminación cuando quiera.</span></label>
       </fieldset>
+      {deliveryFallback && <div role="status" aria-live="polite" className="rounded-xl border border-[#B9D0BE] bg-[#DCE8DD] p-4 text-xs leading-relaxed text-[#173A2E] space-y-2 motion-safe:animate-in motion-safe:fade-in duration-200"><strong className="block text-[#0F3A2D]">Tu correo de respaldo está preparado.</strong><p>Ábrelo y envíalo para que Nathalia reciba exactamente las opciones que has marcado. No se enviará ninguna comunicación automática desde el simulador.</p><a href={deliveryFallback} className="inline-flex items-center gap-2 font-bold text-[#0F3A2D] underline decoration-[#D9FF2B] decoration-2 underline-offset-4">Abrir correo a Kureva</a></div>}
       <button type="submit" disabled={isSending} className="kureva-btn-primary w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed"><Mail className={`w-4 h-4 ${isSending ? "animate-pulse" : ""}`} /> {isSending ? "Guardando…" : "Guardar mis elecciones"}</button>
-      <div className="flex items-center justify-between gap-3 text-[11px] text-[#5E806E]"><span className="inline-flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-[#0F3A2D]" /> Consentimiento explícito, sin suscripciones ocultas.</span><a href="/#metodo" className="font-bold text-[#0F3A2D] underline decoration-[#D9FF2B] decoration-2 underline-offset-3">Saber más de Kureva</a></div>
+      <div className="flex items-center justify-between gap-3 text-[11px] text-[#5E806E]"><span className="inline-flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-[#0F3A2D]" /> Consentimiento explícito, sin suscripciones ocultas.</span><a href={KUREVA_HOME_URL} className="font-bold text-[#0F3A2D] underline decoration-[#D9FF2B] decoration-2 underline-offset-3">Saber más de Kureva</a></div>
     </form>
   );
 }

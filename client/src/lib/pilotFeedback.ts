@@ -72,7 +72,11 @@ export type CommunityMessagePayload = {
 };
 
 function getErrorMessage(body: unknown) {
-  if (typeof body === "object" && body !== null && "message" in body && typeof body.message === "string") return body.message;
+  if (typeof body === "object" && body !== null && "message" in body && typeof body.message === "string") {
+    const message = body.message;
+    if (/permission denied|row-level security|not authorized/i.test(message)) return "El buzón privado está verificando su acceso. Conserva tu copia privada y usa el correo preparado si deseas enviarla ahora.";
+    return message;
+  }
   return "No se ha podido registrar ahora. Revisa tu conexión e inténtalo de nuevo.";
 }
 

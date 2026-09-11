@@ -61,6 +61,34 @@ export function PilotFeedback({ defaultArea = "kurevalife_simulator", compact = 
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [deliveryFallback, setDeliveryFallback] = useState<string | null>(null);
+
+  const preparePrivateFallback = () => {
+    const content = [
+      "KurevaLife · valoración privada de piloto",
+      `Código de prueba: ${ticket}`,
+      `Valoración: ${rating}/5`,
+      `Categoría: ${kurevaLifeCategories.find((item) => item.value === category)?.label ?? category}`,
+      `Tipo: ${feedbackKinds.find((item) => item.value === kind)?.label ?? kind}`,
+      `Acceso: ${accessContexts.find((item) => item.value === accessibilityContext)?.label ?? accessibilityContext}`,
+      `Origen: ${entrySource}`,
+      `Identificación elegida: ${anonymous ? "sin nombre en el contenido" : senderName.trim()}`,
+      "",
+      "Sugerencia:",
+      message.trim(),
+      "",
+      "Nota de privacidad: este correo se prepara como respaldo manual. La dirección desde la que se envía será visible para Kureva; no lo uses si necesitas anonimato frente a Kureva.",
+    ].join("\n");
+    const mailto = `mailto:kurevadigitaldata@gmail.com?subject=${encodeURIComponent(`KurevaLife · valoración ${rating}/5 · ${ticket}`)}&body=${encodeURIComponent(content)}`;
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const downloadUrl = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = `KurevaLife_valoracion_${ticket}.txt`;
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+    return mailto;
+  };
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -82,6 +110,7 @@ export function PilotFeedback({ defaultArea = "kurevalife_simulator", compact = 
     }
 
     setIsSending(true);
+    setDeliveryFallback(null);
     try {
       await submitPilotFeedback({
         ticket_code: ticket,
@@ -98,8 +127,10 @@ export function PilotFeedback({ defaultArea = "kurevalife_simulator", compact = 
       });
       setSent(true);
       toast.success("Gracias. Tu valoración y sugerencia ya se han recibido.");
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "No se ha podido registrar la sugerencia.");
+    } catch {
+      const mailto = preparePrivateFallback();
+      setDeliveryFallback(mailto);
+      toast.message("Hemos preparado una copia privada para que puedas enviarla directamente a Kureva.");
     } finally {
       setIsSending(false);
     }
@@ -171,8 +202,8 @@ export function PilotFeedback({ defaultArea = "kurevalife_simulator", compact = 
 
       <div>
         <label className="block text-xs font-bold uppercase tracking-wider text-white/80 mb-2" htmlFor="pilot-message">Tu sugerencia <span className="normal-case font-normal">(sin información de salud personal)</span></label>
-        <textarea id="pilot-message" value={message} onChange={(event) => setMessage(event.target.value)} rows={compact ? 3 : 5} minLength={10} maxLength={3000} required placeholder="Ej.: Me ayudaría que las citas fueran más visibles y que las preguntas se pudieran ordenar por prioridad." className="w-full resize-y rounded-xl bg-white/10 border border-white/15 px-3.5 py-3 text-sm text-white placeholder:text-white/45 focus:outline-hidden focus:border-[#D9FF2B] focus:ring-1 focus:ring-[#D9FF2B]" />
-        <div className="mt-2 text-[11px] text-white/55 flex justify-between gap-3"><span>No incluyas diagnósticos, medicación, datos clínicos, contraseñas ni otra información sensible.</span><span aria-live="polite">{message.length}/3000</span></div>
+        <textarea id="pilot-message" value={message} onChange={(event) => setMessage(event.target.value)} rows={compact ? 3 : 5} minLength={10} maxLength={700} required placeholder="Ej.: Me ayudaría que las citas fueran más visibles y que las preguntas se pudieran ordenar por prioridad." className="w-full resize-y rounded-xl bg-white/10 border border-white/15 px-3.5 py-3 text-sm text-white placeholder:text-white/45 focus:outline-hidden focus:border-[#D9FF2B] focus:ring-1 focus:ring-[#D9FF2B]" />
+        <div className="mt-2 text-[11px] text-white/55 flex justify-between gap-3"><span>No incluyas diagnósticos, medicación, datos clínicos, contraseñas ni otra información sensible.</span><span aria-live="polite">{message.length}/700</span></div>
       </div>
 
       <div>
@@ -201,6 +232,11 @@ export function PilotFeedback({ defaultArea = "kurevalife_simulator", compact = 
         <span><strong className="text-white">Quiero que esta sugerencia quede en el registro privado del piloto.</strong> Kureva guardará la valoración, el comentario y el código de prueba para mejorar el simulacro. Si elijo identificarme, también guardará el nombre y apellidos escritos. Esta sugerencia no se publica ni se asocia a las notas creadas dentro de la demo.</span>
       </label>
 
+      {deliveryFallback && <div role="status" aria-live="polite" className="rounded-xl border border-[#D9FF2B]/45 bg-[#D9FF2B]/10 p-4 text-sm text-white space-y-2 motion-safe:animate-in motion-safe:fade-in duration-200">
+        <strong className="block text-[#D9FF2B]">Tu copia privada está lista.</strong>
+        <p className="text-white/80 text-xs leading-relaxed">La descarga evita que se pierda tu valoración. Puedes abrir el correo preparado y enviarlo directamente a Kureva. Si lo haces, tu dirección de correo será visible para Kureva; para anonimato completo, conserva solo el código de prueba y no envíes el correo.</p>
+        <a href={deliveryFallback} className="inline-flex items-center gap-2 rounded-lg bg-[#D9FF2B] px-3 py-2 text-xs font-bold text-[#0F3A2D] hover:bg-[#E6FF5A]">Abrir correo privado preparado</a>
+      </div>}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <p className="inline-flex items-center gap-2 text-[11px] text-white/55"><HeartHandshake className="w-3.5 h-3.5 text-[#D9FF2B]" /> Kureva aprende de las experiencias reales.</p>
         <button type="submit" disabled={isSending} className="kureva-btn-accent justify-center disabled:opacity-60 disabled:cursor-not-allowed text-sm"><Sparkles className={`w-4 h-4 ${isSending ? "animate-spin" : ""}`} /> {isSending ? "Enviando…" : "Enviar valoración y sugerencia"}</button>
