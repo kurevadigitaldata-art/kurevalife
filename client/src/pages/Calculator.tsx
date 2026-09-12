@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { PilotFeedback } from "@/components/PilotFeedback";
-import { jsPDF } from "jspdf";
 import {
   ArrowRight,
   Calculator as CalculatorIcon,
@@ -114,7 +113,8 @@ export default function Calculator() {
       maximumFractionDigits: 0,
     }).format(value);
 
-  const exportReport = () => {
+  const exportReport = async () => {
+    const { jsPDF } = await import("jspdf");
     const reportDate = new Intl.DateTimeFormat("es-ES", {
       day: "2-digit",
       month: "long",

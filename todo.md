@@ -2,7 +2,7 @@
 
 ## Fuente de verdad
 
-El proyecto activo es **`/home/ubuntu/kureva-web`**. La ruta pública de simulación es **`/vida`**. Esta ruta es un prototipo navegable y local-first para pruebas; todavía no es una aplicación móvil nativa ni una aplicación clínica en producción.
+El proyecto canónico activo es **`/home/ubuntu/workspaces/kurevalife`** y corresponde a **`kurevadigitaldata-art/kurevalife`**. La ruta de simulación es **`/vida`**. Esta ruta es un prototipo navegable y local-first para pruebas; todavía no es una aplicación móvil nativa ni una aplicación clínica en producción.
 
 ## Cambios de esta iteración
 
@@ -26,6 +26,26 @@ El proyecto activo es **`/home/ubuntu/kureva-web`**. La ruta pública de simulac
 - [x] Recordatorio local de medicación: probado.
 - [x] PDF local: descargado y validado, incluye el registro y el recordatorio.
 - [x] Kivi: respuesta guiada de prueba verificada.
+
+## Auditoría final de aceptación — 12 de septiembre de 2026
+
+- [x] Confirmar la instalación inmutable, TypeScript, formato y compilación desde el commit canónico `a0967fb4abca8407c6e8124f63859f81647cf17c`.
+- [x] Ejecutar y contrastar las comprobaciones de interacción existentes frente a la implementación actual, sin afirmar resultados históricos no reproducidos.
+- [x] Endurecer la hidratación `localStorage` con validación estructural para conservar registros válidos y descartar únicamente entradas corruptas.
+- [x] Conservar de forma explícita la entrada sin cuenta tras recargar, incluso si la persona no indica alias.
+- [x] Corregir únicamente controles verificablemente inactivos, límites de entrada o estados accesibles que afecten al piloto.
+- [x] Capturar y revisar `/vida` en móvil y escritorio, incluyendo navegación de cuatro destinos, Kivi secundario, persistencia, contraste y ausencia de desbordamiento.
+- [x] Documentar evidencia reproducible, límites externos de Supabase y el checkpoint final antes de autorizar testers.
+
+### Hallazgos reproducidos antes de corregir
+
+- [x] `verify_feedback_states.py` finaliza con código 0 aunque informa `"error_fallback": false`; debe fallar si cualquiera de los dos estados no se verifica.
+- [x] `verify_mobile_interactions.py` todavía automatiza el simulador anterior y la ruta de desarrollo fija `localhost:3000`; debe actualizarse al flujo actual y a una URL configurable.
+- [x] El estado local acepta arrays sin validar sus registros y usa el alias como proxy de entrada, por lo que una entrada sin alias se pierde visualmente al recargar.
+- [x] El CTA vacío «Ir a Registrar» no cambia de pestaña, y la mejora de Kivi declarada en `a0967fb` hace scroll pero no traslada el foco al panel.
+- [x] El HTML incorpora un script de analítica con variables no definidas que produce avisos de compilación; debe cargarse únicamente cuando exista configuración explícita.
+- [x] La configuración de `patchedDependencies` y `overrides` está en una ubicación deprecada de `package.json`; debe migrarse y regenerar el bloqueo para recuperar una instalación inmutable sin avisos de configuración.
+- [ ] **Bloqueo externo documentado:** el enlace GitHub Pages para testers devuelve HTTP 404 y la API pública confirma `has_pages: false`. El flujo está preparado, pero activar Pages y ejecutar el workflow requiere administración GitHub fuera de esta sesión.
 
 ## Límites reales y siguiente fase móvil
 

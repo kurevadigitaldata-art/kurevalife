@@ -11,7 +11,11 @@ export function KurevaMark({
   return (
     <span className={`kl-mark kl-mark--${size}`} aria-label={label} role="img">
       <span className="kl-mark__orbit" aria-hidden="true" />
-      <img className="kl-mark__image" src="/kureva-app-icon.svg" alt="" />
+      <img
+        className="kl-mark__image"
+        src={`${import.meta.env.BASE_URL}kureva-app-icon.svg`}
+        alt=""
+      />
     </span>
   );
 }

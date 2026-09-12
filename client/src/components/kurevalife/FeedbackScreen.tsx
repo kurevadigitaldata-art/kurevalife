@@ -208,6 +208,7 @@ export function FeedbackScreen({ ticket }: { ticket: string }) {
               value={publicComment}
               onChange={event => setPublicComment(event.target.value)}
               placeholder="Algo que podría compartir la comunidad de testers, sin datos personales."
+              maxLength={500}
             />
           </label>
           <label className="kl-field" htmlFor="feedback-private">
@@ -218,6 +219,7 @@ export function FeedbackScreen({ ticket }: { ticket: string }) {
               value={privateComment}
               onChange={event => setPrivateComment(event.target.value)}
               placeholder="Cuéntanos dónde te has atascado, qué ha sido confuso o qué no ha funcionado."
+              maxLength={700}
             />
           </label>
           <div className="kl-form-grid">
@@ -229,6 +231,7 @@ export function FeedbackScreen({ ticket }: { ticket: string }) {
                 value={remove}
                 onChange={event => setRemove(event.target.value)}
                 placeholder="Una función, texto o paso que no usarías."
+                maxLength={300}
               />
             </label>
             <label className="kl-field" htmlFor="feedback-add">
@@ -239,6 +242,7 @@ export function FeedbackScreen({ ticket }: { ticket: string }) {
                 value={add}
                 onChange={event => setAdd(event.target.value)}
                 placeholder="Algo que sería esencial para ti."
+                maxLength={300}
               />
             </label>
           </div>
@@ -261,6 +265,7 @@ export function FeedbackScreen({ ticket }: { ticket: string }) {
                 value={name}
                 onChange={event => setName(event.target.value)}
                 placeholder="Nombre y apellidos"
+                maxLength={100}
               />
             </label>
           ) : null}
@@ -319,6 +324,7 @@ export function FeedbackScreen({ ticket }: { ticket: string }) {
               value={email}
               onChange={event => setEmail(event.target.value)}
               placeholder="tu@correo.es"
+              maxLength={254}
             />
           </label>
           <label className="kl-check-row">

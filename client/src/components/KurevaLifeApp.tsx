@@ -51,6 +51,7 @@ function EntryScreen({ onContinue }: { onContinue: (name: string) => void }) {
             onChange={event => setName(event.target.value)}
             placeholder="Nombre o alias (opcional)"
             autoComplete="nickname"
+            maxLength={80}
           />
         </label>
         <KurevaButton
@@ -92,9 +93,7 @@ function EntryScreen({ onContinue }: { onContinue: (name: string) => void }) {
 
 export function KurevaLifeApp() {
   const [state, setState] = useKurevaLifeState();
-  const [entered, setEntered] = useState(
-    Boolean(state.preferences.displayName)
-  );
+  const [entered, setEntered] = useState(state.hasStarted);
   const [activeTab, setActiveTab] = useState<KurevaTab>("hoy");
   const [kiviOpen, setKiviOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
@@ -103,6 +102,7 @@ export function KurevaLifeApp() {
   const continueWithoutAccount = (name: string) => {
     setState(current => ({
       ...current,
+      hasStarted: true,
       preferences: { ...current.preferences, displayName: name },
     }));
     setEntered(true);
@@ -172,7 +172,13 @@ export function KurevaLifeApp() {
           }
         />
       );
-    if (activeTab === "informes") return <ReportsScreen state={state} />;
+    if (activeTab === "informes")
+      return (
+        <ReportsScreen
+          state={state}
+          onOpenRegister={() => setActiveTab("registrar")}
+        />
+      );
     return (
       <ProfileScreen
         preferences={state.preferences}

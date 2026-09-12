@@ -19,7 +19,6 @@ import {
   Sparkles,
   Volume2,
 } from "lucide-react";
-import { jsPDF } from "jspdf";
 import type {
   AttachmentMeta,
   HydrationGoal,
@@ -365,6 +364,7 @@ export function RegisterScreen({
                 value={value}
                 onChange={event => setValue(event.target.value)}
                 placeholder={selectedOption.hint}
+                maxLength={120}
               />
             </label>
           </div>
@@ -377,6 +377,7 @@ export function RegisterScreen({
               value={note}
               onChange={event => setNote(event.target.value)}
               placeholder="Escribe lo que quieres recordar. KurevaLife no interpreta este contenido."
+              maxLength={1000}
             />
           </label>
 
@@ -471,6 +472,7 @@ export function RegisterScreen({
               value={reminderTitle}
               onChange={event => setReminderTitle(event.target.value)}
               placeholder="Ej. Preparar mi consulta"
+              maxLength={120}
             />
           </label>
           <div className="kl-form-grid">
@@ -694,7 +696,13 @@ export function HydrationPanel({
   );
 }
 
-export function ReportsScreen({ state }: { state: KurevaLifeState }) {
+export function ReportsScreen({
+  state,
+  onOpenRegister,
+}: {
+  state: KurevaLifeState;
+  onOpenRegister: () => void;
+}) {
   const [status, setStatus] = useState("");
   const recordGroups = useMemo(() => {
     return RECORD_OPTIONS.map(option => ({
@@ -730,49 +738,56 @@ export function ReportsScreen({ state }: { state: KurevaLifeState }) {
         .map(question => `• ${question.text}`),
     ].filter(line => line !== undefined);
 
-  const downloadPdf = () => {
-    const pdf = new jsPDF({ unit: "pt", format: "a4" });
-    const lines = makeSummary();
-    let y = 62;
-    pdf.setFillColor(15, 58, 45);
-    pdf.rect(0, 0, 595, 38, "F");
-    pdf.setTextColor(15, 58, 45);
-    pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(21);
-    pdf.text("KurevaLife", 40, y);
-    pdf.setTextColor(94, 128, 110);
-    pdf.setFontSize(9);
-    pdf.text("BY KUREVA · RESUMEN LOCAL", 40, y + 16);
-    y += 48;
-    for (const rawLine of lines) {
-      const wrapped = pdf.splitTextToSize(rawLine || " ", 515) as string[];
-      if (y + wrapped.length * 14 > 790) {
-        pdf.addPage();
-        y = 52;
+  const downloadPdf = async () => {
+    try {
+      const { jsPDF } = await import("jspdf");
+      const pdf = new jsPDF({ unit: "pt", format: "a4" });
+      const lines = makeSummary();
+      let y = 62;
+      pdf.setFillColor(15, 58, 45);
+      pdf.rect(0, 0, 595, 38, "F");
+      pdf.setTextColor(15, 58, 45);
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(21);
+      pdf.text("KurevaLife", 40, y);
+      pdf.setTextColor(94, 128, 110);
+      pdf.setFontSize(9);
+      pdf.text("BY KUREVA · RESUMEN LOCAL", 40, y + 16);
+      y += 48;
+      for (const rawLine of lines) {
+        const wrapped = pdf.splitTextToSize(rawLine || " ", 515) as string[];
+        if (y + wrapped.length * 14 > 790) {
+          pdf.addPage();
+          y = 52;
+        }
+        if (/^(REGISTROS|PREGUNTAS PARA LA CONSULTA)$/.test(rawLine)) {
+          pdf.setFont("helvetica", "bold");
+          pdf.setTextColor(15, 58, 45);
+          pdf.setFontSize(11);
+        } else {
+          pdf.setFont("helvetica", "normal");
+          pdf.setTextColor(23, 58, 46);
+          pdf.setFontSize(10);
+        }
+        pdf.text(wrapped, 40, y);
+        y += Math.max(14, wrapped.length * 14);
       }
-      if (/^(REGISTROS|PREGUNTAS PARA LA CONSULTA)$/.test(rawLine)) {
-        pdf.setFont("helvetica", "bold");
-        pdf.setTextColor(15, 58, 45);
-        pdf.setFontSize(11);
-      } else {
-        pdf.setFont("helvetica", "normal");
-        pdf.setTextColor(23, 58, 46);
-        pdf.setFontSize(10);
-      }
-      pdf.text(wrapped, 40, y);
-      y += Math.max(14, wrapped.length * 14);
+      pdf.setTextColor(94, 128, 110);
+      pdf.setFontSize(8);
+      pdf.text(
+        "Este archivo se ha creado localmente desde el simulacro de prueba.",
+        40,
+        812
+      );
+      pdf.save(
+        `KurevaLife_resumen_local_${new Date().toISOString().slice(0, 10)}.pdf`
+      );
+      setStatus("PDF preparado y descargado localmente.");
+    } catch {
+      setStatus(
+        "No se ha podido preparar el PDF ahora. Tus registros locales siguen disponibles."
+      );
     }
-    pdf.setTextColor(94, 128, 110);
-    pdf.setFontSize(8);
-    pdf.text(
-      "Este archivo se ha creado localmente desde el simulacro de prueba.",
-      40,
-      812
-    );
-    pdf.save(
-      `KurevaLife_resumen_local_${new Date().toISOString().slice(0, 10)}.pdf`
-    );
-    setStatus("PDF preparado y descargado localmente.");
   };
 
   const shareSummary = async () => {
@@ -904,7 +919,11 @@ export function ReportsScreen({ state }: { state: KurevaLifeState }) {
             title="Aún no tienes registros."
             text="Registra un dato, una nota o un archivo para verlo organizado aquí."
             action={
-              <KurevaButton type="button" variant="secondary">
+              <KurevaButton
+                type="button"
+                variant="secondary"
+                onClick={onOpenRegister}
+              >
                 Ir a Registrar
               </KurevaButton>
             }
@@ -1135,6 +1154,7 @@ export function KiviPanel({
   useEffect(() => {
     if (panelRef.current) {
       panelRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      panelRef.current.focus({ preventScroll: true });
     }
   }, []);
   const respond = (prompt: string) => {
@@ -1163,6 +1183,7 @@ export function KiviPanel({
       ref={panelRef}
       className="kl-kivi-panel"
       aria-labelledby="kivi-title"
+      tabIndex={-1}
     >
       <div className="kl-kivi-panel__header">
         <div>
@@ -1209,6 +1230,7 @@ export function KiviPanel({
           value={message}
           onChange={event => setMessage(event.target.value)}
           placeholder="Ej. ¿Dónde encuentro mis registros?"
+          maxLength={500}
         />
       </label>
       <div className="kl-action-row">
