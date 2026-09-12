@@ -45,7 +45,7 @@ El proyecto canónico activo es **`/home/ubuntu/workspaces/kurevalife`** y corre
 - [x] El CTA vacío «Ir a Registrar» no cambia de pestaña, y la mejora de Kivi declarada en `a0967fb` hace scroll pero no traslada el foco al panel.
 - [x] El HTML incorpora un script de analítica con variables no definidas que produce avisos de compilación; debe cargarse únicamente cuando exista configuración explícita.
 - [x] La configuración de `patchedDependencies` y `overrides` está en una ubicación deprecada de `package.json`; debe migrarse y regenerar el bloqueo para recuperar una instalación inmutable sin avisos de configuración.
-- [ ] **Bloqueo externo documentado:** el enlace GitHub Pages para testers devuelve HTTP 404 y la API pública confirma `has_pages: false`. El flujo está preparado, pero activar Pages y ejecutar el workflow requiere administración GitHub fuera de esta sesión.
+- [x] **Cierre operativo — 12 de septiembre de 2026:** GitHub Pages fue habilitado con origen GitHub Actions; la publicación final verde `34719556282` entrega `/vida` con HTTP 200. El detalle reproducible está en `docs/kurevalife-pages-closure-2026-09-12.md`.
 
 ## Límites reales y siguiente fase móvil
 
