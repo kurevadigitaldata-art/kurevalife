@@ -34,7 +34,10 @@ jobs:
       - name: Build the public pilot
         run: GITHUB_PAGES=true pnpm build
       - name: Add SPA fallback for the direct /vida tester link
-        run: cp dist/public/index.html dist/public/404.html
+        run: |
+          cp dist/public/index.html dist/public/404.html
+          mkdir -p dist/public/vida
+          cp dist/public/index.html dist/public/vida/index.html
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
