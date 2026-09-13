@@ -11,11 +11,13 @@ import {
   FileText,
   FolderUp,
   GlassWater,
+  HeartHandshake,
   ImageUp,
   HeartPulse,
   Mic,
   PencilLine,
   Plus,
+  Salad,
   Send,
   Share2,
   Sparkles,
@@ -1465,6 +1467,40 @@ export function ReportsScreen({
   );
 }
 
+const SIMULATED_COMMUNITY_POSTS = [
+  {
+    author: "Miembro anónimo",
+    text: "Hoy pude ordenar una pregunta para mi próxima cita. Un paso pequeño también cuenta.",
+  },
+  {
+    author: "Comunidad de prueba",
+    text: "Me ayuda verlo todo en un solo lugar y decidir con calma qué quiero comentar con mi especialista.",
+  },
+  {
+    author: "Miembro anónimo",
+    text: "Gracias por recordar que no hay que hacerlo todo perfecto para cuidar de una misma persona.",
+  },
+];
+
+const SEASONAL_FOODS = [
+  {
+    name: "Manzana",
+    vitamin: "vitamina C y fibra",
+    contribution:
+      "apoyar una alimentación variada dentro de una dieta equilibrada",
+  },
+  {
+    name: "Calabaza",
+    vitamin: "provitamina A",
+    contribution: "aportar variedad de color y textura a platos de temporada",
+  },
+  {
+    name: "Brócoli",
+    vitamin: "vitamina C y folato",
+    contribution: "incorporar verduras de temporada a las comidas cotidianas",
+  },
+];
+
 export function ProfileScreen({
   preferences,
   questions,
@@ -1481,9 +1517,9 @@ export function ProfileScreen({
   return (
     <div className="kl-screen-stack">
       <SectionHeading
-        eyebrow="PERFIL"
-        title="Tu app, a tu manera."
-        description="Los cambios se aplican ahora mismo durante esta prueba."
+        eyebrow="PERFIL · ENTORNO"
+        title="Entorno Social y Ciencia"
+        description="Información de prueba para explorar la parte humana e informativa de KurevaLife."
       />
       <KurevaCard className="kl-profile-card" labelledBy="cuenta-titulo">
         <div className="kl-card-heading">
@@ -1501,6 +1537,63 @@ export function ProfileScreen({
         </div>
         <LocalStatus />
       </KurevaCard>
+      <section aria-labelledby="comunidad-title">
+        <div className="kl-inline-heading">
+          <div>
+            <p className="kl-eyebrow">MÓDULO A</p>
+            <h2 id="comunidad-title">Comunidad Abierta</h2>
+          </div>
+          <HeartHandshake size={20} aria-hidden="true" />
+        </div>
+        <KurevaCard className="kl-community-card">
+          <p>
+            Un espacio seguro guiado por la empatía y el respeto. Lee
+            comentarios de ejemplo y descubre cómo podría funcionar el apoyo
+            mutuo. En tu camino hacia el bienestar, nunca estás a solas.
+          </p>
+          <div
+            className="kl-community-scroll"
+            aria-label="Comentarios simulados de la comunidad"
+          >
+            {SIMULATED_COMMUNITY_POSTS.map(post => (
+              <article key={post.text} className="kl-community-post">
+                <span>{post.author}</span>
+                <p>{post.text}</p>
+              </article>
+            ))}
+          </div>
+          <p className="kl-notice">
+            La Comunidad no está activa en este simulacro: no se publican
+            comentarios, fotografías ni datos de salud reales.
+          </p>
+        </KurevaCard>
+      </section>
+      <section aria-labelledby="temporada-title">
+        <div className="kl-inline-heading">
+          <div>
+            <p className="kl-eyebrow">MÓDULO B</p>
+            <h2 id="temporada-title">Alimentos de Temporada</h2>
+          </div>
+          <Salad size={20} aria-hidden="true" />
+        </div>
+        <div className="kl-seasonal-grid">
+          {SEASONAL_FOODS.map(food => (
+            <KurevaCard key={food.name} className="kl-seasonal-card">
+              <h3>{food.name}</h3>
+              <p>
+                Contiene nutrientes como <strong>{food.vitamin}</strong>. Puede
+                contribuir a {food.contribution}.
+              </p>
+            </KurevaCard>
+          ))}
+        </div>
+        <p className="kl-science-note">
+          <span aria-hidden="true">🔬</span> La aplicación no inventa estas
+          propiedades. Esta demostración se apoya en información nutricional de
+          fuentes públicas y consenso sanitario; no es una recomendación médica
+          ni nutricional personalizada.
+        </p>
+      </section>
       <section aria-labelledby="apariencia-title">
         <div className="kl-inline-heading">
           <div>

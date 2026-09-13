@@ -1519,3 +1519,186 @@
     width: 100%;
   }
 }
+
+
+/* Points 9–10: static environment modules and a session-only closing flow. */
+.kl-community-card,
+.kl-seasonal-card,
+.kl-closing-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.kl-community-card > p:first-child {
+  margin: 0;
+  color: var(--kl-moss);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.kl-community-scroll {
+  display: grid;
+  max-height: 17rem;
+  gap: 0.65rem;
+  overflow-y: auto;
+  padding-right: 0.2rem;
+  scroll-snap-type: y proximity;
+}
+
+.kl-community-post {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem;
+  border: 1px solid var(--kl-border);
+  border-radius: 14px;
+  background: rgba(220, 232, 221, 0.5);
+  scroll-snap-align: start;
+}
+
+.kl-community-post span {
+  color: var(--kl-forest);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.kl-community-post p {
+  margin: 0;
+  color: var(--kl-moss);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.kl-seasonal-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.kl-seasonal-card h3 {
+  margin: 0;
+  color: var(--kl-forest);
+  font-size: 1rem;
+}
+
+.kl-seasonal-card p {
+  margin: 0;
+  color: var(--kl-moss);
+  font-size: 0.85rem;
+  line-height: 1.48;
+}
+
+.kl-seasonal-card strong {
+  color: var(--kl-forest);
+}
+
+.kl-science-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.9rem;
+  border-left: 3px solid var(--kl-lime-deep);
+  border-radius: 0 14px 14px 0;
+  background: #ebe5d8;
+  color: var(--kl-forest);
+  font-size: 0.8125rem;
+  line-height: 1.48;
+}
+
+.kl-closing-card {
+  text-align: center;
+}
+
+.kl-closing-card > div:not(.kl-closing-mark):not(.kl-closing-placeholder) {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.kl-closing-card h2 {
+  margin: 0;
+  color: var(--kl-forest);
+  font-size: 1.3rem;
+  line-height: 1.18;
+}
+
+.kl-closing-card p:not(.kl-card-label) {
+  margin: 0;
+  color: var(--kl-moss);
+  font-size: 0.9rem;
+  line-height: 1.52;
+}
+
+.kl-closing-placeholder,
+.kl-closing-mark {
+  display: grid;
+  width: 4rem;
+  height: 4rem;
+  place-items: center;
+  margin-inline: auto;
+  border-radius: 18px;
+  background: var(--kl-forest);
+  color: var(--kl-lime);
+}
+
+.kl-closing-placeholder {
+  gap: 0.15rem;
+  width: min(100%, 12rem);
+  height: 5.75rem;
+  padding: 0.75rem;
+}
+
+.kl-closing-placeholder span {
+  color: var(--kl-cream);
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+
+.kl-closing-card .kl-star-field {
+  text-align: left;
+}
+
+.kl-closing-link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  color: var(--kl-forest);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.kl-closing-link:hover,
+.kl-closing-link:focus-visible {
+  text-decoration: underline;
+}
+
+.kl-closing-credits {
+  margin: 0;
+  color: var(--kl-moss);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.kl-theme-night .kl-community-post,
+.kl-theme-night .kl-seasonal-card,
+.kl-theme-night .kl-closing-card {
+  border-color: var(--kl-border);
+  background: var(--kl-paper);
+}
+
+.kl-theme-night .kl-community-post span,
+.kl-theme-night .kl-seasonal-card h3,
+.kl-theme-night .kl-seasonal-card strong,
+.kl-theme-night .kl-closing-card h2,
+.kl-theme-night .kl-closing-link {
+  color: var(--kl-cream);
+}
+
+@media (min-width: 640px) {
+  .kl-seasonal-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

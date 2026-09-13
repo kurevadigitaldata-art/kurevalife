@@ -73,6 +73,10 @@ async def run():
             assert await page.get_by_role(
                 "button", name="¿Qué detecta Kureva si subo la foto de una analítica?"
             ).count() == 1
+            await page.get_by_role("button", name="Cerrar Kivi").click()
+            await page.get_by_role("button", name="Perfil").click()
+            assert await page.locator(".kl-community-post").count() == 3
+            assert await page.get_by_role("heading", name="Alimentos de Temporada").count() == 1
             await assert_no_horizontal_overflow(page, f"simulacro-{name}")
             await page.screenshot(path=str(OUT / f"simulacro-{name}.png"), full_page=True)
             assert not errors, (name, errors)

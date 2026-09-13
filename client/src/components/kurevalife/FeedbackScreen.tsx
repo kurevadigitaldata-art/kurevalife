@@ -1,157 +1,87 @@
 import { useState } from "react";
-import { Check, Mail, MessageSquareText, Send, Star } from "lucide-react";
-import {
-  type EntrySource,
-  submitPilotFeedback,
-  submitPilotInterest,
-} from "@/lib/pilotFeedback";
+import { Check, ExternalLink, MessageSquareText, Star } from "lucide-react";
 import { KurevaButton, KurevaCard, SectionHeading } from "./ui";
 
-const areas = [
-  ["clarity", "Claridad y lenguaje"],
-  ["daily_blocks", "Vista Hoy y rutinas"],
-  ["reminders", "Avisos e hidratación"],
-  ["medical_organization", "Registros e informes"],
-  ["accessibility", "Accesibilidad"],
-  ["kivi_support", "Kivi"],
-  ["privacy", "Privacidad"],
-  ["other", "Otro"],
-] as const;
-
-export function FeedbackScreen({ ticket }: { ticket: string }) {
+export function FeedbackScreen({ onFinish }: { onFinish: () => void }) {
   const [rating, setRating] = useState(0);
-  const [area, setArea] = useState<(typeof areas)[number][0]>("clarity");
-  const [publicComment, setPublicComment] = useState("");
-  const [privateComment, setPrivateComment] = useState("");
-  const [remove, setRemove] = useState("");
-  const [add, setAdd] = useState("");
-  const [anonymous, setAnonymous] = useState(true);
-  const [name, setName] = useState("");
-  const [consent, setConsent] = useState(false);
-  const [sending, setSending] = useState(false);
+  const [comment, setComment] = useState("");
+  const [finished, setFinished] = useState(false);
   const [status, setStatus] = useState("");
-  const [email, setEmail] = useState("");
-  const [launch, setLaunch] = useState(false);
-  const [updates, setUpdates] = useState(false);
-  const [gifts, setGifts] = useState(false);
-  const [emailConsent, setEmailConsent] = useState(false);
-  const [emailStatus, setEmailStatus] = useState("");
 
-  const buildMessage = () =>
-    [
-      publicComment.trim()
-        ? `Comentario compartible: ${publicComment.trim()}`
-        : "",
-      privateComment.trim()
-        ? `Comentario privado: ${privateComment.trim()}`
-        : "",
-      remove.trim() ? `Quitaría: ${remove.trim()}` : "",
-      add.trim() ? `Añadiría: ${add.trim()}` : "",
-    ]
-      .filter(Boolean)
-      .join("\n\n");
-
-  const submitFeedback = async (event: React.FormEvent) => {
+  const submitFeedback = (event: React.FormEvent) => {
     event.preventDefault();
-    const message = buildMessage();
-    if (
-      !rating ||
-      !message ||
-      !consent ||
-      (!anonymous && name.trim().length < 2)
-    ) {
+    if (!rating) {
       setStatus(
-        "Elige una valoración, deja al menos un comentario y confirma la privacidad antes de enviar."
+        "Elige una valoración de una a cinco estrellas para completar la prueba."
       );
       return;
     }
-    setSending(true);
-    try {
-      await submitPilotFeedback({
-        ticket_code: ticket,
-        experience_area: "kurevalife_simulator",
-        feedback_type: add.trim()
-          ? "idea"
-          : privateComment.trim()
-            ? "observation"
-            : "problem",
-        feedback_category: area,
-        rating,
-        message,
-        accessibility_context: "not_shared",
-        is_anonymous: anonymous,
-        sender_name: anonymous ? null : name.trim(),
-        entry_source: "directo" as EntrySource,
-        consent_privacy: true,
-      });
-      setStatus(
-        "Gracias. Tu valoración y sugerencia se han guardado en el registro privado del piloto."
-      );
-    } catch {
-      setStatus(
-        "No hemos podido enviar la sugerencia ahora. No se ha guardado ningún dato: puedes intentarlo de nuevo cuando haya conexión."
-      );
-    } finally {
-      setSending(false);
-    }
+    setStatus("");
+    setFinished(true);
   };
 
-  const submitUpdates = async (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!email || !emailConsent || (!launch && !updates && !gifts)) {
-      setEmailStatus(
-        "Escribe tu correo, marca al menos una opción y confirma la privacidad."
-      );
-      return;
-    }
-    try {
-      await submitPilotInterest({
-        email: email.trim(),
-        participation_role: "persona",
-        consent_updates: true,
-        consent_kit_updates: gifts,
-        consent_launch_notifications: launch,
-        consent_project_updates: updates,
-        consent_gift_updates: gifts,
-        entry_source: "directo",
-        consent_privacy: true,
-      });
-      setEmailStatus(
-        "Tus preferencias se han guardado. Las comunicaciones oficiales saldrán desde kurevadigitaldata@gmail.com cuando se habilite el envío."
-      );
-    } catch {
-      setEmailStatus(
-        "No hemos podido guardar el correo ahora. Puedes volver a intentarlo más tarde sin perder tu valoración local."
-      );
-    }
-  };
+  if (finished) {
+    return (
+      <div className="kl-screen-stack">
+        <SectionHeading
+          eyebrow="RECORRIDO COMPLETADO"
+          title="Gracias por ser parte de este simulacro."
+          description="La valoración fue una demostración local: no se publicó ni se envió a ningún servicio."
+        />
+        <KurevaCard className="kl-closing-card" labelledBy="closing-title">
+          <div className="kl-closing-mark" aria-hidden="true">
+            <Check size={28} />
+          </div>
+          <div>
+            <h2 id="closing-title">
+              Tu experiencia ayuda a mejorar KurevaLife.
+            </h2>
+            <p>
+              El recorrido ha terminado. La versión online requerirá opciones de
+              consentimiento claras antes de recibir cualquier opinión, dato o
+              solicitud de contacto.
+            </p>
+          </div>
+          <a
+            className="kl-closing-link"
+            href="https://kurevadigitaldata-art.github.io/kurevalife/"
+          >
+            Conocer Kureva <ExternalLink size={16} aria-hidden="true" />
+          </a>
+          <KurevaButton type="button" variant="primary" onClick={onFinish}>
+            Volver a la bienvenida
+          </KurevaButton>
+        </KurevaCard>
+      </div>
+    );
+  }
 
   return (
     <div className="kl-screen-stack">
       <SectionHeading
-        eyebrow="FEEDBACK DE PRUEBA"
-        title="Tu experiencia ayuda a construir KurevaLife."
-        description="No escribas información de salud, contraseñas ni datos personales sensibles en este formulario."
+        eyebrow="CIERRE DEL SIMULACRO"
+        title="¡Has completado el recorrido por el simulacro!"
+        description="Ahora que has explorado las herramientas en un entorno seguro, tu opinión es importante para el proyecto en desarrollo."
       />
-      <KurevaCard className="kl-feedback-card" labelledBy="feedback-title">
-        <div className="kl-card-heading">
-          <div className="kl-mini-icon" aria-hidden="true">
-            <MessageSquareText size={18} />
-          </div>
-          <div>
-            <h2 id="feedback-title">Valoración y sugerencias</h2>
-            <p>
-              Tu código de prueba es <strong>{ticket}</strong>.
-            </p>
-          </div>
+      <KurevaCard
+        className="kl-closing-card"
+        labelledBy="closing-feedback-title"
+      >
+        <div className="kl-closing-placeholder" aria-hidden="true">
+          <MessageSquareText size={28} />
+          <span>KurevaLife</span>
         </div>
-        <form
-          onSubmit={submitFeedback}
-          className="kl-form-stack"
-          aria-busy={sending}
-        >
+        <div>
+          <p className="kl-card-label">VALORACIÓN DE PRUEBA</p>
+          <h2 id="closing-feedback-title">¿Cómo ha sido tu experiencia?</h2>
+          <p>
+            Esta valoración no se publica ni se envía. Sirve para completar el
+            recorrido de forma segura dentro de esta sesión.
+          </p>
+        </div>
+        <form onSubmit={submitFeedback} className="kl-form-stack">
           <fieldset className="kl-star-field">
-            <legend>¿Cómo valorarías este simulacro?</legend>
+            <legend>Calificación</legend>
             <div
               role="radiogroup"
               aria-label="Valoración de una a cinco estrellas"
@@ -166,112 +96,27 @@ export function FeedbackScreen({ ticket }: { ticket: string }) {
                   onClick={() => setRating(value)}
                   className={value <= rating ? "is-selected" : ""}
                 >
-                  <Star size={28} fill="currentColor" />
+                  <Star size={30} fill="currentColor" />
                 </button>
               ))}
             </div>
             <small>{rating ? `${rating} de 5` : "Elige una valoración"}</small>
           </fieldset>
-          <label className="kl-field" htmlFor="feedback-area">
-            <span>Sobre qué quieres opinar</span>
-            <select
-              id="feedback-area"
-              value={area}
-              onChange={event => setArea(event.target.value as typeof area)}
-            >
-              {areas.map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="kl-field" htmlFor="feedback-public">
-            <span>Comentario público</span>
+          <label className="kl-field" htmlFor="closing-comment">
+            <span>Comentarios o sugerencias</span>
             <textarea
-              id="feedback-public"
-              rows={3}
-              value={publicComment}
-              onChange={event => setPublicComment(event.target.value)}
-              placeholder="Algo que podría compartir la comunidad de testers, sin datos personales."
+              id="closing-comment"
+              rows={5}
+              value={comment}
+              onChange={event => setComment(event.target.value)}
+              placeholder="Escribe una sugerencia para esta demostración, sin datos personales ni de salud."
               maxLength={500}
             />
           </label>
-          <label className="kl-field" htmlFor="feedback-private">
-            <span>Comentario privado</span>
-            <textarea
-              id="feedback-private"
-              rows={4}
-              value={privateComment}
-              onChange={event => setPrivateComment(event.target.value)}
-              placeholder="Cuéntanos dónde te has atascado, qué ha sido confuso o qué no ha funcionado."
-              maxLength={700}
-            />
-          </label>
-          <div className="kl-form-grid">
-            <label className="kl-field" htmlFor="feedback-remove">
-              <span>¿Qué quitarías?</span>
-              <textarea
-                id="feedback-remove"
-                rows={3}
-                value={remove}
-                onChange={event => setRemove(event.target.value)}
-                placeholder="Una función, texto o paso que no usarías."
-                maxLength={300}
-              />
-            </label>
-            <label className="kl-field" htmlFor="feedback-add">
-              <span>¿Qué añadirías?</span>
-              <textarea
-                id="feedback-add"
-                rows={3}
-                value={add}
-                onChange={event => setAdd(event.target.value)}
-                placeholder="Algo que sería esencial para ti."
-                maxLength={300}
-              />
-            </label>
-          </div>
-          <label className="kl-check-row">
-            <input
-              type="checkbox"
-              checked={anonymous}
-              onChange={event => setAnonymous(event.target.checked)}
-            />
-            <span>
-              <strong>Enviar de forma anónima</strong>
-              <small>No se guardará un nombre junto a tu sugerencia.</small>
-            </span>
-          </label>
-          {!anonymous ? (
-            <label className="kl-field" htmlFor="feedback-name">
-              <span>Nombre que quieres asociar</span>
-              <input
-                id="feedback-name"
-                value={name}
-                onChange={event => setName(event.target.value)}
-                placeholder="Nombre y apellidos"
-                maxLength={100}
-              />
-            </label>
-          ) : null}
-          <label className="kl-check-row">
-            <input
-              type="checkbox"
-              checked={consent}
-              onChange={event => setConsent(event.target.checked)}
-            />
-            <span>
-              <strong>
-                Quiero que esta sugerencia quede en el registro privado del
-                piloto.
-              </strong>
-              <small>
-                Se guarda separada de las notas y registros creados dentro de la
-                demo.
-              </small>
-            </span>
-          </label>
+          <p className="kl-notice">
+            La comunidad real no está activa. Este texto es temporal y se
+            elimina al recargar o cerrar la prueba.
+          </p>
           {status ? (
             <p className="kl-inline-status" role="status" aria-live="polite">
               {status}
@@ -281,104 +126,16 @@ export function FeedbackScreen({ ticket }: { ticket: string }) {
             type="submit"
             variant="accent"
             className="kl-full-action"
-            disabled={sending}
           >
-            <Send size={18} aria-hidden="true" />{" "}
-            {sending ? "Guardando…" : "Enviar valoración y sugerencia"}
+            <Check size={18} aria-hidden="true" /> Publicar valoración y
+            finalizar simulacro
           </KurevaButton>
         </form>
       </KurevaCard>
-      <KurevaCard className="kl-updates-card" labelledBy="updates-title">
-        <div className="kl-card-heading">
-          <div className="kl-mini-icon" aria-hidden="true">
-            <Mail size={18} />
-          </div>
-          <div>
-            <h2 id="updates-title">
-              Quiero enterarme cuando llegue el momento
-            </h2>
-            <p>El correo es opcional y está separado de la valoración.</p>
-          </div>
-        </div>
-        <form onSubmit={submitUpdates} className="kl-form-stack">
-          <label className="kl-field" htmlFor="feedback-email">
-            <span>Tu correo</span>
-            <input
-              id="feedback-email"
-              type="email"
-              autoComplete="email"
-              value={email}
-              onChange={event => setEmail(event.target.value)}
-              placeholder="tu@correo.es"
-              maxLength={254}
-            />
-          </label>
-          <label className="kl-check-row">
-            <input
-              type="checkbox"
-              checked={launch}
-              onChange={event => setLaunch(event.target.checked)}
-            />
-            <span>
-              <strong>Fecha de lanzamiento de KurevaLife</strong>
-              <small>
-                Quiero saber cuándo la app esté lista para empezar a usarla.
-              </small>
-            </span>
-          </label>
-          <label className="kl-check-row">
-            <input
-              type="checkbox"
-              checked={updates}
-              onChange={event => setUpdates(event.target.checked)}
-            />
-            <span>
-              <strong>Avances y futuros proyectos de Kureva</strong>
-              <small>Solo novedades relevantes y aperturas.</small>
-            </span>
-          </label>
-          <label className="kl-check-row">
-            <input
-              type="checkbox"
-              checked={gifts}
-              onChange={event => setGifts(event.target.checked)}
-            />
-            <span>
-              <strong>Regalos Kureva</strong>
-              <small>
-                Información sobre regalos de participación y primeras 30
-                personas.
-              </small>
-            </span>
-          </label>
-          <label className="kl-check-row">
-            <input
-              type="checkbox"
-              checked={emailConsent}
-              onChange={event => setEmailConsent(event.target.checked)}
-            />
-            <span>
-              <strong>Confirmo la privacidad de esta elección.</strong>
-              <small>
-                Las comunicaciones oficiales se enviarán desde
-                kurevadigitaldata@gmail.com cuando se habilite el envío.
-              </small>
-            </span>
-          </label>
-          {emailStatus ? (
-            <p className="kl-inline-status" role="status" aria-live="polite">
-              {emailStatus}
-            </p>
-          ) : null}
-          <KurevaButton
-            type="submit"
-            variant="primary"
-            className="kl-full-action"
-          >
-            <Check size={18} aria-hidden="true" /> Guardar mis elecciones
-          </KurevaButton>
-        </form>
-      </KurevaCard>
+      <p className="kl-closing-credits">
+        KurevaLife · propiedad y autoría de Kureva. Este simulacro no recopila
+        datos reales.
+      </p>
     </div>
   );
 }

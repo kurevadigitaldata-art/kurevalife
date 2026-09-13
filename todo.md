@@ -6,6 +6,10 @@ El proyecto canónico activo es **`/home/ubuntu/workspaces/kurevalife`** y corre
 
 ## Cambios de esta iteración
 
+- [x] Integrar Entorno Social y Ciencia dentro de la cuarta pestaña obligatoria, sin abrir una quinta pestaña ni una comunidad real.
+- [x] Incorporar comentarios de ejemplo, fichas estacionales y nota de rigor científico como contenido estático e informativo, sin afirmar publicación, moderación o recomendación personalizada.
+- [x] Convertir el cierre de valoración en un final local de simulacro con escala de estrellas, comentario temporal, aviso de privacidad y enlace público de Kureva.
+- [x] Verificar las pantallas 9 y 10 en móvil, tableta y escritorio, junto con el reinicio y la ausencia de transmisión de información.
 - [x] Adaptar exclusivamente Hoy, Informes y Kivi al guion aprobado de los puntos 6 a 8, conservando las cuatro pestañas y Kivi como asistente secundario.
 - [x] Crear interacciones locales y temporales para constantes, antecedentes, agua, alimentación, avisos y una cita de ejemplo, sin hacer diagnóstico, cuentas, cargas remotas ni notificaciones reales.
 - [x] Añadir a Informes el recorrido demostrativo Imagen, Análisis y Revisión, manteniendo el PDF local y declarando que la simulación no procesa analíticas reales.

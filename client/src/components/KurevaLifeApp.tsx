@@ -21,7 +21,6 @@ import {
   KurevaCard,
   LocalStatus,
 } from "@/components/kurevalife/ui";
-import { getPilotTicket } from "@/lib/pilotFeedback";
 
 export function KurevaLifeApp() {
   const [state, setState] = useKurevaLifeState();
@@ -29,7 +28,6 @@ export function KurevaLifeApp() {
   const [activeTab, setActiveTab] = useState<KurevaTab>("hoy");
   const [kiviOpen, setKiviOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const [ticket] = useState(() => getPilotTicket());
   const [liveMessage, setLiveMessage] = useState("");
 
   const announce = (message: string, useVoice = false) => {
@@ -95,6 +93,14 @@ export function KurevaLifeApp() {
     setKiviOpen(false);
   };
 
+  const finishSimulation = () => {
+    setState(JSON.parse(JSON.stringify(DEFAULT_KUREVALIFE_STATE)));
+    setEntered(false);
+    setActiveTab("hoy");
+    setFeedbackOpen(false);
+    setKiviOpen(false);
+  };
+
   if (!entered) {
     return (
       <KurevaLifeOnboarding
@@ -105,7 +111,7 @@ export function KurevaLifeApp() {
   }
 
   const page = () => {
-    if (feedbackOpen) return <FeedbackScreen ticket={ticket} />;
+    if (feedbackOpen) return <FeedbackScreen onFinish={finishSimulation} />;
     if (activeTab === "hoy")
       return (
         <TodayScreen
