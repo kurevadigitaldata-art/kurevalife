@@ -6,6 +6,7 @@ El proyecto canónico activo es **`/home/ubuntu/workspaces/kurevalife`** y corre
 
 ## Cambios de esta iteración
 
+- [x] Sustituir en la landing la lámina ilustrativa de UI basada en el ejemplo externo por la portada y la K oficiales de KurevaLife, sin trasladar sus patrones de escritorio a la navegación funcional mobile-first de KurevaLife. La K rota de forma continua —sin pulso ni rebote— en landing y simulacro, con respeto a `prefers-reduced-motion`.
 - [x] Sustituir la entrada pasiva por un registro de simulación con nombre, apellidos, correo, contraseña de prueba, identidad opcional y consentimiento local.
 - [x] Añadir recorrido de tres pasos: registro ficticio, selección de necesidades y bienvenida personalizada de cinco minutos.
 - [x] Añadir control de pausa, reinicio, temporizador visual, texto ampliado y contraste.

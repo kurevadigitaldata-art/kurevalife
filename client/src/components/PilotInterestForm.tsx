@@ -76,7 +76,7 @@ export function PilotInterestForm() {
         <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-[#D9FF2B]/45 motion-safe:animate-pulse" />
         <div className="relative mx-auto w-20 h-20">
           <div className="absolute inset-0 rounded-full border border-[#0F3A2D]/20 kureva-k-orbit" />
-          <div className="absolute inset-3 rounded-2xl bg-[#0F3A2D] text-[#D9FF2B] flex items-center justify-center font-display text-3xl font-bold shadow-lg kureva-k-pulse">K</div>
+          <div className="absolute inset-3 rounded-2xl bg-[#0F3A2D] text-[#D9FF2B] flex items-center justify-center font-display text-3xl font-bold shadow-lg kureva-k-rotate">K</div>
         </div>
         <div className="relative">
           <div className="text-xs font-bold uppercase tracking-wider text-[#5E806E]">Gracias por estar aquí</div>
@@ -94,7 +94,7 @@ export function PilotInterestForm() {
 
   return (
     <form onSubmit={submit} aria-busy={isSending} className="relative overflow-hidden rounded-3xl bg-[#FFFDF8] p-7 sm:p-9 text-[#173A2E] shadow-2xl border border-white/20 space-y-5" aria-labelledby="updates-title">
-      {isSending && <div className="absolute inset-0 z-10 bg-[#FFFDF8]/92 backdrop-blur-[2px] flex flex-col items-center justify-center text-center p-6 motion-safe:animate-in motion-safe:fade-in duration-200"><div className="relative w-18 h-18"><div className="absolute inset-0 rounded-full border-2 border-[#D9FF2B] kureva-k-orbit" /><div className="absolute inset-3 rounded-xl bg-[#0F3A2D] text-[#D9FF2B] flex items-center justify-center font-display text-2xl font-bold">K</div></div><strong className="font-display text-lg text-[#0F3A2D] mt-4">Guardando tus opciones…</strong><p className="text-sm text-[#5E806E] mt-1">Un momento, por favor.</p></div>}
+      {isSending && <div className="absolute inset-0 z-10 bg-[#FFFDF8]/92 backdrop-blur-[2px] flex flex-col items-center justify-center text-center p-6 motion-safe:animate-in motion-safe:fade-in duration-200"><div className="relative w-18 h-18"><div className="absolute inset-0 rounded-full border-2 border-[#D9FF2B] kureva-k-orbit" /><div className="absolute inset-3 rounded-xl bg-[#0F3A2D] text-[#D9FF2B] flex items-center justify-center font-display text-2xl font-bold kureva-k-rotate">K</div></div><strong className="font-display text-lg text-[#0F3A2D] mt-4">Guardando tus opciones…</strong><p className="text-sm text-[#5E806E] mt-1">Un momento, por favor.</p></div>}
       <div>
         <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#5E806E] mb-2"><Sparkles className="w-3.5 h-3.5 text-[#0F3A2D]" /> Acompaña el proceso</div>
         <h3 id="updates-title" className="font-display text-2xl font-bold text-[#0F3A2D]">Sigue el nacimiento de Kureva.</h3>

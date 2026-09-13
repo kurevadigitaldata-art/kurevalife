@@ -55,7 +55,7 @@ export function InstallKurevaLife() {
     <section className="rounded-3xl overflow-hidden bg-[#0F3A2D] text-white p-6 sm:p-8" aria-labelledby="install-kurevalife-title">
       <div className="flex flex-col sm:flex-row gap-5 sm:items-center sm:justify-between">
         <div className="flex gap-4">
-          <div className="relative w-14 h-14 shrink-0"><div className="absolute inset-0 rounded-full border border-[#D9FF2B]/50 kureva-k-orbit" /><div className="absolute inset-2 rounded-2xl bg-[#D9FF2B] text-[#0F3A2D] flex items-center justify-center font-display text-xl font-bold kureva-k-pulse">K</div></div>
+          <div className="relative w-14 h-14 shrink-0"><div className="absolute inset-0 rounded-full border border-[#D9FF2B]/50 kureva-k-orbit" /><div className="absolute inset-2 rounded-2xl bg-[#D9FF2B] text-[#0F3A2D] flex items-center justify-center font-display text-xl font-bold kureva-k-rotate">K</div></div>
           <div>
             <div className="text-xs text-[#D9FF2B] font-bold uppercase tracking-wider">Al terminar tu simulacro</div>
             <h2 id="install-kurevalife-title" className="font-display text-xl sm:text-2xl font-bold mt-1">Ten KurevaLife a un toque de distancia.</h2>

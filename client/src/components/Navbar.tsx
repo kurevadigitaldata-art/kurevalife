@@ -37,7 +37,7 @@ export const Navbar = () => {
           <div className="relative w-10 h-10">
             <div className="absolute -inset-1 rounded-2xl border border-[#D9FF2B]/50 kureva-k-orbit" aria-hidden="true" />
             <div className="relative w-10 h-10 rounded-xl bg-[#0F3A2D] flex items-center justify-center shadow-xs transition-transform duration-200 group-hover:scale-105 p-2">
-            <svg viewBox="0 0 800 800" className="w-full h-full" fill="none" stroke="#F5F1E7" strokeWidth="96" strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 800 800" className="w-full h-full kureva-k-rotate" fill="none" stroke="#F5F1E7" strokeWidth="96" strokeLinecap="round" strokeLinejoin="round">
               <path d="M236 628V252C236 118 414 118 414 252V372" />
               <path d="M414 372L634 164" />
               <path d="M414 372L634 606" />

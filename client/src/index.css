@@ -740,6 +740,15 @@
   }
 }
 
+/* Official K movement: continuous rotation only; never pulse, breathe, or bounce. */
+.kureva-k-rotate {
+  animation: kl-rotate 10s linear infinite;
+}
+
+.kureva-k-orbit {
+  animation: kl-rotate 10s linear infinite;
+}
+
 @media (min-width: 680px) {
   .kl-app-header {
     padding-inline: 1.5rem;
@@ -825,7 +834,9 @@
     animation-iteration-count: 1 !important;
   }
   .kl-mark__orbit,
-  .kl-mark__image {
+  .kl-mark__image,
+  .kureva-k-orbit,
+  .kureva-k-rotate {
     animation: none;
   }
 }

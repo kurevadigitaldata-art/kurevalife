@@ -133,7 +133,7 @@ export default function Home() {
                 <div className="my-6 flex items-center justify-center py-6">
                   <div className="w-48 h-48 rounded-2xl bg-[#09241B] flex items-center justify-center p-6 border border-white/10 shadow-inner group transition-transform duration-300 hover:scale-105 relative overflow-hidden">
                     <div className="w-36 h-36 flex items-center justify-center">
-                      <svg viewBox="0 0 800 800" className="w-full h-full drop-shadow-md" fill="none" stroke="#F5F1E7" strokeWidth="86" strokeLinecap="round" strokeLinejoin="round">
+                      <svg viewBox="0 0 800 800" className="w-full h-full drop-shadow-md kureva-k-rotate" fill="none" stroke="#F5F1E7" strokeWidth="86" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M236 628V252C236 118 414 118 414 252V372" />
                         <path d="M414 372L634 164" />
                         <path d="M414 372L634 606" />
@@ -149,8 +149,8 @@ export default function Home() {
                     <strong className="text-white font-medium">San Miguel de Salinas</strong>
                   </div>
                   <div className="flex justify-between items-center text-white/60">
-                    <span>Ecosistema futuro:</span>
-                    <strong className="text-[#D9FF2B] font-medium">KurevaLife (Digital App)</strong>
+                    <span>Ecosistema:</span>
+                    <strong className="text-[#D9FF2B] font-medium">KurevaLife · App digital</strong>
                   </div>
                   <div className="flex justify-between items-center text-white/60">
                     <span>Arquitectura de valor:</span>
@@ -434,16 +434,21 @@ export default function Home() {
             <div className="lg:col-span-6 space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0F3A2D] text-[#D9FF2B] text-xs font-semibold">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Producto en fase de incubación</span>
+                <span>Producto digital Kureva</span>
               </div>
 
               <div className="space-y-2">
-                <div className="w-48 h-auto mb-2">
+                <div className="mb-2 flex items-center gap-3 text-[#0F3A2D]">
                   <img
-                    src="/manus-storage/kurevalife-lockup_f908d233.svg"
-                    alt="KurevaLife by Kureva"
-                    className="w-full h-auto"
+                    src={`${import.meta.env.BASE_URL}kurevalife-profile-mark.png`}
+                    alt=""
+                    aria-hidden="true"
+                    className="size-12 rounded-xl object-cover kureva-k-rotate"
                   />
+                  <span className="grid leading-none">
+                    <strong className="font-display text-2xl tracking-[-0.04em]">KurevaLife</strong>
+                    <small className="mt-1 text-[0.625rem] font-extrabold tracking-[0.12em] text-[#5E806E]">BY KUREVA</small>
+                  </span>
                 </div>
                 <p className="text-xs font-mono uppercase tracking-wider text-[#5E806E]">
                   SUBMARCA DIGITAL · SISTEMA MAESTRO K FLUIDA
@@ -496,29 +501,31 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right preview: UI Direction preview */}
+            {/* Right preview: official KurevaLife landing artwork, not an app screen specification. */}
             <div className="lg:col-span-6">
               <div className="rounded-3xl bg-[#FFFDF8] p-4 sm:p-6 border border-[#DCD4C4] shadow-xl">
                 <div className="flex items-center justify-between pb-4 border-b border-[#DCD4C4]/60 mb-4 text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#0F3A2D]" />
-                    <span className="font-semibold text-[#0F3A2D]">KurevaLife UI Preview</span>
+                    <img src={`${import.meta.env.BASE_URL}kurevalife-profile-mark.png`} alt="" aria-hidden="true" className="size-6 rounded-md object-cover kureva-k-rotate" loading="lazy" />
+                    <span className="font-semibold text-[#0F3A2D]">Portada oficial KurevaLife</span>
                   </div>
-                  <span className="text-[#5E806E]">Arquitectura accesible</span>
+                  <span className="text-[#5E806E]">Sistema K Fluida</span>
                 </div>
 
                 <div className="rounded-2xl overflow-hidden border border-[#DCD4C4]">
                   <img
-                    src="/manus-storage/kureva-ui-direction_89c54ed0.png"
-                    alt="Dirección de interfaz KurevaLife"
-                    className="w-full h-auto object-cover hover:scale-102 transition-transform duration-300"
+                    src={`${import.meta.env.BASE_URL}kurevalife-youtube-cover.svg`}
+                    alt="Portada oficial de KurevaLife"
+                    className="w-full h-auto object-cover"
+                    loading="lazy"
                   />
                 </div>
 
                 <div className="mt-4 flex items-center justify-between text-xs text-[#5E806E] px-1">
-                  <span>Paneles de gestión por bloques</span>
-                  <span className="font-mono text-[#0F3A2D]">WCAG AA Compliant</span>
+                  <span>Identidad KurevaLife propia</span>
+                  <span className="font-mono text-[#0F3A2D]">NO ES PANTALLA OPERATIVA</span>
                 </div>
+                <p className="mt-3 px-1 text-xs leading-relaxed text-[#5E806E]">La beta conserva su navegación mobile-first y sus cuatro destinos aprobados; esta portada comunica la marca sin sustituir las pantallas funcionales.</p>
               </div>
             </div>
           </div>
