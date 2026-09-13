@@ -15,10 +15,18 @@ export type Routine = {
 
 export type RecordKind =
   | "tension"
+  | "glucosa"
+  | "ritmo-cardiaco"
   | "colesterol"
   | "hba1c"
   | "observacion"
   | "peso"
+  | "temperatura"
+  | "sueno"
+  | "animo"
+  | "diagnostico"
+  | "alimentacion"
+  | "analitica"
   | "otro";
 
 export type AttachmentMeta = {
@@ -162,10 +170,18 @@ type StoredObject = Record<string, unknown>;
 
 const RECORD_KINDS: RecordKind[] = [
   "tension",
+  "glucosa",
+  "ritmo-cardiaco",
   "colesterol",
   "hba1c",
   "observacion",
   "peso",
+  "temperatura",
+  "sueno",
+  "animo",
+  "diagnostico",
+  "alimentacion",
+  "analitica",
   "otro",
 ];
 const ROUTINE_PERIODS: Routine["period"][] = ["Mañana", "Tarde", "Noche"];

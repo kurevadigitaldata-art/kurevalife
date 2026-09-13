@@ -6,6 +6,11 @@ El proyecto canónico activo es **`/home/ubuntu/workspaces/kurevalife`** y corre
 
 ## Cambios de esta iteración
 
+- [x] Adaptar exclusivamente Hoy, Informes y Kivi al guion aprobado de los puntos 6 a 8, conservando las cuatro pestañas y Kivi como asistente secundario.
+- [x] Crear interacciones locales y temporales para constantes, antecedentes, agua, alimentación, avisos y una cita de ejemplo, sin hacer diagnóstico, cuentas, cargas remotas ni notificaciones reales.
+- [x] Añadir a Informes el recorrido demostrativo Imagen, Análisis y Revisión, manteniendo el PDF local y declarando que la simulación no procesa analíticas reales.
+- [x] Sustituir las respuestas rápidas de Kivi por las preguntas aprobadas, con límites clínicos, de comunidad y de funciones conectadas explícitos.
+- [x] Validar el recorrido completo de los puntos 6 a 8 en móvil, tableta y escritorio antes de publicar el checkpoint.
 - [x] Ajustar exclusivamente la pantalla de Introducción: título genérico, copia sin saludo, selector de idioma, aviso informativo de simulacro y acento lima deslizante que respeta movimiento reducido.
 - [x] Verificar la pantalla de Introducción en móvil y su ausencia de regresiones responsive antes de publicar el checkpoint.
 - [x] Aplicar exclusivamente los contenidos y controles aprobados para Bienvenida, Introducción, Inclusión, Registro y Configuración; sin alterar las pantallas posteriores del simulacro.

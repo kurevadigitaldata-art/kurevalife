@@ -1289,3 +1289,233 @@
     transform: none;
   }
 }
+
+
+/* Points 6–8: compact mobile-first interaction panels for the simulator. */
+.kl-vitals-list,
+.kl-history-options,
+.kl-analysis-list {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.kl-vital-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  border: 1px solid var(--kl-border);
+  border-radius: 16px;
+  background: var(--kl-paper);
+}
+
+.kl-vital-row__icon {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(220, 232, 221, 0.78);
+  color: var(--kl-forest);
+}
+
+.kl-vital-row > div:nth-child(2) {
+  display: grid;
+  min-width: 0;
+  gap: 0.16rem;
+}
+
+.kl-vital-row strong,
+.kl-water-quick strong,
+.kl-agenda-card strong,
+.kl-appointment-preview strong {
+  color: var(--kl-forest);
+  font-size: 0.875rem;
+}
+
+.kl-vital-row small,
+.kl-water-quick small,
+.kl-agenda-card p,
+.kl-appointment-preview small {
+  overflow: hidden;
+  color: var(--kl-moss);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.kl-vital-row__action {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--kl-border);
+  border-radius: 10px;
+  color: var(--kl-forest);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.kl-quick-entry,
+.kl-history-card,
+.kl-wellbeing-card,
+.kl-agenda-card,
+.kl-analysis-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.kl-quick-entry h3 {
+  margin: 0;
+  color: var(--kl-forest);
+  font-size: 1rem;
+}
+
+.kl-history-options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kl-history-options button {
+  min-height: 3.15rem;
+  padding: 0.55rem;
+  border: 1px solid var(--kl-border);
+  border-radius: 12px;
+  background: var(--kl-paper);
+  color: var(--kl-moss);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-align: left;
+}
+
+.kl-history-options button.is-active {
+  border-color: var(--kl-forest);
+  background: var(--kl-forest);
+  color: var(--kl-lime);
+}
+
+.kl-water-quick,
+.kl-appointment-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  border-radius: 14px;
+  background: rgba(220, 232, 221, 0.56);
+}
+
+.kl-water-quick > div:nth-child(2),
+.kl-appointment-preview span {
+  display: grid;
+  min-width: 0;
+  gap: 0.15rem;
+}
+
+.kl-water-quick__controls {
+  display: flex;
+  gap: 0.35rem;
+  margin-left: auto;
+}
+
+.kl-water-quick__controls button {
+  width: 2.4rem;
+  min-height: 2.4rem;
+  border-radius: 999px;
+  background: var(--kl-forest);
+  color: var(--kl-lime);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.kl-agenda-card > div:first-child {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.kl-agenda-card p {
+  margin: 0;
+}
+
+.kl-appointment-preview {
+  align-items: flex-start;
+}
+
+.kl-appointment-preview > svg {
+  flex: 0 0 auto;
+  color: var(--kl-forest);
+}
+
+.kl-analysis-card {
+  margin-top: 0.875rem;
+}
+
+.kl-analysis-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--kl-moss);
+  font-size: 0.875rem;
+  line-height: 1.48;
+}
+
+.kl-analysis-progress {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background: rgba(220, 232, 221, 0.58);
+}
+
+.kl-analysis-progress::before {
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--kl-border);
+  content: "";
+  grid-area: 1 / 1;
+}
+
+.kl-analysis-progress > span {
+  height: 0.55rem;
+  min-width: 0.4rem;
+  border-radius: 999px;
+  background: var(--kl-forest);
+  grid-area: 1 / 1;
+}
+
+.kl-analysis-progress strong {
+  color: var(--kl-forest);
+  font-size: 0.8125rem;
+}
+
+.kl-theme-night .kl-vital-row,
+.kl-theme-night .kl-quick-entry,
+.kl-theme-night .kl-history-card,
+.kl-theme-night .kl-wellbeing-card,
+.kl-theme-night .kl-agenda-card,
+.kl-theme-night .kl-analysis-card,
+.kl-theme-night .kl-history-options button {
+  border-color: var(--kl-border);
+  background: var(--kl-paper);
+}
+
+.kl-theme-night .kl-vital-row strong,
+.kl-theme-night .kl-water-quick strong,
+.kl-theme-night .kl-agenda-card strong,
+.kl-theme-night .kl-appointment-preview strong,
+.kl-theme-night .kl-quick-entry h3,
+.kl-theme-night .kl-analysis-progress strong {
+  color: var(--kl-cream);
+}
+
+@media (max-width: 390px) {
+  .kl-vital-row {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .kl-vital-row__action {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}

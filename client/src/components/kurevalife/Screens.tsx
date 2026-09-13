@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  Activity,
+  Apple,
   Bell,
   CalendarDays,
   Check,
@@ -10,13 +12,14 @@ import {
   FolderUp,
   GlassWater,
   ImageUp,
+  HeartPulse,
   Mic,
-  Moon,
   PencilLine,
   Plus,
   Send,
   Share2,
   Sparkles,
+  Thermometer,
   Volume2,
 } from "lucide-react";
 import type {
@@ -42,6 +45,12 @@ import {
 
 const RECORD_OPTIONS: { value: RecordKind; label: string; hint: string }[] = [
   { value: "tension", label: "Tensión arterial", hint: "Ej. 120 / 80 mmHg" },
+  { value: "glucosa", label: "Glucosa", hint: "Ej. 92 mg/dL" },
+  {
+    value: "ritmo-cardiaco",
+    label: "Ritmo cardíaco",
+    hint: "Ej. 72 lpm",
+  },
   {
     value: "colesterol",
     label: "Colesterol",
@@ -53,6 +62,24 @@ const RECORD_OPTIONS: { value: RecordKind; label: string; hint: string }[] = [
     hint: "Escribe el dato que quieres conservar",
   },
   { value: "peso", label: "Peso", hint: "Ej. 64 kg" },
+  { value: "temperatura", label: "Temperatura", hint: "Ej. 36,6 °C" },
+  { value: "sueno", label: "Sueño", hint: "Ej. 7 horas" },
+  { value: "animo", label: "Estado de ánimo", hint: "Ej. Con energía" },
+  {
+    value: "diagnostico",
+    label: "Antecedente de prueba",
+    hint: "Ej. Tratamiento crónico",
+  },
+  {
+    value: "alimentacion",
+    label: "Alimentación",
+    hint: "Ej. Desayuno: fruta y tostada",
+  },
+  {
+    value: "analitica",
+    label: "Analítica de prueba",
+    hint: "Ej. Analítica mensual",
+  },
   {
     value: "observacion",
     label: "Observación",
@@ -69,68 +96,373 @@ function todayLabel() {
   }).format(new Date());
 }
 
+const DAILY_CONSTANTS: {
+  kind: RecordKind;
+  label: string;
+  hint: string;
+  action: string;
+}[] = [
+  {
+    kind: "tension",
+    label: "Presión arterial",
+    hint: "Ej. 120/80 mmHg",
+    action: "Añadir",
+  },
+  { kind: "glucosa", label: "Glucosa", hint: "Ej. 92 mg/dL", action: "Añadir" },
+  {
+    kind: "ritmo-cardiaco",
+    label: "Ritmo cardíaco",
+    hint: "Ej. 72 lpm",
+    action: "Añadir",
+  },
+  { kind: "peso", label: "Peso", hint: "Ej. 68 kg", action: "Añadir" },
+  {
+    kind: "temperatura",
+    label: "Temperatura",
+    hint: "Ej. 36,6 °C",
+    action: "Añadir",
+  },
+  {
+    kind: "sueno",
+    label: "Sueño",
+    hint: "Ej. 7 horas",
+    action: "Registrar horas",
+  },
+  {
+    kind: "animo",
+    label: "Estado de ánimo",
+    hint: "¿Cómo te sientes?",
+    action: "Añadir",
+  },
+];
+
+const HISTORY_OPTIONS = [
+  "Diagnóstico clínico",
+  "Cirugía previa",
+  "Tratamiento crónico",
+  "Otros",
+];
+
 export function TodayScreen({
   name,
   state,
   onToggleRoutine,
   onOpenRegister,
+  onAddRecord,
+  onAddReminder,
+  onUpdateHydration,
 }: {
   name: string;
   state: KurevaLifeState;
   onToggleRoutine: (id: string) => void;
   onOpenRegister: () => void;
+  onAddRecord: (record: RecordEntry) => void;
+  onAddReminder: (reminder: Reminder) => void;
+  onUpdateHydration: (hydration: HydrationGoal) => void;
 }) {
+  const [activeConstant, setActiveConstant] = useState<RecordKind | null>(null);
+  const [draftValue, setDraftValue] = useState("");
+  const [historyOption, setHistoryOption] = useState("");
+  const [meal, setMeal] = useState("");
+  const [notice, setNotice] = useState("");
   const completed = state.routines.filter(routine => routine.completed).length;
-  const next = state.routines.find(routine => !routine.completed);
-  const greeting = name ? `Hola, ${name}` : "Hola";
+  const constantKinds = new Set(DAILY_CONSTANTS.map(item => item.kind));
+  const capturedConstants = new Set(
+    state.records
+      .filter(record => constantKinds.has(record.kind))
+      .map(record => record.kind)
+  ).size;
+  const impactSteps = Math.min(
+    5,
+    capturedConstants +
+      Number(state.hydration.completed > 0) +
+      Number(state.records.some(record => record.kind === "alimentacion")) +
+      Number(state.reminders.length > 0)
+  );
+  const greeting = name ? `Hola, ${name} 👋` : "Hola 👋";
+  const activeDefinition = DAILY_CONSTANTS.find(
+    item => item.kind === activeConstant
+  );
+
+  const addQuickRecord = (kind: RecordKind, value: string) => {
+    const cleanValue = value.trim();
+    if (!cleanValue) {
+      setNotice("Escribe un dato para añadirlo a esta prueba. No hay prisa.");
+      return;
+    }
+    onAddRecord({
+      id: createLocalId("registro"),
+      kind,
+      value: cleanValue,
+      note: "",
+      createdAt: new Date().toISOString(),
+      source: "manual",
+      attachments: [],
+    });
+    setDraftValue("");
+    setActiveConstant(null);
+    setNotice("Registro añadido solo durante esta sesión.");
+  };
+
+  const addHistory = () => {
+    if (!historyOption) {
+      setNotice("Elige una opción para añadirla como ejemplo en esta prueba.");
+      return;
+    }
+    addQuickRecord("diagnostico", historyOption);
+    setHistoryOption("");
+  };
 
   return (
     <div className="kl-screen-stack">
       <SectionHeading
         eyebrow={todayLabel()}
         title={greeting}
-        description="Los datos de ejemplo solo estarán disponibles mientras esta prueba esté abierta."
+        description="Registra tus datos de hoy para organizar tu bienestar."
       />
 
       <KurevaCard className="kl-day-overview" labelledBy="progreso-hoy">
         <div>
-          <p className="kl-card-label">MI DÍA</p>
-          <h2 id="progreso-hoy">Pequeños pasos, en orden.</h2>
-          <p>Marca lo que ya hayas hecho y vuelve cuando lo necesites.</p>
-        </div>
-        <ProgressRing completed={completed} total={state.routines.length} />
-      </KurevaCard>
-
-      <KurevaCard className="kl-next-card" labelledBy="siguiente-accion">
-        <div className="kl-next-card__icon" aria-hidden="true">
-          <ChevronRight size={22} />
-        </div>
-        <div>
-          <p className="kl-card-label">SIGUIENTE ACCIÓN</p>
-          <h2 id="siguiente-accion">
-            {next?.title ?? "Has terminado tus rutinas de hoy"}
-          </h2>
+          <p className="kl-card-label">RESUMEN DE IMPACTO</p>
+          <h2 id="progreso-hoy">Tu bienestar general de hoy</h2>
           <p>
-            {next?.detail ??
-              "Puedes revisar tus registros o crear una nueva rutina cuando quieras."}
+            {impactSteps
+              ? `${Math.round((impactSteps / 5) * 100)}% de esta prueba completado.`
+              : "Calculando conforme anotas tus datos de ejemplo."}
           </p>
         </div>
-        {next ? (
+        <ProgressRing completed={impactSteps} total={5} />
+      </KurevaCard>
+
+      <section aria-labelledby="constantes-title">
+        <div className="kl-inline-heading">
+          <div>
+            <p className="kl-eyebrow">MIS CONSTANTES VITALES</p>
+            <h2 id="constantes-title">Registro de hoy</h2>
+          </div>
+          <span>
+            {capturedConstants} de {DAILY_CONSTANTS.length}
+          </span>
+        </div>
+        <div className="kl-vitals-list">
+          {DAILY_CONSTANTS.map(item => {
+            const latest = state.records.find(
+              record => record.kind === item.kind
+            );
+            return (
+              <div key={item.kind} className="kl-vital-row">
+                <span className="kl-vital-row__icon" aria-hidden="true">
+                  {item.kind === "tension" || item.kind === "ritmo-cardiaco" ? (
+                    <HeartPulse size={18} />
+                  ) : item.kind === "temperatura" ? (
+                    <Thermometer size={18} />
+                  ) : (
+                    <Activity size={18} />
+                  )}
+                </span>
+                <div>
+                  <strong>{item.label}</strong>
+                  <small>{latest?.value || item.hint}</small>
+                </div>
+                <button
+                  type="button"
+                  className="kl-vital-row__action"
+                  onClick={() => {
+                    setActiveConstant(item.kind);
+                    setDraftValue(latest?.value || "");
+                  }}
+                >
+                  <Plus size={15} aria-hidden="true" />{" "}
+                  {latest ? "Editar" : item.action}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+        {activeDefinition ? (
+          <KurevaCard className="kl-quick-entry" labelledBy="dato-rapido-title">
+            <h3 id="dato-rapido-title">{activeDefinition.label}</h3>
+            <label className="kl-field">
+              <span>Dato de prueba</span>
+              <input
+                value={draftValue}
+                onChange={event => setDraftValue(event.target.value)}
+                placeholder={activeDefinition.hint}
+                autoFocus
+              />
+            </label>
+            <div className="kl-action-row">
+              <KurevaButton
+                type="button"
+                variant="quiet"
+                onClick={() => setActiveConstant(null)}
+              >
+                Cancelar
+              </KurevaButton>
+              <KurevaButton
+                type="button"
+                variant="accent"
+                onClick={() =>
+                  addQuickRecord(activeDefinition.kind, draftValue)
+                }
+              >
+                Guardar en la prueba
+              </KurevaButton>
+            </div>
+          </KurevaCard>
+        ) : null}
+      </section>
+
+      <section aria-labelledby="antecedentes-title">
+        <div className="kl-inline-heading">
+          <div>
+            <p className="kl-eyebrow">DIAGNÓSTICOS Y ANTECEDENTES</p>
+            <h2 id="antecedentes-title">
+              ¿Tienes algún diagnóstico o cirugía previa?
+            </h2>
+          </div>
+        </div>
+        <KurevaCard className="kl-history-card">
+          <div className="kl-history-options">
+            {HISTORY_OPTIONS.map(option => (
+              <button
+                key={option}
+                type="button"
+                className={historyOption === option ? "is-active" : ""}
+                onClick={() => setHistoryOption(option)}
+                aria-pressed={historyOption === option}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+          <KurevaButton type="button" variant="secondary" onClick={addHistory}>
+            <Plus size={18} aria-hidden="true" /> Añadir diagnóstico
+          </KurevaButton>
+          <p className="kl-notice">
+            Recuerda que esto es un simulacro interactivo para comprobar cómo
+            Kureva estructuraría tu historial médico.
+          </p>
+        </KurevaCard>
+      </section>
+
+      <section aria-labelledby="bienestar-title">
+        <div className="kl-inline-heading">
+          <div>
+            <p className="kl-eyebrow">NUTRICIÓN Y BIENESTAR DIARIO</p>
+            <h2 id="bienestar-title">Agua y alimentación</h2>
+          </div>
+        </div>
+        <KurevaCard className="kl-wellbeing-card">
+          <div className="kl-water-quick">
+            <span className="kl-mini-icon" aria-hidden="true">
+              <GlassWater size={18} />
+            </span>
+            <div>
+              <strong>Vasos de agua</strong>
+              <small>
+                {state.hydration.completed} / {state.hydration.glasses}
+              </small>
+            </div>
+            <div className="kl-water-quick__controls">
+              <button
+                type="button"
+                aria-label="Quitar vaso"
+                onClick={() =>
+                  onUpdateHydration({
+                    ...state.hydration,
+                    completed: Math.max(0, state.hydration.completed - 1),
+                  })
+                }
+              >
+                −
+              </button>
+              <button
+                type="button"
+                aria-label="Añadir vaso"
+                onClick={() =>
+                  onUpdateHydration({
+                    ...state.hydration,
+                    completed: Math.min(
+                      state.hydration.glasses,
+                      state.hydration.completed + 1
+                    ),
+                  })
+                }
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <label className="kl-field">
+            <span>Registro de comidas</span>
+            <input
+              value={meal}
+              onChange={event => setMeal(event.target.value)}
+              placeholder="Desde tu desayuno hasta la cena"
+            />
+          </label>
+          <KurevaButton
+            type="button"
+            variant="secondary"
+            onClick={() => addQuickRecord("alimentacion", meal)}
+          >
+            <Apple size={18} aria-hidden="true" /> Registrar alimento
+          </KurevaButton>
+          <p className="kl-notice">
+            Este registro solo se incluye en tu PDF local si decides anotarlo.
+            Kureva no interpreta tu alimentación.
+          </p>
+        </KurevaCard>
+      </section>
+
+      <section aria-labelledby="agenda-title">
+        <div className="kl-inline-heading">
+          <div>
+            <p className="kl-eyebrow">PLANIFICACIÓN Y AGENDA MÉDICA</p>
+            <h2 id="agenda-title">Organiza recordatorios</h2>
+          </div>
+        </div>
+        <KurevaCard className="kl-agenda-card">
+          <div>
+            <strong>Alertas de medicación</strong>
+            <p>Activa una toma visual de prueba por hora y día.</p>
+          </div>
           <KurevaButton
             type="button"
             variant="accent"
-            onClick={() => onToggleRoutine(next.id)}
+            onClick={() => {
+              onAddReminder({
+                id: createLocalId("aviso"),
+                title: "Toma de medicación de prueba",
+                time: "09:00",
+                frequency: "Cada día",
+                visual: true,
+                completed: false,
+                createdAt: new Date().toISOString(),
+              });
+              setNotice(
+                "Alerta visual de prueba añadida. No envía notificaciones reales."
+              );
+            }}
           >
-            Hecho <Check size={18} aria-hidden="true" />
+            <Bell size={18} aria-hidden="true" /> Activar tomas del día
           </KurevaButton>
-        ) : null}
-      </KurevaCard>
+          <div className="kl-appointment-preview">
+            <CalendarDays size={18} aria-hidden="true" />
+            <span>
+              <strong>Próxima cita médica</strong>
+              <small>Especialidad · Fecha · Hora · Lugar</small>
+            </span>
+          </div>
+        </KurevaCard>
+      </section>
 
       <section aria-labelledby="rutinas-de-hoy">
         <div className="kl-inline-heading">
           <div>
-            <p className="kl-eyebrow">RUTINAS</p>
-            <h2 id="rutinas-de-hoy">Hoy</h2>
+            <p className="kl-eyebrow">HÁBITOS</p>
+            <h2 id="rutinas-de-hoy">Pequeños pasos</h2>
           </div>
           <span>
             {completed} de {state.routines.length}
@@ -149,23 +481,18 @@ export function TodayScreen({
         </div>
       </section>
 
-      <KurevaCard className="kl-local-card" labelledBy="estado-local">
-        <LocalStatus state="Solo esta sesión" />
-        <div>
-          <h2 id="estado-local">
-            Tus registros de prueba están disponibles durante esta sesión.
-          </h2>
-          <p>No se crea una cuenta, no se envían datos y se eliminan al recargar.</p>
-        </div>
-      </KurevaCard>
-
+      {notice ? (
+        <p className="kl-inline-status" role="status" aria-live="polite">
+          {notice}
+        </p>
+      ) : null}
       <KurevaButton
         type="button"
         variant="primary"
         className="kl-full-action"
         onClick={onOpenRegister}
       >
-        <Plus size={19} aria-hidden="true" /> Registrar un paso
+        <Plus size={19} aria-hidden="true" /> Abrir registro detallado
       </KurevaButton>
     </div>
   );
@@ -287,7 +614,9 @@ export function RegisterScreen({
     setNote("");
     setAttachments([]);
     setUsedDictation(false);
-    setRecordMessage("Registro añadido a esta prueba. Lo verás en Informes mientras la sesión siga abierta.");
+    setRecordMessage(
+      "Registro añadido a esta prueba. Lo verás en Informes mientras la sesión siga abierta."
+    );
   };
 
   const saveReminder = () => {
@@ -401,8 +730,8 @@ export function RegisterScreen({
             <div>
               <strong>Foto, captura, PDF o archivo</strong>
               <p>
-                La prueba solo muestra el nombre del archivo durante esta sesión.
-                No lo sube ni lo conserva en ningún servidor.
+                La prueba solo muestra el nombre del archivo durante esta
+                sesión. No lo sube ni lo conserva en ningún servidor.
               </p>
             </div>
             <input
@@ -715,11 +1044,20 @@ export function HydrationPanel({
 export function ReportsScreen({
   state,
   onOpenRegister,
+  onAddRecord,
 }: {
   state: KurevaLifeState;
   onOpenRegister: () => void;
+  onAddRecord: (record: RecordEntry) => void;
 }) {
   const [status, setStatus] = useState("");
+  const [analysisMode, setAnalysisMode] = useState<
+    "imagen" | "analisis" | "revision"
+  >("imagen");
+  const analysisFileRef = useRef<HTMLInputElement>(null);
+  const analysisCount = state.records.filter(
+    record => record.kind === "analitica"
+  ).length;
   const recordGroups = useMemo(() => {
     return RECORD_OPTIONS.map(option => ({
       ...option,
@@ -836,9 +1174,149 @@ export function ReportsScreen({
     <div className="kl-screen-stack">
       <SectionHeading
         eyebrow="INFORMES"
-        title="Tu información, más clara."
-        description="Un resumen local para revisar con calma o preparar una conversación."
+        title="Analíticas e informes"
+        description="Una vista de prueba para organizar documentos y preparar conversaciones."
       />
+      <section aria-labelledby="analiticas-title">
+        <div
+          className="kl-segmented"
+          role="tablist"
+          aria-label="Analíticas e informes"
+        >
+          {[
+            ["imagen", "Imagen"],
+            ["analisis", "Análisis"],
+            ["revision", "Revisión"],
+          ].map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={analysisMode === id}
+              className={analysisMode === id ? "is-active" : ""}
+              onClick={() => setAnalysisMode(id as typeof analysisMode)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <KurevaCard className="kl-analysis-card" labelledBy="analiticas-title">
+          {analysisMode === "imagen" ? (
+            <>
+              <div className="kl-card-heading">
+                <div className="kl-mini-icon" aria-hidden="true">
+                  <ImageUp size={18} />
+                </div>
+                <div>
+                  <h2 id="analiticas-title">Subir foto o analítica</h2>
+                  <p>
+                    Selecciona una imagen o archivo solo para simular el
+                    recorrido.
+                  </p>
+                </div>
+              </div>
+              <input
+                ref={analysisFileRef}
+                type="file"
+                className="kl-visually-hidden"
+                accept="image/*,.pdf"
+                onChange={event => {
+                  const file = event.target.files?.[0];
+                  if (!file) return;
+                  onAddRecord({
+                    id: createLocalId("analitica"),
+                    kind: "analitica",
+                    value: file.name,
+                    note: "Analítica adjunta solo en esta sesión; no se procesa ni se sube.",
+                    createdAt: new Date().toISOString(),
+                    source: "archivo",
+                    attachments: [
+                      {
+                        id: createLocalId("archivo"),
+                        name: file.name,
+                        type: file.type || "archivo",
+                        size: file.size,
+                      },
+                    ],
+                  });
+                  setStatus(
+                    "Archivo añadido a la demostración local. No se ha analizado ni enviado."
+                  );
+                  event.currentTarget.value = "";
+                }}
+              />
+              <KurevaButton
+                type="button"
+                variant="primary"
+                className="kl-full-action"
+                onClick={() => analysisFileRef.current?.click()}
+              >
+                <ImageUp size={18} aria-hidden="true" /> Seleccionar imagen /
+                subir analítica
+              </KurevaButton>
+            </>
+          ) : null}
+          {analysisMode === "analisis" ? (
+            <>
+              <div className="kl-card-heading">
+                <div className="kl-mini-icon" aria-hidden="true">
+                  <Activity size={18} />
+                </div>
+                <div>
+                  <h2 id="analiticas-title">
+                    ¿Qué haría Kivi con tus analíticas?
+                  </h2>
+                  <p>
+                    La versión online podrá organizar valores que decidas
+                    aportar, como glucosa, colesterol y triglicéridos.
+                  </p>
+                </div>
+              </div>
+              <ul className="kl-analysis-list">
+                <li>Valores que la persona usuaria decida registrar.</li>
+                <li>
+                  Rangos de referencia presentados con fuentes y contexto.
+                </li>
+                <li>
+                  Comparación visual solo cuando haya suficientes registros.
+                </li>
+              </ul>
+              <p className="kl-notice">
+                Este simulacro no lee imágenes, no extrae resultados ni
+                interpreta analíticas reales.
+              </p>
+            </>
+          ) : null}
+          {analysisMode === "revision" ? (
+            <>
+              <div className="kl-card-heading">
+                <div className="kl-mini-icon" aria-hidden="true">
+                  <ClipboardList size={18} />
+                </div>
+                <div>
+                  <h2 id="analiticas-title">Análisis evolutivo de prueba</h2>
+                  <p>
+                    {analysisCount > 2
+                      ? "La demostración tiene tres o más documentos locales; la versión conectada podría mostrar una comparación visual."
+                      : "Añade más de dos documentos de prueba para ver cómo se habilitaría una comparación visual en la versión conectada."}
+                  </p>
+                </div>
+              </div>
+              <div
+                className="kl-analysis-progress"
+                aria-label={`${analysisCount} de 3 analíticas de prueba`}
+              >
+                <span
+                  style={{
+                    width: `${Math.min(100, (analysisCount / 3) * 100)}%`,
+                  }}
+                />
+                <strong>{analysisCount} de 3 documentos de prueba</strong>
+              </div>
+            </>
+          ) : null}
+        </KurevaCard>
+      </section>
       <KurevaCard className="kl-report-summary" labelledBy="resumen-local">
         <div>
           <p className="kl-card-label">RESUMEN</p>
@@ -1188,7 +1666,7 @@ export function KiviPanel({
   const panelRef = useRef<HTMLElement>(null);
   const [message, setMessage] = useState("");
   const [reply, setReply] = useState(
-    "Elige una opción o escribe una pregunta. Puedo ayudarte a ordenar, no a diagnosticar."
+    "Hola, soy Kivi. Puedo ayudarte a organizar tus datos, entender cómo funciona este simulacro y explicar términos médicos de forma general. Recuerda: no puedo diagnosticarte."
   );
   useEffect(() => {
     if (panelRef.current) {
@@ -1198,17 +1676,29 @@ export function KiviPanel({
   }, []);
   const respond = (prompt: string) => {
     setMessage(prompt);
-    const nextReply = prompt.toLowerCase().includes("consejo")
-      ? `El mejor consejo de bienestar es el que se adapta a tu realidad hoy, ${state.preferences.displayName || "amiga"}. No necesitas rutinas imposibles de internet. Si hoy lograste tomarte tu medicación a tiempo o registrar tu tensión, ya es una victoria. Vamos un día a la vez.`
-      : prompt.toLowerCase().includes("consulta")
-      ? "Puedes seleccionar preguntas habituales desde Perfil y generar un resumen solo durante esta prueba desde Informes."
-      : prompt.toLowerCase().includes("registro")
-        ? state.records.length
-          ? `Tienes ${state.records.length} registro(s) en esta sesión. Puedes verlos en Informes.`
-          : "Aún no has añadido registros en esta sesión. Puedes crear el primero desde Registrar."
-        : prompt.toLowerCase().includes("rutina")
-          ? "En Hoy puedes marcar las rutinas una a una. El progreso permanece disponible mientras esta prueba está abierta."
-          : "No interpreto datos ni sustituyo a un profesional sanitario. Puedo ayudarte a encontrar una sección de KurevaLife o a ordenar tu información.";
+    const normalized = prompt.toLowerCase();
+    const nextReply =
+      normalized.includes("alimentación") || normalized.includes("como")
+        ? "Este registro te permite construir una bitácora limpia de tu alimentación mensual. Su fin es que puedas incluir lo que decidas anotar en tu informe PDF local y comentarlo con tu especialista en la próxima cita. Kureva no evalúa ni interpreta tu dieta."
+        : normalized.includes("analítica") || normalized.includes("foto")
+          ? "En la versión online, el sistema podrá ayudarte a organizar valores que decidas aportar, como glucosa, colesterol o triglicéridos, junto con sus rangos de referencia. Este simulacro no lee imágenes ni analiza resultados reales."
+          : normalized.includes("medicación") || normalized.includes("hora")
+            ? "Las alertas visuales de prueba te ayudan a organizar una pauta que ya te haya indicado un profesional. En la app online, cualquier recordatorio por hora y día requerirá tu permiso explícito. Kureva no cambia tratamientos ni confirma adherencia clínica."
+            : normalized.includes("médico") ||
+                normalized.includes("diagnosticar")
+              ? "Kureva es una herramienta de organización y registro personal, no de diagnóstico. Su objetivo es ayudarte a preparar información para que la revises con tu especialista; no sustituye una consulta ni interpreta tus datos clínicamente."
+              : normalized.includes("comunidad")
+                ? "La Comunidad es una propuesta futura para compartir experiencias de bienestar con empatía y respeto. No está activa en este simulacro ni se publican mensajes, fotos o datos de salud reales."
+                : normalized.includes("estacional") ||
+                    normalized.includes("temporada")
+                  ? "El bloque de alimentación estacional es una propuesta informativa futura. Podrá orientar hacia alimentos de temporada con fuentes públicas, pero no sustituirá recomendaciones nutricionales personalizadas."
+                  : normalized.includes("consejo")
+                    ? `El mejor consejo de bienestar es el que se adapta a tu realidad hoy, ${state.preferences.displayName || "amiga"}. No necesitas rutinas imposibles de internet. Si hoy lograste tomarte tu medicación a tiempo o registrar tu tensión, ya es una victoria. Vamos un día a la vez.`
+                    : normalized.includes("registro")
+                      ? state.records.length
+                        ? `Tienes ${state.records.length} registro(s) en esta sesión. Puedes verlos en Informes.`
+                        : "Aún no has añadido registros en esta sesión. Puedes crear el primero desde Hoy o Registrar."
+                      : "No interpreto datos ni sustituyo a un profesional sanitario. Puedo ayudarte a encontrar una sección de KurevaLife o a ordenar la información de este simulacro.";
     setReply(nextReply);
     onAnnounce(`Kivi responde: ${nextReply}`);
   };
@@ -1222,7 +1712,7 @@ export function KiviPanel({
       <div className="kl-kivi-panel__header">
         <div>
           <p className="kl-eyebrow">KIVI</p>
-          <h2 id="kivi-title">Asistente de organización</h2>
+          <h2 id="kivi-title">Chat con Kivi</h2>
         </div>
         <button type="button" aria-label="Cerrar Kivi" onClick={onClose}>
           ×
@@ -1233,11 +1723,12 @@ export function KiviPanel({
       </p>
       <div className="kl-kivi-options">
         {[
-          "Preparar mi consulta",
-          "Revisar un registro",
-          "Organizar mis rutinas",
-          "Ver consejos de bienestar",
-          "Resolver una duda",
+          "¿Para qué sirve registrar lo que como desde el desayuno hasta la cena?",
+          "¿Qué detecta Kureva si subo la foto de una analítica?",
+          "¿Cómo me ayudan las alertas de medicación por hora y día?",
+          "¿Por qué Kureva insiste en que no es mi médico?",
+          "¿Qué puedo hacer en la sección de Comunidad?",
+          "¿Cómo funciona el bloque de alimentación estacional?",
         ].map(option => (
           <button
             key={option}

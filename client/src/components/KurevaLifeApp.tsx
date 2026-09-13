@@ -122,6 +122,21 @@ export function KurevaLifeApp() {
             }))
           }
           onOpenRegister={() => setActiveTab("registrar")}
+          onAddRecord={record =>
+            setState(current => ({
+              ...current,
+              records: [record, ...current.records],
+            }))
+          }
+          onAddReminder={reminder =>
+            setState(current => ({
+              ...current,
+              reminders: [reminder, ...current.reminders],
+            }))
+          }
+          onUpdateHydration={hydration =>
+            setState(current => ({ ...current, hydration }))
+          }
         />
       );
     if (activeTab === "registrar")
@@ -152,6 +167,12 @@ export function KurevaLifeApp() {
         <ReportsScreen
           state={state}
           onOpenRegister={() => setActiveTab("registrar")}
+          onAddRecord={record =>
+            setState(current => ({
+              ...current,
+              records: [record, ...current.records],
+            }))
+          }
         />
       );
     return (

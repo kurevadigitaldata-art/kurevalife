@@ -65,6 +65,14 @@ async def run():
             await page.get_by_role("button", name="Finalizar").click()
             nav_labels = await page.locator(".kl-bottom-nav__item").all_inner_texts()
             assert nav_labels == ["Hoy", "Registrar", "Informes", "Perfil"], nav_labels
+            assert await page.locator(".kl-vital-row").count() == 7
+            await page.get_by_role("button", name="Informes").click()
+            await page.get_by_role("tab", name="Revisión").click()
+            assert "Análisis evolutivo de prueba" in await page.locator("body").inner_text()
+            await page.get_by_role("button", name="Abrir Kivi, asistente de organización").click()
+            assert await page.get_by_role(
+                "button", name="¿Qué detecta Kureva si subo la foto de una analítica?"
+            ).count() == 1
             await assert_no_horizontal_overflow(page, f"simulacro-{name}")
             await page.screenshot(path=str(OUT / f"simulacro-{name}.png"), full_page=True)
             assert not errors, (name, errors)
