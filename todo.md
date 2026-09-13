@@ -6,6 +6,9 @@ El proyecto canónico activo es **`/home/ubuntu/workspaces/kurevalife`** y corre
 
 ## Cambios de esta iteración
 
+- [x] Corregir enlaces internos y rutas directas de GitHub Pages bajo `/kurevalife`, incluidos recursos, calculadora y simulacro, sin afirmar que las URLs raíz externas al proyecto estén controladas por este repositorio.
+- [x] Convertir la landing en una presentación pública centrada en Kureva, su origen, propuesta de valor y mentoría para emprendedores y microempresas; retirar paleta, manual, merchandising y demás detalles internos.
+- [x] Verificar en móvil, tableta y escritorio la navegación, rutas públicas y rotación continua de la K, respetando movimiento reducido y sin prometer una web imposible de rastrear o hackear.
 - [x] Sustituir en la landing la lámina ilustrativa de UI basada en el ejemplo externo por la portada y la K oficiales de KurevaLife, sin trasladar sus patrones de escritorio a la navegación funcional mobile-first de KurevaLife. La K rota de forma continua —sin pulso ni rebote— en landing y simulacro, con respeto a `prefers-reduced-motion`.
 - [x] Sustituir la entrada pasiva por un registro de simulación con nombre, apellidos, correo, contraseña de prueba, identidad opcional y consentimiento local.
 - [x] Añadir recorrido de tres pasos: registro ficticio, selección de necesidades y bienvenida personalizada de cinco minutos.

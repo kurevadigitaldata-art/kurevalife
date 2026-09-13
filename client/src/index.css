@@ -284,6 +284,7 @@
     border: 1px solid rgba(217, 255, 43, 0.68);
     border-radius: 999px;
     animation: kl-rotate 10s linear infinite;
+    will-change: transform;
   }
   .kl-mark__image {
     position: relative;
@@ -291,6 +292,7 @@
     height: 78%;
     object-fit: contain;
     animation: kl-rotate 10s linear infinite;
+    will-change: transform;
   }
   .kl-brand-signature {
     display: inline-flex;
@@ -743,10 +745,13 @@
 /* Official K movement: continuous rotation only; never pulse, breathe, or bounce. */
 .kureva-k-rotate {
   animation: kl-rotate 10s linear infinite;
+  transform-origin: center;
+  will-change: transform;
 }
 
 .kureva-k-orbit {
   animation: kl-rotate 10s linear infinite;
+  will-change: transform;
 }
 
 @media (min-width: 680px) {

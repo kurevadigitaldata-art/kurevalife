@@ -2,32 +2,19 @@ import React, { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { DiagnosticModal } from "@/components/DiagnosticModal";
 import { FounderStory } from "@/components/FounderStory";
-import { TransitionCases } from "@/components/TransitionCases";
+import { publicPath } from "@/lib/publicPath";
 import {
   ArrowRight,
-  Shield,
   Layers,
   Sparkles,
   Cpu,
-  Compass,
-  Code2,
-  Lock,
   Workflow,
   CheckCircle,
-  HelpCircle,
-  ChevronRight,
-  ExternalLink,
   Laptop,
   BookOpen,
-  Shirt,
-  ShoppingBag,
-  Package,
-  Terminal,
-  Download,
   Zap,
   Check,
   Send,
-  Users
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -67,18 +54,18 @@ export default function Home() {
             <div className="lg:col-span-7 space-y-6">
               <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0F3A2D]/8 border border-[#0F3A2D]/15 text-[#0F3A2D] text-xs font-semibold tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-[#D9FF2B] animate-pulse" />
-                <span>Agencia y escuela de autonomía digital</span>
+                <span>Mentoría y estrategia para negocios reales</span>
               </div>
 
               <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-[#0F3A2D] tracking-tight leading-[1.08]">
-                Lo digital, <br />
+                El marketing digital no tiene <br />
                 <span className="text-[#0F3A2D] underline decoration-[#D9FF2B] decoration-wavy decoration-2">
-                  en tus manos.
+                  una receta única.
                 </span>
               </h1>
 
               <p className="text-lg sm:text-xl text-[#5E806E] max-w-2xl font-normal leading-relaxed">
-                Ayudamos a emprendedores, fundadores y equipos a comprender, construir y sostener sus propios sistemas digitales. <strong>Sin cajas negras. Sin rehenes técnicos. Con autonomía real.</strong>
+                Ayudamos a emprendedores y microempresas a entender qué necesitan, qué deben pedir y en qué merece la pena invertir. <strong>Menos publicaciones vacías. Más estrategia, criterio y autonomía.</strong>
               </p>
 
               {/* CTAs */}
@@ -91,26 +78,26 @@ export default function Home() {
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <a
-                  href="#metodo"
+                  href={publicPath("#metodo")}
                   className="kureva-btn-secondary"
                 >
-                  <span>Ver nuestro método</span>
+                  <span>Conocer cómo trabajamos</span>
                 </a>
               </div>
 
               {/* Trust badges */}
               <div className="pt-6 border-t border-[#DCD4C4] grid grid-cols-3 gap-6 max-w-lg">
                 <div>
-                  <div className="font-display font-bold text-2xl text-[#0F3A2D]">100%</div>
-                  <div className="text-xs text-[#5E806E] font-medium leading-tight">Código y cuentas de tu propiedad</div>
+                  <div className="font-display font-bold text-2xl text-[#0F3A2D]">1:1</div>
+                  <div className="text-xs text-[#5E806E] font-medium leading-tight">Mentoría adaptada a tu negocio</div>
                 </div>
                 <div>
                   <div className="font-display font-bold text-2xl text-[#0F3A2D]">0</div>
-                  <div className="text-xs text-[#5E806E] font-medium leading-tight">Dependencias sanitarias o clínicas</div>
+                  <div className="text-xs text-[#5E806E] font-medium leading-tight">Packs genéricos sin contexto</div>
                 </div>
                 <div>
-                  <div className="font-display font-bold text-2xl text-[#0F3A2D]">3x</div>
-                  <div className="text-xs text-[#5E806E] font-medium leading-tight">Mayor velocidad de iteración propia</div>
+                  <div className="font-display font-bold text-2xl text-[#0F3A2D]">4</div>
+                  <div className="text-xs text-[#5E806E] font-medium leading-tight">Perspectivas de experiencia real</div>
                 </div>
               </div>
             </div>
@@ -124,9 +111,9 @@ export default function Home() {
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-[#D9FF2B]" />
-                    <span className="text-xs font-mono tracking-widest uppercase opacity-75">SISTEMA K FLUIDA</span>
+                    <span className="text-xs font-mono tracking-widest uppercase opacity-75">KUREVA · DESDE EL CAMINO</span>
                   </div>
-                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-white/10 text-white/90">v1.0 ACTIVA</span>
+                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-white/10 text-white/90">ESTRATEGIA REAL</span>
                 </div>
 
                 {/* Big Master K Icon */}
@@ -145,27 +132,27 @@ export default function Home() {
 
                 <div className="space-y-3 bg-[#09241B]/80 rounded-2xl p-4 border border-white/5 text-xs">
                   <div className="flex justify-between items-center text-white/60">
-                    <span>Base:</span>
-                    <strong className="text-white font-medium">San Miguel de Salinas</strong>
+                    <span>Para:</span>
+                    <strong className="text-white font-medium">Emprendedores y microempresas</strong>
                   </div>
                   <div className="flex justify-between items-center text-white/60">
-                    <span>Ecosistema:</span>
-                    <strong className="text-[#D9FF2B] font-medium">KurevaLife · App digital</strong>
+                    <span>Partimos de:</span>
+                    <strong className="text-[#D9FF2B] font-medium">Escucha y contexto</strong>
                   </div>
                   <div className="flex justify-between items-center text-white/60">
-                    <span>Arquitectura de valor:</span>
-                    <strong className="text-white font-medium">Autonomía &amp; Mentoría</strong>
+                    <span>Buscamos:</span>
+                    <strong className="text-white font-medium">Decisiones con criterio</strong>
                   </div>
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-white/70">
                   <span className="flex items-center gap-1.5">
                     <Check className="w-3.5 h-3.5 text-[#D9FF2B]" />
-                    Verde bosque dominante
+                    Tu negocio antes que una plantilla
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Check className="w-3.5 h-3.5 text-[#D9FF2B]" />
-                    Sin fondo negro
+                    Acompañamiento sin humo
                   </span>
                 </div>
               </div>
@@ -180,12 +167,12 @@ export default function Home() {
       <section id="manifiesto" className="py-20 md:py-28 bg-[#FFFDF8] border-b border-[#DCD4C4]">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-16">
-            <span className="kureva-badge">El Manifiesto de Autonomía</span>
+            <span className="kureva-badge">El Manifiesto desde el Camino</span>
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#0F3A2D]">
-              La tecnología debe liberarte, no atarte a un contrato eterno
+              Marketing real para negocios reales
             </h2>
             <p className="text-[#5E806E] text-base sm:text-lg">
-              Durante años, las agencias tradicionales han construido muros de complejidad para mantener a sus clientes cautivos. Kureva nació para demoler ese modelo.
+              Kureva nace de haber estado en los cuatro lados del escritorio: como emprendedora, empleada, cliente y especialista. No vendemos una receta idéntica para todos; ayudamos a entender cada negocio antes de proponer una herramienta o una campaña.
             </p>
           </div>
 
@@ -195,10 +182,10 @@ export default function Home() {
                 01
               </div>
               <h3 className="font-display font-bold text-xl text-[#0F3A2D]">
-                Propiedad desde el minuto uno
+                Estrategia antes que cámara
               </h3>
               <p className="text-sm text-[#5E806E] leading-relaxed">
-                Tus repositorios de código, tus cuentas de DNS, tus bases de datos y tus claves API pertenecen a tu empresa. Si mañana decides prescindir de nosotros, tu negocio no se detiene ni un segundo.
+                Tu marca no necesita hacer ruido para tener valor. Necesita escucha, contexto y una estrategia que sepa qué objetivo comercial debe sostener cada acción.
               </p>
             </div>
 
@@ -207,10 +194,10 @@ export default function Home() {
                 02
               </div>
               <h3 className="font-display font-bold text-xl text-[#0F3A2D]">
-                Aprender mientras se construye
+                Especialistas, no un todólogo
               </h3>
               <p className="text-sm text-[#5E806E] leading-relaxed">
-                No te entregamos un entregable ciego. Cada solución incluye sesiones de transferencia técnica donde te enseñamos a ti y a tu equipo a modificar, iterar y gobernar la herramienta creada.
+                Crear contenido, diseñar, programar, vender y pautar son trabajos distintos. Te ayudamos a elegir y coordinar a las personas adecuadas, sin pedirle a una sola figura que haga todo.
               </p>
             </div>
 
@@ -219,10 +206,10 @@ export default function Home() {
                 03
               </div>
               <h3 className="font-display font-bold text-xl text-[#0F3A2D]">
-                Arquitectura limpia y abierta
+                Autonomía para quien decide
               </h3>
               <p className="text-sm text-[#5E806E] leading-relaxed">
-                Usamos estándares modernos, código documentado y servicios desacoplados. Nada de frameworks propietarios oscuros que solo un gurú pueda reparar.
+                No buscamos que dependas de Kureva para siempre. Queremos que comprendas lo que pagas, sepas qué exigir y puedas tomar decisiones sin que nadie te venda espejitos de colores.
               </p>
             </div>
           </div>
@@ -233,14 +220,14 @@ export default function Home() {
                 <Check className="w-5 h-5" />
               </div>
               <p className="text-sm md:text-base font-medium">
-                ¿Tienes dudas sobre si actualmente eres dueño de tus activos digitales? Realizamos una auditoría técnica en 48 horas.
+                ¿Sientes que inviertes en marketing sin saber qué te está dando resultado? Empezamos escuchando tu negocio y aclarando la siguiente decisión.
               </p>
             </div>
             <button
               onClick={() => setIsDiagnosticOpen(true)}
               className="kureva-btn-accent text-xs whitespace-nowrap"
             >
-              Solicitar revisión de activos
+              Solicitar sesión de diagnóstico
             </button>
           </div>
         </div>
@@ -255,13 +242,13 @@ export default function Home() {
         <div className="container">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div className="space-y-3">
-              <span className="kureva-badge">Servicios y Transferencia</span>
+              <span className="kureva-badge">Acompañamiento con criterio</span>
               <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#0F3A2D]">
-                Lo que hacemos y lo que te enseñamos a sostener
+                Lo que tu negocio necesita, no lo que vende un paquete
               </h2>
             </div>
             <p className="text-[#5E806E] max-w-md text-sm">
-              Modelos de trabajo flexibles: desde la conceptualización integral hasta mentorías individuales para líderes técnicos no programadores.
+              Mentoría, asesoría y decisiones digitales explicadas en lenguaje claro para emprendedores y microempresas.
             </p>
           </div>
 
@@ -273,28 +260,28 @@ export default function Home() {
                   <Laptop className="w-6 h-6" />
                 </div>
                 <h3 className="font-display font-bold text-xl text-[#0F3A2D]">
-                  Desarrollo de Aplicaciones &amp; Web
+                  Elegir la herramienta adecuada
                 </h3>
                 <p className="text-sm text-[#5E806E] leading-relaxed">
-                  Creamos landing pages de alta conversión, plataformas web progresivas (PWA) y portales de clientes rápidos, accesibles y listos para producción.
+                  Antes de invertir, aclaramos si necesitas una landing para una acción, una web institucional para dar credibilidad o una app para una operación recurrente.
                 </p>
                 <ul className="text-xs space-y-2 text-[#173A2E] pt-2">
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-[#0F3A2D]" />
-                    React, Next.js, Vite &amp; Tailwind
+                    Landing: validar o convertir una acción concreta
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-[#0F3A2D]" />
-                    Despliegue sin costes ocultos en Cloudflare / Vercel
+                    Web: explicar, posicionar y dar confianza
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-[#0F3A2D]" />
-                    Accesibilidad WCAG AA verificada
+                    App: resolver un proceso que se usa a menudo
                   </li>
                 </ul>
               </div>
               <div className="pt-4 border-t border-[#DCD4C4]/60">
-                <span className="text-xs font-semibold text-[#0F3A2D]">Entregable: Código abierto + Guía de despliegue</span>
+                <span className="text-xs font-semibold text-[#0F3A2D]">Resultado: una decisión que entiendes antes de contratar</span>
               </div>
             </div>
 
@@ -305,28 +292,28 @@ export default function Home() {
                   <BookOpen className="w-6 h-6" />
                 </div>
                 <h3 className="font-display font-bold text-xl text-[#0F3A2D]">
-                  KurevaMentoría: Sesiones de Autonomía
+                  Mentoría estratégica 1 a 1
                 </h3>
                 <p className="text-sm text-[#5E806E] leading-relaxed">
-                  Acompañamiento 1 a 1 para fundadores y emprendedores. Te enseñamos a auditar a proveedores, tomar decisiones técnicas y usar IA con criterio propio.
+                  Sesiones para traducir tus objetivos a prioridades reales: qué comunicar, qué medir, qué delegar y cuándo no necesitas gastar más.
                 </p>
                 <ul className="text-xs space-y-2 text-[#173A2E] pt-2">
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-[#0F3A2D]" />
-                    Auditoría de presupuestos ajenos
+                    Lectura crítica de presupuestos y propuestas
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-[#0F3A2D]" />
-                    Entrenamiento en herramientas no-code/low-code
+                    Criterio para contratar y pedir resultados
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-[#0F3A2D]" />
-                    Documentación de procesos internos
+                    Plan de acción adaptado a tu rubro
                   </li>
                 </ul>
               </div>
               <div className="pt-4 border-t border-[#DCD4C4]/60">
-                <span className="text-xs font-semibold text-[#0F3A2D]">Modalidad: 4 sesiones intensivas + soporte</span>
+                <span className="text-xs font-semibold text-[#0F3A2D]">Para: personas que necesitan claridad antes de ejecutar</span>
               </div>
             </div>
 
@@ -337,28 +324,28 @@ export default function Home() {
                   <Workflow className="w-6 h-6" />
                 </div>
                 <h3 className="font-display font-bold text-xl text-[#0F3A2D]">
-                  Diseño de Sistemas &amp; Identidad
+                  Asesoría estratégica de negocio
                 </h3>
                 <p className="text-sm text-[#5E806E] leading-relaxed">
-                  Construcción de sistemas de diseño coherentes, manuales imprimibles, tokens de marca y kits de merchandising aplicados con rigor técnico.
+                  Revisamos lo que está ocurriendo hoy en tu comunicación, tus procesos o tu equipo para encontrar la decisión que más puede mover el negocio.
                 </p>
                 <ul className="text-xs space-y-2 text-[#173A2E] pt-2">
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-[#0F3A2D]" />
-                    Tokens listos para código (JSON/CSS)
+                    Análisis de rubro, cliente y momento de negocio
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-[#0F3A2D]" />
-                    Manual vectorial de identidad en PDF
+                    Revisión de procesos y prioridades comerciales
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-[#0F3A2D]" />
-                    Directrices de merchandising ético
+                    Orientación para coordinar especialistas
                   </li>
                 </ul>
               </div>
               <div className="pt-4 border-t border-[#DCD4C4]/60">
-                <span className="text-xs font-semibold text-[#0F3A2D]">Entregable: Manual + Archivos SVG maestros</span>
+                <span className="text-xs font-semibold text-[#0F3A2D]">Sin plantillas: cada propuesta parte de tu contexto</span>
               </div>
             </div>
           </div>
@@ -373,10 +360,10 @@ export default function Home() {
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-16">
             <span className="kureva-badge">El Método Kureva</span>
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#0F3A2D]">
-              De la necesidad al control absoluto en 4 etapas
+              De la duda a una decisión clara en 4 etapas
             </h2>
             <p className="text-[#5E806E] text-base">
-              Un proceso estructurado para que cada línea de código y cada decisión de diseño quede plenamente asimilada por tu equipo.
+              Un proceso simple para convertir una preocupación concreta en una prioridad realista para tu negocio.
             </p>
           </div>
 
@@ -384,23 +371,23 @@ export default function Home() {
             {[
               {
                 step: "01",
-                title: "Diagnóstico & Arquitectura",
-                desc: "Revisamos tus herramientas actuales, eliminamos redundancias de costes y diseñamos la estructura más ligera posible.",
+                title: "Escucha y diagnóstico",
+                desc: "Entendemos el momento de tu negocio, el problema que quieres resolver y lo que ya has probado.",
               },
               {
                 step: "02",
-                title: "Construcción Transparente",
-                desc: "Desarrollamos con repositorios abiertos a tu vista, con código limpio y sin librerías cautivas.",
+                title: "Prioridades y estrategia",
+                desc: "Ordenamos objetivos, público, mensajes y herramientas para no gastar energía donde no toca.",
               },
               {
                 step: "03",
-                title: "Acompañamiento Práctico",
-                desc: "Te mostramos cómo opera cada componente mediante grabaciones cortas y sesiones de trabajo en vivo.",
+                title: "Plan de acción",
+                desc: "Traducimos la estrategia a próximos pasos, responsables y preguntas que debes llevar a tu equipo o proveedores.",
               },
               {
                 step: "04",
-                title: "Traspaso & Autonomía",
-                desc: "Recibes credenciales maestras, documentación y la certeza de que no necesitas depender de nosotros para seguir creciendo.",
+                title: "Acompañamiento con autonomía",
+                desc: "Te acompañamos a ejecutar, medir y ajustar sin crear dependencia ni esconder la información importante.",
               },
             ].map((item, idx) => (
               <div
@@ -422,8 +409,6 @@ export default function Home() {
         </div>
       </section>
 
-      <TransitionCases />
-
       {/* =========================================================================
           KUREVALIFE SECTION: The future product ecosystem (Clear distinction)
          ========================================================================= */}
@@ -434,7 +419,7 @@ export default function Home() {
             <div className="lg:col-span-6 space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0F3A2D] text-[#D9FF2B] text-xs font-semibold">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Producto digital Kureva</span>
+                <span>También creamos herramientas propias</span>
               </div>
 
               <div className="space-y-2">
@@ -451,7 +436,7 @@ export default function Home() {
                   </span>
                 </div>
                 <p className="text-xs font-mono uppercase tracking-wider text-[#5E806E]">
-                  SUBMARCA DIGITAL · SISTEMA MAESTRO K FLUIDA
+                  ORGANIZACIÓN PERSONAL · BETA DE PRUEBA
                 </p>
               </div>
 
@@ -492,7 +477,7 @@ export default function Home() {
 
               <div className="pt-4 flex items-center gap-4">
                 <a
-                  href="/kurevalife"
+                  href={publicPath("vida")}
                   className="kureva-btn-primary text-xs"
                 >
                   <span>Conocer la beta de KurevaLife</span>
@@ -532,186 +517,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* =========================================================================
-          BRAND IDENTITY & MANUAL SECTION (Document download and system info)
-         ========================================================================= */}
-      <section id="identidad" className="py-20 md:py-28 bg-[#FFFDF8] border-b border-[#DCD4C4]">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center space-y-4 mb-16">
-            <span className="kureva-badge">Sistema Maestro de Marca</span>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#0F3A2D]">
-              La K Fluida: geometría, color y directrices oficiales
-            </h2>
-            <p className="text-[#5E806E] text-base">
-              Todo el sistema gráfico de Kureva ha sido condensado en un manual imprimible de 22 páginas para asegurar coherencia en cualquier soporte físico o digital.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-16">
-            <div className="lg:col-span-7">
-              <div className="rounded-3xl overflow-hidden border border-[#DCD4C4] shadow-lg">
-                <img
-                  src="/manus-storage/kureva-k-fluida-brand-system_743efa9d.png"
-                  alt="Sistema de Identidad K Fluida"
-                  className="w-full h-auto object-cover"
-                />
-              </div>
-            </div>
-
-            <div className="lg:col-span-5 space-y-6">
-              <div className="space-y-4">
-                <h3 className="font-display font-bold text-2xl text-[#0F3A2D]">
-                  Manual de Identidad Oficial (v1.0)
-                </h3>
-                <p className="text-sm text-[#5E806E] leading-relaxed">
-                  Documento técnico e imprimible que define proporciones, área de protección, paleta cromática de alta fidelidad, normas de rotulación y casos de uso prohibidos.
-                </p>
-              </div>
-
-              {/* Palette tokens quick view */}
-              <div className="space-y-2">
-                <span className="text-xs font-mono font-bold uppercase text-[#0F3A2D]">Paleta oficial:</span>
-                <div className="grid grid-cols-4 gap-2 text-center text-[10px] font-mono">
-                  <div className="p-2.5 rounded-xl bg-[#0F3A2D] text-[#F5F1E7]">
-                    <strong>#0F3A2D</strong>
-                    <div className="text-[9px] opacity-80">Bosque</div>
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-[#F5F1E7] text-[#0F3A2D] border border-[#DCD4C4]">
-                    <strong>#F5F1E7</strong>
-                    <div className="text-[9px] text-[#5E806E]">Crema</div>
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-[#5E806E] text-[#F5F1E7]">
-                    <strong>#5E806E</strong>
-                    <div className="text-[9px] opacity-80">Musgo</div>
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-[#D9FF2B] text-[#0F3A2D]">
-                    <strong>#D9FF2B</strong>
-                    <div className="text-[9px] font-bold">Lima</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 rounded-xl bg-[#FAF7F0] border border-[#DCD4C4] space-y-2 text-xs">
-                <div className="flex items-center justify-between font-bold text-[#0F3A2D]">
-                  <span>Especificaciones técnicas</span>
-                  <span>22 páginas · PDF/X</span>
-                </div>
-                <p className="text-[#5E806E]">
-                  Tipografía: Noto Sans / Space Grotesk. Sin fondo negro. Aprobado para impresión offset y serigrafía.
-                </p>
-              </div>
-
-              <div className="pt-2 flex flex-col sm:flex-row gap-3">
-                <a
-                  href="/manus-storage/kureva-k-fluida-brand-system_743efa9d.png"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="kureva-btn-primary text-xs"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>Ver Lámina del Sistema</span>
-                </a>
-                <a
-                  href="/manus-storage/kureva-isotipo_24d6eb8a.svg"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="kureva-btn-secondary text-xs"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  <span>Descargar Isotipo SVG</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          MERCHANDISING SHOWCASE: Realistic mockups with ethical narrative
-         ========================================================================= */}
-      <section id="merchandising" className="py-20 md:py-28 border-b border-[#DCD4C4]">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center space-y-4 mb-16">
-            <span className="kureva-badge">Colección de Presencia</span>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-[#0F3A2D]">
-              Merchandising tangible para talleres y equipo
-            </h2>
-            <p className="text-[#5E806E] text-base">
-              Objetos sobrios y duraderos. La camiseta verde bosque marca el eje cromático de la colección, sin logos saturados ni estampas desechables.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Item 1: T-Shirt */}
-            <div className="bg-[#FFFDF8] rounded-2xl p-4 border border-[#DCD4C4] group hover:border-[#0F3A2D] transition-all">
-              <div className="rounded-xl overflow-hidden bg-[#FAF7F0] aspect-4/5 mb-4">
-                <img
-                  src="/manus-storage/kureva-tshirt_ae2f5beb.png"
-                  alt="Camiseta verde bosque Kureva"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <h4 className="font-display font-bold text-base text-[#0F3A2D]">
-                Camiseta Bosque Kureva
-              </h4>
-              <p className="text-xs text-[#5E806E] mt-1">
-                Algodón peinado 240g, serigrafía crema a 2 tintas con toque lima en pecho.
-              </p>
-            </div>
-
-            {/* Item 2: Tote */}
-            <div className="bg-[#FFFDF8] rounded-2xl p-4 border border-[#DCD4C4] group hover:border-[#0F3A2D] transition-all">
-              <div className="rounded-xl overflow-hidden bg-[#FAF7F0] aspect-4/5 mb-4">
-                <img
-                  src="/manus-storage/kureva-tote_bc7bcbb6.png"
-                  alt="Tote bag cruda Kureva"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <h4 className="font-display font-bold text-base text-[#0F3A2D]">
-                Tote Bag Algodón Crudo
-              </h4>
-              <p className="text-xs text-[#5E806E] mt-1">
-                Lona 320g, K fluida frontal en bosque y acento lima. Asas reforzadas.
-              </p>
-            </div>
-
-            {/* Item 3: Notebook */}
-            <div className="bg-[#FFFDF8] rounded-2xl p-4 border border-[#DCD4C4] group hover:border-[#0F3A2D] transition-all">
-              <div className="rounded-xl overflow-hidden bg-[#FAF7F0] aspect-4/5 mb-4">
-                <img
-                  src="/manus-storage/kureva-notebook_88463de6.png"
-                  alt="Libreta de trabajo A5 Kureva"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <h4 className="font-display font-bold text-base text-[#0F3A2D]">
-                Libreta de Trabajo A5
-              </h4>
-              <p className="text-xs text-[#5E806E] mt-1">
-                Cubierta rígida bosque mate, bajo relieve crema y elástico en crema natural.
-              </p>
-            </div>
-
-            {/* Item 4: Sleeve */}
-            <div className="bg-[#FFFDF8] rounded-2xl p-4 border border-[#DCD4C4] group hover:border-[#0F3A2D] transition-all">
-              <div className="rounded-xl overflow-hidden bg-[#FAF7F0] aspect-4/5 mb-4">
-                <img
-                  src="/manus-storage/kureva-laptop-sleeve_50416f9d.png"
-                  alt="Funda de portátil Kureva"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <h4 className="font-display font-bold text-base text-[#0F3A2D]">
-                Funda Laptop en Fieltro
-              </h4>
-              <p className="text-xs text-[#5E806E] mt-1">
-                Fieltro reciclado crema con ribete verde bosque y bordado de alta definición.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* =========================================================================
           FAQ SECTION: Answering common hesitations
@@ -728,20 +533,20 @@ export default function Home() {
           <div className="space-y-6">
             {[
               {
-                q: "¿Qué significa exactamente que 'lo digital queda en mis manos'?",
-                a: "Significa que todas las cuentas principales (hosting, dominios, repositorios de código, accesos a Stripe o CRM) se abren a nombre de tu sociedad desde el primer día. Nosotros trabajamos como colaboradores técnicos invitados. Si decides continuar con otro equipo o gestionarlo internamente, no tienes que pedirnos permiso ni pagar tarifas de liberación.",
+                q: "¿Me vas a hacer los flyers o las publicaciones de Instagram?",
+                a: "No trabajamos desde un paquete automático de publicaciones. Empezamos por la estrategia que necesita tu negocio y, si hay que producir contenido o coordinar a un equipo, te ayudamos a saber qué pedir y a quién delegarlo.",
               },
               {
-                q: "¿Por qué Kureva no es una marca médica ni de salud?",
-                a: "Porque creemos en la honestidad radical. Nuestra especialidad es la ingeniería de software, la accesibilidad y la pedagogía digital para emprendedores. KurevaLife será una herramienta de organización personal y citas, pero no emite diagnósticos, no receta medicamentos ni reemplaza a profesionales sanitarios colegiados.",
+                q: "¿Cómo sé si necesito una landing, una web o una app?",
+                a: "Una landing concentra una acción; una web explica tu negocio y construye confianza; una app sirve cuando existe un proceso recurrente que las personas necesitan usar. Lo decidimos a partir de tu objetivo, no por la herramienta más cara.",
               },
               {
-                q: "¿Necesito conocimientos técnicos para aprovechar las mentorías?",
-                a: "No. De hecho, el programa está diseñado especialmente para fundadores no técnicos que se sienten abrumados por la jerga de los programadores. Te enseñamos a entender qué te están cobrando, cómo evaluar tiempos y cómo gobernar tus herramientas sin sentirte perdido.",
+                q: "¿Necesito saber de marketing o tecnología para empezar?",
+                a: "No. La mentoría está pensada para quienes conocen su negocio pero necesitan ordenar prioridades, comprender presupuestos y tomar decisiones sin sentirse fuera de lugar por la jerga técnica o comercial.",
               },
               {
-                q: "¿Qué costes recurrentes tendré al terminar un proyecto web?",
-                a: "Optimizamos para el coste mínimo viable. Por ejemplo, utilizando arquitecturas estáticas en Cloudflare Pages o Vercel y bases de datos modernas, la mayoría de microempresas pagan entre 0 € y 20 € al mes en infraestructura, en lugar de cuotas abusivas de mantenimiento.",
+                q: "¿Por qué dos profesionales pueden cobrar importes tan distintos?",
+                a: "Porque no es lo mismo ejecutar una tarea que investigar, decidir y sostener una estrategia. Te enseñamos a valorar el tiempo, el alcance y el resultado esperado para comparar propuestas con criterio, no solo por el número de entregables.",
               },
             ].map((faq, i) => (
               <div
@@ -909,9 +714,9 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-[#0F3A2D] flex items-center justify-center border border-white/10">
                   <img
-                    src="/manus-storage/kureva-isotipo_24d6eb8a.svg"
+                    src={publicPath("kureva-app-icon.svg")}
                     alt="Isotipo Kureva"
-                    className="w-5 h-5"
+                    className="w-5 h-5 kureva-k-rotate"
                   />
                 </div>
                 <span className="font-display font-bold text-xl text-white">Kureva</span>
@@ -920,7 +725,7 @@ export default function Home() {
                 Agencia y escuela de autonomía digital. Impulsamos la soberanía tecnológica de empresas y creadores.
               </p>
               <div className="text-[11px] font-mono text-[#D9FF2B]">
-                Sistema K Fluida · San Miguel de Salinas, Alicante
+                Estrategia, mentoría y autonomía digital
               </div>
             </div>
 
@@ -929,12 +734,11 @@ export default function Home() {
                 Ecosistema Kureva
               </h5>
               <ul className="space-y-2">
-                <li><a href="#servicios" className="hover:text-white transition-colors">Kureva Digital</a></li>
-                <li><a href="#servicios" className="hover:text-white transition-colors">KurevaMentoría</a></li>
-                <li><a href="/kurevalife" className="hover:text-[#D9FF2B] transition-colors">KurevaLife (Beta)</a></li>
-                <li><a href="/calculadora" className="hover:text-white transition-colors">Calculadora de costes</a></li>
-                <li><a href="/recursos" className="hover:text-white transition-colors">Recursos abiertos</a></li>
-                <li><a href="#identidad" className="hover:text-white transition-colors">Manual de Marca</a></li>
+                <li><a href={publicPath("#servicios")} className="hover:text-white transition-colors">Servicios Kureva</a></li>
+                <li><a href={publicPath("#servicios")} className="hover:text-white transition-colors">KurevaMentoría</a></li>
+                <li><a href={publicPath("vida")} className="hover:text-[#D9FF2B] transition-colors">KurevaLife (Beta)</a></li>
+                <li><a href={publicPath("calculadora")} className="hover:text-white transition-colors">Calculadora de costes</a></li>
+                <li><a href={publicPath("recursos")} className="hover:text-white transition-colors">Recursos abiertos</a></li>
               </ul>
             </div>
 
@@ -943,10 +747,9 @@ export default function Home() {
                 Criterio &amp; Legal
               </h5>
               <ul className="space-y-2">
-                <li><a href="#manifiesto" className="hover:text-white transition-colors">Manifiesto de Autonomía</a></li>
+                <li><a href={publicPath("#manifiesto")} className="hover:text-white transition-colors">Manifiesto desde el Camino</a></li>
                 <li><span className="opacity-75">No es una entidad sanitaria</span></li>
                 <li><span className="opacity-75">Privacidad por diseño (GDPR)</span></li>
-                <li><span className="opacity-75">Código bajo licencia del cliente</span></li>
               </ul>
             </div>
 
@@ -979,7 +782,7 @@ export default function Home() {
               © 2026 Kureva. Todos los derechos reservados. Sistema visual registrado K Fluida.
             </div>
             <div className="flex items-center gap-6">
-              <span>Paleta: Bosque #0F3A2D · Crema #F5F1E7 · Lima #D9FF2B</span>
+              <span>Marketing real para negocios reales</span>
             </div>
           </div>
         </div>

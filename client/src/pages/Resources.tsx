@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Navbar } from "@/components/Navbar";
+import { publicPath } from "@/lib/publicPath";
 import {
   ArrowRight,
   BookOpen,
   CheckSquare,
-  Download,
-  ExternalLink,
   FileText,
   LockKeyhole,
   Search,
@@ -19,30 +18,24 @@ const resources = [
     icon: CheckSquare,
     title: "Checklist de autonomía digital",
     description: "Doce comprobaciones para saber si tu negocio puede continuar sin pedir permiso: cuentas, dominios, código, datos, copias y continuidad.",
-    file: "/manus-storage/Kureva_Checklist_Autonomia_Digital_38c9fdb4.pdf",
-    filename: "Kureva_Checklist_Autonomia_Digital.pdf",
     time: "5 min de lectura",
-    label: "Checklist imprimible",
+    label: "Guía de conversación",
   },
   {
     category: "Contratación",
     icon: LockKeyhole,
     title: "Plantilla de propiedad digital",
     description: "Cláusulas operativas y preguntas para contratar desarrollo, diseño o soporte sin perder el control de tus cuentas, archivos y salida.",
-    file: "/manus-storage/Kureva_Plantilla_Propiedad_Digital_877bbaba.pdf",
-    filename: "Kureva_Plantilla_Propiedad_Digital.pdf",
     time: "7 min de lectura",
-    label: "Plantilla de trabajo",
+    label: "Plantilla en preparación",
   },
   {
     category: "Decisión",
     icon: BookOpen,
     title: "Guía para elegir tecnología",
     description: "Siete preguntas y una matriz breve para decidir entre herramientas, integraciones o desarrollo propio sin comprar por una demo atractiva.",
-    file: "/manus-storage/Kureva_Guia_Seleccion_Tecnologia_acf2bdaa.pdf",
-    filename: "Kureva_Guia_Seleccion_Tecnologia.pdf",
     time: "6 min de lectura",
-    label: "Guía práctica",
+    label: "Guía en preparación",
   },
 ];
 
@@ -117,12 +110,9 @@ export default function Resources() {
                     <h3 className="font-display text-xl font-bold text-[#0F3A2D] leading-tight">{resource.title}</h3>
                     <p className="text-sm text-[#5E806E] leading-relaxed">{resource.description}</p>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 mt-7 pt-5 border-t border-[#DCD4C4]/70">
-                    <a href={resource.file} download={resource.filename} className="kureva-btn-primary text-xs px-3 py-2.5">
-                      <Download className="w-3.5 h-3.5" /> PDF
-                    </a>
-                    <a href={resource.file} target="_blank" rel="noreferrer" className="kureva-btn-secondary text-xs px-3 py-2.5">
-                      <ExternalLink className="w-3.5 h-3.5" /> Ver
+                  <div className="mt-7 pt-5 border-t border-[#DCD4C4]/70">
+                    <a href={publicPath("#contacto")} className="kureva-btn-secondary text-xs px-3 py-2.5">
+                      Solicitar este recurso <ArrowRight className="w-3.5 h-3.5" />
                     </a>
                   </div>
                 </article>
@@ -146,7 +136,7 @@ export default function Resources() {
               <p className="text-[#5E806E] leading-relaxed max-w-xl">
                 Estas guías no te convierten en especialista ni sustituyen una asesoría legal o de seguridad. Su función es más sencilla: permitirte conversar con proveedores desde una posición informada y mantener las decisiones importantes en tu empresa.
               </p>
-              <a href="/calculadora" className="inline-flex items-center gap-2 text-sm font-bold text-[#0F3A2D] hover:text-[#5E806E] transition-colors">
+              <a href={publicPath("calculadora")} className="inline-flex items-center gap-2 text-sm font-bold text-[#0F3A2D] hover:text-[#5E806E] transition-colors">
                 Ver la calculadora de costes ocultos <ArrowRight className="w-4 h-4" />
               </a>
             </div>

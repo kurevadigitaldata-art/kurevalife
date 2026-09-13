@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { PilotFeedback } from "@/components/PilotFeedback";
+import { publicPath } from "@/lib/publicPath";
 import {
   ArrowRight,
   Calculator as CalculatorIcon,
@@ -382,7 +383,7 @@ export default function Calculator() {
                   Descargar informe de simulación
                   <FileDown className="w-4 h-4" />
                 </button>
-                <a href="/#contacto" className="kureva-btn-primary w-full justify-center">
+                <a href={publicPath("#contacto")} className="kureva-btn-primary w-full justify-center">
                   Convertir esta estimación en un plan real
                   <ArrowRight className="w-4 h-4" />
                 </a>

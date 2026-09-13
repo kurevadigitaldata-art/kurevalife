@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, ArrowRight } from "lucide-react";
+import { publicPath } from "@/lib/publicPath";
 
 export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -14,11 +15,11 @@ export const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { label: "Servicios", href: "/#servicios" },
-    { label: "Calculadora", href: "/calculadora" },
-    { label: "Recursos", href: "/recursos" },
-    { label: "Probar KurevaLife", href: "/vida#inicio", tag: "Piloto" },
-    { label: "Método", href: "/#metodo" },
+    { label: "Servicios", href: publicPath("#servicios") },
+    { label: "Calculadora", href: publicPath("calculadora") },
+    { label: "Recursos", href: publicPath("recursos") },
+    { label: "Probar KurevaLife", href: publicPath("vida#inicio"), tag: "Piloto" },
+    { label: "Método", href: publicPath("#metodo") },
   ];
 
   return (
@@ -33,7 +34,7 @@ export const Navbar = () => {
       >
       <div className="container flex items-center justify-between">
         {/* Brand logo */}
-        <a href="/" className="flex items-center gap-3 group">
+        <a href={publicPath()} className="flex items-center gap-3 group">
           <div className="relative w-10 h-10">
             <div className="absolute -inset-1 rounded-2xl border border-[#D9FF2B]/50 kureva-k-orbit" aria-hidden="true" />
             <div className="relative w-10 h-10 rounded-xl bg-[#0F3A2D] flex items-center justify-center shadow-xs transition-transform duration-200 group-hover:scale-105 p-2">
@@ -77,7 +78,7 @@ export const Navbar = () => {
         {/* CTAs */}
         <div className="hidden lg:flex items-center gap-4">
           <a
-            href="/#contacto"
+            href={publicPath("#contacto")}
             className="kureva-btn-primary text-xs py-2.5 px-5 shadow-xs"
           >
             <span>Iniciar diagnóstico</span>
@@ -116,7 +117,7 @@ export const Navbar = () => {
             ))}
             <div className="pt-4 flex flex-col gap-3">
               <a
-                href="/#contacto"
+                href={publicPath("#contacto")}
                 onClick={() => setMobileMenuOpen(false)}
                 className="kureva-btn-primary text-center justify-center"
               >
