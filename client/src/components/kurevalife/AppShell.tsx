@@ -49,7 +49,7 @@ export function AppShell({
         <div className="kl-app-header__status">
           <LocalStatus state="Solo esta sesión" />
           <span className="kl-app-header__hello">
-            Hola, {userName || "Nathalia"}
+            {userName ? `Hola, ${userName}` : "Hola"}
           </span>
         </div>
         <button

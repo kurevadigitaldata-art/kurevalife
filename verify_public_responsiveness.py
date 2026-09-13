@@ -61,6 +61,7 @@ async def run():
             await page.get_by_role("button", name="Comenzar").click()
             await page.get_by_role("button", name="Continuar").click()
             await page.get_by_role("button", name="Siguiente").click()
+            await page.get_by_text("Acepto los términos y condiciones y la política de privacidad.", exact=True).click()
             await page.get_by_role("button", name="Finalizar").click()
             nav_labels = await page.locator(".kl-bottom-nav__item").all_inner_texts()
             assert nav_labels == ["Hoy", "Registrar", "Informes", "Perfil"], nav_labels

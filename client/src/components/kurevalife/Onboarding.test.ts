@@ -2,24 +2,17 @@ import { describe, expect, it } from "vitest";
 import { introductionCopy } from "./Onboarding";
 
 describe("introductionCopy", () => {
-  it("uses feminine welcome language when requested", () => {
-    const copy = introductionCopy("Nathalia", "femenino");
-    expect(copy.title).toBe("Bienvenida a KurevaLife, Nathalia");
-    expect(copy.first).toContain("seleccionada");
-    expect(copy.second).toContain("tranquila");
+  it("uses the approved neutral wording without profile data", () => {
+    const copy = introductionCopy();
+    expect(copy.title).toBe("Bienvenida a KurevaLife");
+    expect(copy.greeting).toContain("muchas gracias por formar parte");
+    expect(copy.greeting).not.toMatch(/Nathalia|Carlos|seleccionad[oa]/i);
+    expect(copy.exploration).toContain("con total tranquilidad, sin prisas");
   });
 
-  it("uses masculine welcome language when requested", () => {
-    const copy = introductionCopy("Carlos", "masculino");
-    expect(copy.title).toBe("Bienvenido a KurevaLife, Carlos");
-    expect(copy.first).toContain("seleccionado");
-    expect(copy.second).toContain("tranquilo");
-  });
-
-  it("uses neutral language without gendered adjectives", () => {
-    const copy = introductionCopy("Alex", "neutro");
-    expect(copy.title).toBe("Te damos la bienvenida a KurevaLife, Alex");
-    expect(copy.first).toContain("Agradecemos");
-    expect(copy.second).toContain("sin prisas");
+  it("preserves KurevaLife's humanised and origin statements", () => {
+    const copy = introductionCopy();
+    expect(copy.humanized).toContain("herramienta humanizada");
+    expect(copy.origin).toContain("experiencia real");
   });
 });

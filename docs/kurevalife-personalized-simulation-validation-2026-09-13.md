@@ -1,5 +1,7 @@
 # Validación de personalización y sesión — KurevaLife
 
+> **Histórico.** Este informe registra la validación de un checkpoint anterior del 13 de septiembre. El contenido aprobado actual de las cinco primeras pantallas es neutral y queda documentado en `docs/kurevalife-first-five-screens-validation-2026-09-13.md`; ese documento es la referencia vigente para aceptar el recorrido inicial.
+
 **Fecha:** 13 de septiembre de 2026  
 **Repositorio canónico:** `kurevadigitaldata-art/kurevalife`  
 **Ruta de simulación:** `/kurevalife/vida`
@@ -12,14 +14,14 @@ La clave heredada propia de KurevaLife se elimina en el arranque para evitar res
 
 ## Flujo guiado implementado
 
-| Pantalla | Comportamiento confirmado |
-|---|---|
-| 1. Bienvenida | Presenta “Tu día en orden. Tu bienestar más claro.” y declara que los datos de ejemplo desaparecen al cerrar o recargar. |
-| 2. Introducción | Personaliza el título y la redacción por nombre y trato: femenino, masculino o neutro/no binario. |
-| 3. Inclusión | Permite activar apoyo para lector de pantalla y subtítulos/transcripciones visibles. |
-| 4. Registro | Recoge nombre y apellidos de ejemplo, trato y tamaño de texto; correo y teléfono no se incorporan al estado de la simulación. |
-| 5. Configuración | Aplica de forma inmediata sonido/voz opcional, subtítulos, lectura fácil y modo nocturno. |
-| 6. Hoy | Muestra el saludo dinámico “Hola, [Nombre]” y mantiene las cuatro pestañas obligatorias: Hoy, Registrar, Informes y Perfil. |
+| Pantalla         | Comportamiento confirmado                                                                                                     |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 1. Bienvenida    | Presenta “Tu día en orden. Tu bienestar más claro.” y declara que los datos de ejemplo desaparecen al cerrar o recargar.      |
+| 2. Introducción  | Personaliza el título y la redacción por nombre y trato: femenino, masculino o neutro/no binario.                             |
+| 3. Inclusión     | Permite activar apoyo para lector de pantalla y subtítulos/transcripciones visibles.                                          |
+| 4. Registro      | Recoge nombre y apellidos de ejemplo, trato y tamaño de texto; correo y teléfono no se incorporan al estado de la simulación. |
+| 5. Configuración | Aplica de forma inmediata sonido/voz opcional, subtítulos, lectura fácil y modo nocturno.                                     |
+| 6. Hoy           | Muestra el saludo dinámico “Hola, [Nombre]” y mantiene las cuatro pestañas obligatorias: Hoy, Registrar, Informes y Perfil.   |
 
 ## Personalización y accesibilidad
 
@@ -33,15 +35,15 @@ Kivi incorpora el consejo de bienestar solicitado y personaliza el mensaje con e
 
 ## Evidencia ejecutada
 
-| Comprobación | Resultado |
-|---|---|
-| `pnpm test` | Correcto: 7 pruebas superadas, incluidos los tres tratos de bienvenida. |
-| `pnpm check` | Correcto: TypeScript sin errores. |
-| Build estándar y GitHub Pages | Correctos. |
-| Flujo móvil guiado | Correcto: femenina, masculina, neutra, modo nocturno, texto muy grande, Kivi, validación amable y reinicio. |
-| Memoria entre recargas | Correcto: el perfil Carlos y su registro desaparecen tras recargar. |
-| Responsive | Correcto sin desbordamiento en móvil 390 × 844, tableta 768 × 1024 y escritorio 1280 × 900. |
-| Movimiento reducido | Correcto: la K ornamental detiene su rotación cuando el sistema solicita `prefers-reduced-motion`. |
+| Comprobación                  | Resultado                                                                                                   |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `pnpm test`                   | Correcto: 7 pruebas superadas, incluidos los tres tratos de bienvenida.                                     |
+| `pnpm check`                  | Correcto: TypeScript sin errores.                                                                           |
+| Build estándar y GitHub Pages | Correctos.                                                                                                  |
+| Flujo móvil guiado            | Correcto: femenina, masculina, neutra, modo nocturno, texto muy grande, Kivi, validación amable y reinicio. |
+| Memoria entre recargas        | Correcto: el perfil Carlos y su registro desaparecen tras recargar.                                         |
+| Responsive                    | Correcto sin desbordamiento en móvil 390 × 844, tableta 768 × 1024 y escritorio 1280 × 900.                 |
+| Movimiento reducido           | Correcto: la K ornamental detiene su rotación cuando el sistema solicita `prefers-reduced-motion`.          |
 
 ## Límite honesto
 

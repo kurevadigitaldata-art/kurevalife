@@ -34,7 +34,11 @@ export function KurevaLifeApp() {
 
   const announce = (message: string, useVoice = false) => {
     setLiveMessage(message);
-    if (!useVoice || typeof window === "undefined" || !("speechSynthesis" in window)) {
+    if (
+      !useVoice ||
+      typeof window === "undefined" ||
+      !("speechSynthesis" in window)
+    ) {
       return;
     }
     window.speechSynthesis.cancel();
@@ -49,10 +53,9 @@ export function KurevaLifeApp() {
       typeof state.preferences,
       | "displayName"
       | "familyName"
-      | "preferredAddress"
       | "textScale"
-      | "nightMode"
       | "soundEnabled"
+      | "translationEnabled"
       | "subtitlesEnabled"
       | "screenReaderSupport"
       | "easyReadMode"
@@ -187,7 +190,8 @@ export function KurevaLifeApp() {
         }[tab];
         announce(
           `Abriendo ${tabLabel}.`,
-          state.preferences.soundEnabled || state.preferences.screenReaderSupport
+          state.preferences.soundEnabled ||
+            state.preferences.screenReaderSupport
         );
       }}
       userName={state.preferences.displayName}
@@ -200,7 +204,8 @@ export function KurevaLifeApp() {
         setKiviOpen(true);
         announce(
           "Kivi está abierto. Puedes elegir una opción o escribir una consulta.",
-          state.preferences.soundEnabled || state.preferences.screenReaderSupport
+          state.preferences.soundEnabled ||
+            state.preferences.screenReaderSupport
         );
       }}
     >
@@ -230,7 +235,8 @@ export function KurevaLifeApp() {
           <h2 id="simulacro-local">Puedes explorar con tranquilidad.</h2>
           <p>
             Lo que anotas solo existe mientras esta prueba está abierta. No se
-            sincroniza, no se conserva al recargar ni se interpreta clínicamente.
+            sincroniza, no se conserva al recargar ni se interpreta
+            clínicamente.
           </p>
         </div>
         <KurevaButton type="button" variant="quiet" onClick={resetSimulation}>
@@ -245,7 +251,8 @@ export function KurevaLifeApp() {
           onAnnounce={message =>
             announce(
               message,
-              state.preferences.soundEnabled || state.preferences.screenReaderSupport
+              state.preferences.soundEnabled ||
+                state.preferences.screenReaderSupport
             )
           }
         />

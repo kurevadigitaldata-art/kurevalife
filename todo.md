@@ -6,6 +6,11 @@ El proyecto canónico activo es **`/home/ubuntu/workspaces/kurevalife`** y corre
 
 ## Cambios de esta iteración
 
+- [x] Aplicar exclusivamente los contenidos y controles aprobados para Bienvenida, Introducción, Inclusión, Registro y Configuración; sin alterar las pantallas posteriores del simulacro.
+- [x] Convertir la Introducción en la versión neutral aprobada y eliminar las precargas de nombre de Registro.
+- [x] Situar Español / English al inicio de Registro y reflejar la selección en el idioma semántico durante el recorrido de prueba.
+- [x] Sustituir Configuración por la lista de sonido, traducción en línea, lectura fácil, comunicaciones opcionales y consentimiento solicitada.
+- [x] Validar el recorrido de los cinco pasos en móvil y la ausencia de persistencia antes de publicar el checkpoint.
 - [x] Corregir el inicio del simulacro para que no restaure perfiles ni registros entre sesiones o pestañas: la prueba comienza siempre en Bienvenida y permanece solo en memoria durante la pestaña abierta.
 - [x] Implementar las cinco pantallas guiadas de bienvenida, introducción, inclusión, registro y configuración con datos locales de prueba, identidad elegida y personalización inclusiva de textos.
 - [x] Hacer que el nombre, trato, escala tipográfica, modo nocturno, subtítulos y apoyos de lectura configurados durante la bienvenida se apliquen inmediatamente al simulacro.

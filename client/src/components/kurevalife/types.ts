@@ -71,13 +71,14 @@ export type KurevaLifePreferences = {
   largeText: boolean;
   highContrast: boolean;
   soundEnabled: boolean;
+  translationEnabled: boolean;
   subtitlesEnabled: boolean;
   screenReaderSupport: boolean;
   easyReadMode: boolean;
 };
 
 export type KurevaLifeState = {
-  /** Keeps an anonymous local-first session open after a reload. */
+  /** Marks completion of the guided onboarding during the current tab session. */
   hasStarted: boolean;
   routines: Routine[];
   records: RecordEntry[];
@@ -150,6 +151,7 @@ export const DEFAULT_KUREVALIFE_STATE: KurevaLifeState = {
     largeText: false,
     highContrast: false,
     soundEnabled: false,
+    translationEnabled: false,
     subtitlesEnabled: true,
     screenReaderSupport: false,
     easyReadMode: false,
@@ -372,6 +374,10 @@ function sanitizePreferences(
       textScale !== "normal" || asBoolean(value.largeText, fallback.largeText),
     highContrast: asBoolean(value.highContrast, fallback.highContrast),
     soundEnabled: asBoolean(value.soundEnabled, fallback.soundEnabled),
+    translationEnabled: asBoolean(
+      value.translationEnabled,
+      fallback.translationEnabled
+    ),
     subtitlesEnabled: asBoolean(
       value.subtitlesEnabled,
       fallback.subtitlesEnabled
@@ -387,7 +393,7 @@ function sanitizePreferences(
 function hasSavedActivity(state: Omit<KurevaLifeState, "hasStarted">) {
   const defaults = DEFAULT_KUREVALIFE_STATE;
   return Boolean(
-      state.preferences.displayName ||
+    state.preferences.displayName ||
       state.preferences.familyName ||
       state.records.length ||
       state.reminders.length ||
@@ -402,6 +408,7 @@ function hasSavedActivity(state: Omit<KurevaLifeState, "hasStarted">) {
       state.preferences.largeText ||
       state.preferences.highContrast ||
       state.preferences.soundEnabled ||
+      state.preferences.translationEnabled ||
       state.preferences.subtitlesEnabled !==
         defaults.preferences.subtitlesEnabled ||
       state.preferences.screenReaderSupport ||
