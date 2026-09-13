@@ -43,12 +43,28 @@ async def run():
 
         # 2. Introducción neutral
         introduction = await page.locator("body").inner_text()
-        assert "Bienvenida a KurevaLife" in introduction
-        assert "muchas gracias por formar parte de este simulacro" in introduction
+        assert "Bienvenidos" in introduction
+        assert "Muchas gracias por formar parte de este simulacro" in introduction
         assert "Tómate el tiempo que necesites" in introduction
         assert "herramienta humanizada" in introduction
-        assert "Nathalia" not in introduction and "Carlos" not in introduction
-        results.append("PASS: 2. Introducción usa la redacción neutral aprobada, sin nombre ni género.")
+        assert "Hola," not in introduction and "Nathalia" not in introduction and "Carlos" not in introduction
+        assert "Este simulacro es solo informativo" in introduction
+        assert await page.locator(".kl-onboarding__title-accent").count() == 1
+        motion = await page.locator(".kl-onboarding__title-accent").evaluate(
+            "node => getComputedStyle(node, '::before').animationName"
+        )
+        assert motion == "kl-introduction-lime-slide"
+        await page.emulate_media(reduced_motion="reduce")
+        reduced_motion = await page.locator(".kl-onboarding__title-accent").evaluate(
+            "node => getComputedStyle(node, '::before').animationName"
+        )
+        assert reduced_motion == "none"
+        await page.emulate_media(reduced_motion="no-preference")
+        await page.get_by_role("button", name="English").click()
+        assert await page.locator("html").get_attribute("lang") == "en"
+        await page.get_by_role("button", name="Español").click()
+        assert await page.locator("html").get_attribute("lang") == "es"
+        results.append("PASS: 2. Introducción usa título genérico, lenguaje neutral, idioma, aviso informativo y acento lima accesible.")
 
         await page.get_by_role("button", name="Comenzar").click()
 
@@ -62,11 +78,7 @@ async def run():
 
         await page.get_by_role("button", name="Continuar").click()
 
-        # 4. Registro: idioma primero, campos vacíos, tamaño configurable
-        assert await page.locator("html").get_attribute("lang") == "es"
-        await page.get_by_role("button", name="English").click()
-        assert await page.locator("html").get_attribute("lang") == "en"
-        await page.get_by_role("button", name="Español").click()
+        # 4. Registro: campos vacíos y tamaño configurable
         fields = await page.locator("input").evaluate_all("nodes => nodes.map(node => node.value)")
         assert fields[:4] == ["", "", "", ""]
         await page.get_by_role("textbox", name="Nombre").fill("Alex")
@@ -75,7 +87,7 @@ async def run():
         assert await page.locator(".kl-onboarding").evaluate(
             "node => node.classList.contains('kl-text-muy-grande')"
         )
-        results.append("PASS: 4. Registro inicia vacío, sitúa idioma primero y aplica texto muy grande.")
+        results.append("PASS: 4. Registro inicia vacío y aplica texto muy grande.")
 
         await page.get_by_role("button", name="Siguiente").click()
 

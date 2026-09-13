@@ -34,9 +34,9 @@ const steps = [
 
 export function introductionCopy() {
   return {
-    title: "Bienvenida a KurevaLife",
+    title: "Bienvenidos",
     greeting:
-      "Hola, muchas gracias por formar parte de este simulacro. Tu perfil califica perfectamente porque confiamos en tu criterio, curiosidad y ganas de mejorar.",
+      "Muchas gracias por formar parte de este simulacro. Tu perfil califica perfectamente porque confiamos en tu criterio, curiosidad y ganas de mejorar.",
     exploration:
       "Hoy queremos que explores la herramienta con total tranquilidad, sin prisas, y que pruebes todo lo que te apetezca. ¡Tómate el tiempo que necesites!",
     humanized:
@@ -154,11 +154,39 @@ export function KurevaLifeOnboarding({
         {step === 1 ? (
           <div className="kl-onboarding__story">
             <p className="kl-eyebrow">INTRODUCCIÓN AL SIMULACRO</p>
-            <h1 id="onboarding-title">{intro.title}</h1>
+            <h1 id="onboarding-title" className="kl-onboarding__title-accent">
+              {intro.title}
+            </h1>
             <p>{intro.greeting}</p>
             <p>{intro.exploration}</p>
             <p>{intro.humanized}</p>
             <p>{intro.origin}</p>
+            <fieldset className="kl-onboarding__choice kl-onboarding__language">
+              <legend>Idioma</legend>
+              <div>
+                <button
+                  type="button"
+                  className={locale === "es" ? "is-selected" : ""}
+                  onClick={() => selectLocale("es")}
+                  aria-pressed={locale === "es"}
+                >
+                  Español
+                </button>
+                <button
+                  type="button"
+                  className={locale === "en" ? "is-selected" : ""}
+                  onClick={() => selectLocale("en")}
+                  aria-pressed={locale === "en"}
+                >
+                  English
+                </button>
+              </div>
+            </fieldset>
+            <p className="kl-onboarding__informative-note">
+              <Info size={16} aria-hidden="true" /> Este simulacro es solo
+              informativo. La app online incorporará las funciones que requieren
+              conexión.
+            </p>
           </div>
         ) : null}
 
@@ -231,27 +259,6 @@ export function KurevaLifeOnboarding({
               <LockKeyhole size={16} aria-hidden="true" /> Estos datos son solo
               para personalizar tu experiencia en el simulacro.
             </p>
-            <fieldset className="kl-onboarding__choice">
-              <legend>Idioma</legend>
-              <div>
-                <button
-                  type="button"
-                  className={locale === "es" ? "is-selected" : ""}
-                  onClick={() => selectLocale("es")}
-                  aria-pressed={locale === "es"}
-                >
-                  Español
-                </button>
-                <button
-                  type="button"
-                  className={locale === "en" ? "is-selected" : ""}
-                  onClick={() => selectLocale("en")}
-                  aria-pressed={locale === "en"}
-                >
-                  English
-                </button>
-              </div>
-            </fieldset>
             <label className="kl-field">
               <span>Nombre</span>
               <input

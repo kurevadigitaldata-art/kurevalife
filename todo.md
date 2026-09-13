@@ -6,6 +6,8 @@ El proyecto canónico activo es **`/home/ubuntu/workspaces/kurevalife`** y corre
 
 ## Cambios de esta iteración
 
+- [x] Ajustar exclusivamente la pantalla de Introducción: título genérico, copia sin saludo, selector de idioma, aviso informativo de simulacro y acento lima deslizante que respeta movimiento reducido.
+- [x] Verificar la pantalla de Introducción en móvil y su ausencia de regresiones responsive antes de publicar el checkpoint.
 - [x] Aplicar exclusivamente los contenidos y controles aprobados para Bienvenida, Introducción, Inclusión, Registro y Configuración; sin alterar las pantallas posteriores del simulacro.
 - [x] Convertir la Introducción en la versión neutral aprobada y eliminar las precargas de nombre de Registro.
 - [x] Situar Español / English al inicio de Registro y reflejar la selección en el idioma semántico durante el recorrido de prueba.

@@ -1227,3 +1227,65 @@
   opacity: 0.55;
   filter: saturate(0.35);
 }
+
+
+/* Introducción: el acento se desplaza detrás del título; el texto no se mueve. */
+.kl-onboarding__title-accent {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  width: fit-content;
+  padding: 0.08em 0.14em;
+  isolation: isolate;
+}
+
+.kl-onboarding__title-accent::before {
+  position: absolute;
+  z-index: -1;
+  inset: -0.02em -0.12em;
+  border-radius: 0.06em;
+  background: var(--kl-lime);
+  content: "";
+  animation: kl-introduction-lime-slide 4.8s cubic-bezier(0.45, 0, 0.55, 1)
+    infinite alternate;
+  will-change: transform;
+}
+
+@keyframes kl-introduction-lime-slide {
+  from {
+    transform: translateX(-5%);
+  }
+  to {
+    transform: translateX(5%);
+  }
+}
+
+.kl-onboarding__language {
+  padding-top: 0.25rem;
+}
+
+.kl-onboarding__informative-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 0.25rem !important;
+  padding: 0.875rem;
+  border: 1px solid rgba(15, 58, 45, 0.14);
+  border-radius: 14px;
+  background: rgba(220, 232, 221, 0.7);
+  color: var(--kl-forest) !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.45 !important;
+}
+
+.kl-onboarding__informative-note svg {
+  flex: 0 0 auto;
+  margin-top: 0.1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kl-onboarding__title-accent::before {
+    animation: none;
+    transform: none;
+  }
+}

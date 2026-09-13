@@ -4,6 +4,8 @@
 **Repositorio canónico:** `kurevadigitaldata-art/kurevalife`  
 **Ruta:** `/kurevalife/vida`
 
+> **Actualización, 14 de septiembre de 2026.** La pantalla 2 usa ahora el título genérico **“Bienvenidos”**, elimina el saludo inicial, ofrece el selector Español / English en la propia introducción y aclara que el simulacro es informativo. El acento lima se desplaza detrás del título sin mover el texto y se detiene cuando el sistema solicita reducción de movimiento.
+
 ## Alcance estricto
 
 Esta entrega modifica únicamente el recorrido inicial de cinco pantallas del simulacro. No rediseña ni altera las pantallas posteriores de Hoy, Registrar, Informes, Perfil o Kivi.
