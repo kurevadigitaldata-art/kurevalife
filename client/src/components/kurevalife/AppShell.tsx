@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { BarChart3, ClipboardPlus, Home, UserRound } from "lucide-react";
-import type { KurevaTab } from "./types";
+import type { KurevaTab, TextScale } from "./types";
 import { BrandSignature, KurevaMark, LocalStatus } from "./ui";
 
 const navItems: { id: KurevaTab; label: string; Icon: typeof Home }[] = [
@@ -16,8 +16,10 @@ export function AppShell({
   userName,
   children,
   nightMode,
-  largeText,
+  textScale,
   highContrast,
+  easyReadMode,
+  screenReaderSupport,
   onOpenKivi,
 }: {
   activeTab: KurevaTab;
@@ -25,14 +27,16 @@ export function AppShell({
   userName: string;
   children: ReactNode;
   nightMode: boolean;
-  largeText: boolean;
+  textScale: TextScale;
   highContrast: boolean;
+  easyReadMode: boolean;
+  screenReaderSupport: boolean;
   onOpenKivi: () => void;
 }) {
   return (
     <div
       id="kurevalife-app"
-      className={`kl-app-shell ${nightMode ? "kl-theme-night" : ""} ${largeText ? "kl-text-large" : ""} ${highContrast ? "kl-high-contrast" : ""}`}
+      className={`kl-app-shell ${nightMode ? "kl-theme-night" : ""} kl-text-${textScale} ${highContrast ? "kl-high-contrast" : ""} ${easyReadMode ? "kl-easy-read" : ""} ${screenReaderSupport ? "kl-screen-reader-support" : ""}`}
     >
       <a className="kl-skip-link" href="#contenido-kurevalife">
         Saltar al contenido
@@ -43,9 +47,9 @@ export function AppShell({
           <span className="kl-app-header__tester">Simulacro para testers</span>
         </div>
         <div className="kl-app-header__status">
-          <LocalStatus />
+          <LocalStatus state="Solo esta sesión" />
           <span className="kl-app-header__hello">
-            Hola, {userName || "amiga"}
+            Hola, {userName || "Nathalia"}
           </span>
         </div>
         <button

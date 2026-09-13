@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export type KurevaTab = "hoy" | "registrar" | "informes" | "perfil";
 export type RegisterSection = "datos" | "notas" | "avisos" | "agua";
+export type PreferredAddress = "femenino" | "masculino" | "neutro";
+export type TextScale = "normal" | "grande" | "muy-grande";
 
 export type Routine = {
   id: string;
@@ -62,11 +64,16 @@ export type ConsultationQuestion = {
 
 export type KurevaLifePreferences = {
   displayName: string;
+  familyName: string;
+  preferredAddress: PreferredAddress;
+  textScale: TextScale;
   nightMode: boolean;
   largeText: boolean;
   highContrast: boolean;
   soundEnabled: boolean;
   subtitlesEnabled: boolean;
+  screenReaderSupport: boolean;
+  easyReadMode: boolean;
 };
 
 export type KurevaLifeState = {
@@ -80,6 +87,7 @@ export type KurevaLifeState = {
   preferences: KurevaLifePreferences;
 };
 
+/** Legacy local key, removed on startup so a fresh link always starts at Bienvenida. */
 export const KUREVALIFE_STORAGE_KEY = "kurevalife-simulator-v3";
 
 export const DEFAULT_QUESTIONS: ConsultationQuestion[] = [
@@ -135,11 +143,16 @@ export const DEFAULT_KUREVALIFE_STATE: KurevaLifeState = {
   consultationQuestions: DEFAULT_QUESTIONS,
   preferences: {
     displayName: "",
+    familyName: "",
+    preferredAddress: "neutro",
+    textScale: "normal",
     nightMode: false,
     largeText: false,
     highContrast: false,
     soundEnabled: false,
     subtitlesEnabled: true,
+    screenReaderSupport: false,
+    easyReadMode: false,
   },
 };
 
@@ -170,6 +183,12 @@ const HYDRATION_ACTIVITIES: HydrationGoal["activity"][] = [
   "Media",
   "Alta",
 ];
+const PREFERRED_ADDRESSES: PreferredAddress[] = [
+  "femenino",
+  "masculino",
+  "neutro",
+];
+const TEXT_SCALES: TextScale[] = ["normal", "grande", "muy-grande"];
 
 function isStoredObject(value: unknown): value is StoredObject {
   return Boolean(value && typeof value === "object" && !Array.isArray(value));
@@ -338,23 +357,38 @@ function sanitizePreferences(
   fallback: KurevaLifePreferences
 ): KurevaLifePreferences {
   if (!isStoredObject(value)) return fallback;
+  const textScale = asEnum(value.textScale, TEXT_SCALES, fallback.textScale);
   return {
     displayName: asString(value.displayName, fallback.displayName),
+    familyName: asString(value.familyName, fallback.familyName),
+    preferredAddress: asEnum(
+      value.preferredAddress,
+      PREFERRED_ADDRESSES,
+      fallback.preferredAddress
+    ),
+    textScale,
     nightMode: asBoolean(value.nightMode, fallback.nightMode),
-    largeText: asBoolean(value.largeText, fallback.largeText),
+    largeText:
+      textScale !== "normal" || asBoolean(value.largeText, fallback.largeText),
     highContrast: asBoolean(value.highContrast, fallback.highContrast),
     soundEnabled: asBoolean(value.soundEnabled, fallback.soundEnabled),
     subtitlesEnabled: asBoolean(
       value.subtitlesEnabled,
       fallback.subtitlesEnabled
     ),
+    screenReaderSupport: asBoolean(
+      value.screenReaderSupport,
+      fallback.screenReaderSupport
+    ),
+    easyReadMode: asBoolean(value.easyReadMode, fallback.easyReadMode),
   };
 }
 
 function hasSavedActivity(state: Omit<KurevaLifeState, "hasStarted">) {
   const defaults = DEFAULT_KUREVALIFE_STATE;
   return Boolean(
-    state.preferences.displayName ||
+      state.preferences.displayName ||
+      state.preferences.familyName ||
       state.records.length ||
       state.reminders.length ||
       state.routines.some(routine => routine.completed) ||
@@ -369,7 +403,10 @@ function hasSavedActivity(state: Omit<KurevaLifeState, "hasStarted">) {
       state.preferences.highContrast ||
       state.preferences.soundEnabled ||
       state.preferences.subtitlesEnabled !==
-        defaults.preferences.subtitlesEnabled
+        defaults.preferences.subtitlesEnabled ||
+      state.preferences.screenReaderSupport ||
+      state.preferences.easyReadMode ||
+      state.preferences.textScale !== defaults.preferences.textScale
   );
 }
 
@@ -408,24 +445,16 @@ export function hydrateKurevaLifeState(value: unknown): KurevaLifeState {
 }
 
 export function loadKurevaLifeState(): KurevaLifeState {
-  if (typeof window === "undefined") return cloneDefaultState();
-  try {
-    const raw = window.localStorage.getItem(KUREVALIFE_STORAGE_KEY);
-    if (!raw) return cloneDefaultState();
-    const stored = JSON.parse(raw) as unknown;
-    if (!isStoredObject(stored)) {
-      window.localStorage.removeItem(KUREVALIFE_STORAGE_KEY);
-      return cloneDefaultState();
-    }
-    return hydrateKurevaLifeState(stored);
-  } catch {
+  if (typeof window !== "undefined") {
     try {
+      // Previous builds used persistent localStorage. Remove only KurevaLife's
+      // legacy simulation key so new visits always start at Bienvenida.
       window.localStorage.removeItem(KUREVALIFE_STORAGE_KEY);
     } catch {
-      // Storage is unavailable; the session remains usable with default data.
+      // Storage can be blocked; a fresh in-memory state remains available.
     }
-    return cloneDefaultState();
   }
+  return cloneDefaultState();
 }
 
 export function createLocalId(prefix: string) {
@@ -435,17 +464,5 @@ export function createLocalId(prefix: string) {
 
 export function useKurevaLifeState() {
   const [state, setState] = useState<KurevaLifeState>(loadKurevaLifeState);
-
-  useEffect(() => {
-    try {
-      window.localStorage.setItem(
-        KUREVALIFE_STORAGE_KEY,
-        JSON.stringify(state)
-      );
-    } catch {
-      // The app remains usable for the current session if storage is unavailable.
-    }
-  }, [state]);
-
   return [state, setState] as const;
 }

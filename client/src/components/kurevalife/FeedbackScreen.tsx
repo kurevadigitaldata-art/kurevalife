@@ -88,22 +88,8 @@ export function FeedbackScreen({ ticket }: { ticket: string }) {
         "Gracias. Tu valoración y sugerencia se han guardado en el registro privado del piloto."
       );
     } catch {
-      try {
-        localStorage.setItem(
-          `kurevalife-feedback-${ticket}`,
-          JSON.stringify({
-            rating,
-            area,
-            message,
-            anonymous,
-            name: anonymous ? null : name,
-          })
-        );
-      } catch {
-        // The human-readable status below remains available if storage is unavailable.
-      }
       setStatus(
-        "No hemos podido enviar la sugerencia ahora. La hemos conservado localmente en este dispositivo para que no se pierda."
+        "No hemos podido enviar la sugerencia ahora. No se ha guardado ningún dato: puedes intentarlo de nuevo cuando haya conexión."
       );
     } finally {
       setSending(false);

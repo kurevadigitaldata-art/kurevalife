@@ -90,9 +90,9 @@ export function SectionHeading({
 }
 
 export function LocalStatus({
-  state = "Guardado localmente",
+  state = "Solo esta sesión",
 }: {
-  state?: "Guardado localmente" | "Sincronización futura" | "Offline";
+  state?: "Solo esta sesión" | "Sincronización futura" | "Offline";
 }) {
   return (
     <span className="kl-local-status">

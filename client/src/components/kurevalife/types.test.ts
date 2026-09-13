@@ -60,6 +60,9 @@ describe("hydrateKurevaLifeState", () => {
       ],
       preferences: {
         displayName: "Nathalia",
+        familyName: "Ejemplo",
+        preferredAddress: "femenino",
+        textScale: "muy-grande",
         nightMode: true,
         largeText: "sí",
         highContrast: false,
@@ -84,8 +87,11 @@ describe("hydrateKurevaLifeState", () => {
     expect(hydrated.consultationQuestions).toHaveLength(1);
     expect(hydrated.preferences).toMatchObject({
       displayName: "Nathalia",
+      familyName: "Ejemplo",
+      preferredAddress: "femenino",
+      textScale: "muy-grande",
       nightMode: true,
-      largeText: false,
+      largeText: true,
     });
   });
 

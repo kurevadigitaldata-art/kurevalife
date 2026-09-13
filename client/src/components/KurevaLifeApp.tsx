@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { ArrowRight, CheckCircle2, CircleHelp, RotateCcw } from "lucide-react";
+import { CircleHelp, RotateCcw } from "lucide-react";
 import { AppShell } from "@/components/kurevalife/AppShell";
+import { KurevaLifeOnboarding } from "@/components/kurevalife/Onboarding";
 import { FeedbackScreen } from "@/components/kurevalife/FeedbackScreen";
 import {
   KiviPanel,
@@ -16,80 +17,11 @@ import {
   useKurevaLifeState,
 } from "@/components/kurevalife/types";
 import {
-  BrandSignature,
   KurevaButton,
   KurevaCard,
   LocalStatus,
 } from "@/components/kurevalife/ui";
 import { getPilotTicket } from "@/lib/pilotFeedback";
-
-function EntryScreen({ onContinue }: { onContinue: (name: string) => void }) {
-  const [name, setName] = useState("");
-  return (
-    <section
-      className="kl-entry-screen"
-      aria-labelledby="bienvenida-kurevalife"
-    >
-      <div className="kl-entry-screen__panel">
-        <BrandSignature />
-        <p className="kl-eyebrow">SIMULACRO PARA TESTERS</p>
-        <h1 id="bienvenida-kurevalife">
-          Tu día en orden.
-          <br />
-          Tu consulta más clara.
-        </h1>
-        <p>
-          Bienvenida a KurevaLife. Esta prueba te permite recorrer una app
-          local-first: puedes registrar, organizar y generar un resumen sin
-          crear una cuenta ni enviar tus notas personales.
-        </p>
-        <label className="kl-field" htmlFor="kl-alias">
-          <span>¿Cómo quieres que te llamemos?</span>
-          <input
-            id="kl-alias"
-            value={name}
-            onChange={event => setName(event.target.value)}
-            placeholder="Nombre o alias (opcional)"
-            autoComplete="nickname"
-            maxLength={80}
-          />
-        </label>
-        <KurevaButton
-          type="button"
-          variant="accent"
-          onClick={() => onContinue(name.trim())}
-        >
-          Empezar simulacro <ArrowRight size={18} aria-hidden="true" />
-        </KurevaButton>
-        <p className="kl-entry-screen__note">
-          <CheckCircle2 size={16} aria-hidden="true" /> Tus registros de prueba
-          se guardarán solo en este dispositivo. KurevaLife no diagnostica ni
-          sustituye a profesionales sanitarios.
-        </p>
-      </div>
-      <aside
-        className="kl-entry-screen__aside"
-        aria-label="Información de la prueba"
-      >
-        <div className="kl-entry-screen__k">
-          <BrandSignature />
-        </div>
-        <div>
-          <h2>Una experiencia que acompaña.</h2>
-          <p>
-            Organiza rutinas, registros, avisos y preguntas con una estructura
-            clara, accesible y sin juicios.
-          </p>
-        </div>
-        <div className="kl-entry-screen__features">
-          <span>Texto escalable</span>
-          <span>Modo nocturno</span>
-          <span>Guardado local</span>
-        </div>
-      </aside>
-    </section>
-  );
-}
 
 export function KurevaLifeApp() {
   const [state, setState] = useKurevaLifeState();
@@ -98,26 +30,59 @@ export function KurevaLifeApp() {
   const [kiviOpen, setKiviOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [ticket] = useState(() => getPilotTicket());
+  const [liveMessage, setLiveMessage] = useState("");
 
-  const continueWithoutAccount = (name: string) => {
+  const announce = (message: string, useVoice = false) => {
+    setLiveMessage(message);
+    if (!useVoice || typeof window === "undefined" || !("speechSynthesis" in window)) {
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(message);
+    utterance.lang = "es-ES";
+    utterance.rate = 0.96;
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const continueWithoutAccount = (
+    patch: Pick<
+      typeof state.preferences,
+      | "displayName"
+      | "familyName"
+      | "preferredAddress"
+      | "textScale"
+      | "nightMode"
+      | "soundEnabled"
+      | "subtitlesEnabled"
+      | "screenReaderSupport"
+      | "easyReadMode"
+    >
+  ) => {
     setState(current => ({
       ...current,
       hasStarted: true,
-      preferences: { ...current.preferences, displayName: name },
+      preferences: {
+        ...current.preferences,
+        ...patch,
+        largeText: patch.textScale !== "normal",
+      },
     }));
     setEntered(true);
   };
 
   const updatePreferences = (patch: Partial<typeof state.preferences>) => {
-    setState(current => ({
-      ...current,
-      preferences: { ...current.preferences, ...patch },
-    }));
+    setState(current => {
+      const preferences = { ...current.preferences, ...patch };
+      if (patch.textScale) {
+        preferences.largeText = patch.textScale !== "normal";
+      }
+      return { ...current, preferences };
+    });
   };
 
   const resetSimulation = () => {
     const confirmation = window.confirm(
-      "¿Quieres reiniciar los datos locales de esta simulación? Esta acción solo afecta a este dispositivo."
+      "¿Quieres reiniciar los datos de ejemplo de esta sesión? Esta acción no afecta a ninguna cuenta."
     );
     if (!confirmation) return;
     setState(JSON.parse(JSON.stringify(DEFAULT_KUREVALIFE_STATE)));
@@ -127,7 +92,14 @@ export function KurevaLifeApp() {
     setKiviOpen(false);
   };
 
-  if (!entered) return <EntryScreen onContinue={continueWithoutAccount} />;
+  if (!entered) {
+    return (
+      <KurevaLifeOnboarding
+        onComplete={continueWithoutAccount}
+        onAnnounce={announce}
+      />
+    );
+  }
 
   const page = () => {
     if (feedbackOpen) return <FeedbackScreen ticket={ticket} />;
@@ -207,19 +179,40 @@ export function KurevaLifeApp() {
         setActiveTab(tab);
         setFeedbackOpen(false);
         setKiviOpen(false);
+        const tabLabel = {
+          hoy: "Hoy",
+          registrar: "Registrar",
+          informes: "Informes",
+          perfil: "Perfil",
+        }[tab];
+        announce(
+          `Abriendo ${tabLabel}.`,
+          state.preferences.soundEnabled || state.preferences.screenReaderSupport
+        );
       }}
       userName={state.preferences.displayName}
       nightMode={state.preferences.nightMode}
-      largeText={state.preferences.largeText}
+      textScale={state.preferences.textScale}
       highContrast={state.preferences.highContrast}
-      onOpenKivi={() => setKiviOpen(true)}
+      easyReadMode={state.preferences.easyReadMode}
+      screenReaderSupport={state.preferences.screenReaderSupport}
+      onOpenKivi={() => {
+        setKiviOpen(true);
+        announce(
+          "Kivi está abierto. Puedes elegir una opción o escribir una consulta.",
+          state.preferences.soundEnabled || state.preferences.screenReaderSupport
+        );
+      }}
     >
+      <p className="kl-visually-hidden" role="status" aria-live="polite">
+        {liveMessage}
+      </p>
       <div className="kl-simulator-strip" role="status">
         <span>
           <CircleHelp size={16} aria-hidden="true" /> Simulacro para entorno de
           pruebas
         </span>
-        <LocalStatus />
+        <LocalStatus state="Solo esta sesión" />
       </div>
       {feedbackOpen ? (
         <button
@@ -236,8 +229,8 @@ export function KurevaLifeApp() {
           <p className="kl-card-label">SIMULACRO LOCAL</p>
           <h2 id="simulacro-local">Puedes explorar con tranquilidad.</h2>
           <p>
-            Lo que anotas se conserva en este dispositivo durante la prueba. No
-            se sincroniza ni se interpreta clínicamente.
+            Lo que anotas solo existe mientras esta prueba está abierta. No se
+            sincroniza, no se conserva al recargar ni se interpreta clínicamente.
           </p>
         </div>
         <KurevaButton type="button" variant="quiet" onClick={resetSimulation}>
@@ -248,10 +241,13 @@ export function KurevaLifeApp() {
         <KiviPanel
           onClose={() => setKiviOpen(false)}
           state={state}
-          onOpenTab={tab => {
-            setActiveTab(tab);
-            setKiviOpen(false);
-          }}
+          subtitlesEnabled={state.preferences.subtitlesEnabled}
+          onAnnounce={message =>
+            announce(
+              message,
+              state.preferences.soundEnabled || state.preferences.screenReaderSupport
+            )
+          }
         />
       ) : null}
     </AppShell>

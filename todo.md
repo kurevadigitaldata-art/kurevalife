@@ -6,6 +6,11 @@ El proyecto canónico activo es **`/home/ubuntu/workspaces/kurevalife`** y corre
 
 ## Cambios de esta iteración
 
+- [x] Corregir el inicio del simulacro para que no restaure perfiles ni registros entre sesiones o pestañas: la prueba comienza siempre en Bienvenida y permanece solo en memoria durante la pestaña abierta.
+- [x] Implementar las cinco pantallas guiadas de bienvenida, introducción, inclusión, registro y configuración con datos locales de prueba, identidad elegida y personalización inclusiva de textos.
+- [x] Hacer que el nombre, trato, escala tipográfica, modo nocturno, subtítulos y apoyos de lectura configurados durante la bienvenida se apliquen inmediatamente al simulacro.
+- [x] Añadir anuncios accesibles y voz opcional no clínica para cambios de pantalla y respuestas de Kivi, sin hacer depender ninguna acción del sonido.
+- [x] Probar el flujo completo con perfiles femenino, masculino y neutro en móvil, tableta y escritorio, incluyendo reinicio y ausencia de persistencia entre sesiones.
 - [x] Corregir enlaces internos y rutas directas de GitHub Pages bajo `/kurevalife`, incluidos recursos, calculadora y simulacro, sin afirmar que las URLs raíz externas al proyecto estén controladas por este repositorio.
 - [x] Convertir la landing en una presentación pública centrada en Kureva, su origen, propuesta de valor y mentoría para emprendedores y microempresas; retirar paleta, manual, merchandising y demás detalles internos.
 - [x] Verificar en móvil, tableta y escritorio la navegación, rutas públicas y rotación continua de la K, respetando movimiento reducido y sin prometer una web imposible de rastrear o hackear.

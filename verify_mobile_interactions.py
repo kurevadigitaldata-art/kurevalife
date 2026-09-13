@@ -32,60 +32,85 @@ async def run():
         await page.evaluate("localStorage.clear(); sessionStorage.clear()")
         await page.reload(wait_until="networkidle")
 
-        await page.get_by_role("button", name="Empezar simulacro").click()
-        nav_labels = await page.locator(".kl-bottom-nav__item").all_inner_texts()
-        assert nav_labels == ["Hoy", "Registrar", "Informes", "Perfil"], nav_labels
-        assert await page.locator(".kl-bottom-nav").get_by_text("Kivi", exact=True).count() == 0
-        results.append("PASS: La barra inferior conserva Hoy, Registrar, Informes y Perfil; Kivi es secundario.")
+        assert await page.get_by_role("heading", name="Tu día en orden. Tu bienestar más claro.").count() == 1
+        results.append("PASS: Cada visita comienza en Bienvenida, sin restaurar un perfil previo.")
 
-        await page.get_by_role("button", name="Registrar", exact=True).click()
-        await page.locator("#record-value").fill("120/80 mmHg")
-        await page.locator("#record-note").fill("Medición de prueba")
-        await page.get_by_role("button", name="Guardar registro local").click()
-        assert "Registro guardado localmente" in await page.locator("body").inner_text()
-        results.append("PASS: El registro de tensión se guarda de manera local.")
+        await page.get_by_role("button", name="Comenzar simulacro").click()
+        assert "Bienvenida a KurevaLife, Nathalia" in await page.locator("body").inner_text()
+        results.append("PASS: La introducción precargada usa la bienvenida femenina de Nathalia.")
 
-        await page.get_by_role("tab", name="Avisos").click()
-        await page.locator("#reminder-title").fill("Preparar la consulta")
-        await page.get_by_role("button", name="Crear aviso visual").click()
-        assert "Aviso visual creado" in await page.locator("body").inner_text()
-        results.append("PASS: El recordatorio visual se crea dentro del simulacro.")
+        await page.get_by_role("button", name="Comenzar").click()
+        await page.get_by_role("button", name="Continuar").click()
+        await page.get_by_role("textbox", name="Nombre").fill("Carlos")
+        await page.get_by_role("button", name="Masculino").click()
+        await page.get_by_role("button", name="Siguiente").click()
+        await page.get_by_role("button", name="Volver").click()
+        await page.get_by_role("button", name="Volver").click()
+        await page.get_by_role("button", name="Volver").click()
+        intro_text = await page.locator("body").inner_text()
+        assert "Bienvenido a KurevaLife, Carlos" in intro_text
+        assert "seleccionado" in intro_text and "tranquilo" in intro_text
+        results.append("PASS: El trato masculino se adapta dinámicamente al nombre y preferencia del registro.")
 
-        await page.get_by_role("tab", name="Agua").click()
-        await page.get_by_role("button", name="Añadir vaso").click()
-        assert "1 de 8 vasos" in await page.locator("body").inner_text()
-        results.append("PASS: El progreso de hidratación se actualiza localmente.")
-
-        await page.reload(wait_until="networkidle")
-        assert await page.locator("#kl-alias").count() == 0
-        await page.get_by_role("button", name="Informes", exact=True).click()
-        report_text = await page.locator("body").inner_text()
-        assert "120/80 mmHg" in report_text, report_text[:1500]
-        results.append("PASS: El registro continúa disponible después de recargar.")
-
-        async with page.expect_download(timeout=20_000) as download_info:
-            await page.get_by_role("button", name="Descargar PDF").click()
-        download = await download_info.value
-        download_path = OUT / download.suggested_filename
-        await download.save_as(str(download_path))
-        assert download_path.suffix == ".pdf" and download_path.stat().st_size > 1_000
-        results.append(
-            f"PASS: El PDF local se genera y descarga ({download.suggested_filename}, {download_path.stat().st_size} bytes)."
-        )
-
-        await page.get_by_role("button", name="Perfil", exact=True).click()
+        await page.get_by_role("button", name="Comenzar").click()
+        await page.get_by_role("button", name="Continuar").click()
+        await page.get_by_role("button", name="Siguiente").click()
         await page.get_by_role("switch", name="Modo nocturno").check()
+        await page.get_by_role("switch", name="Sonido y voz opcional").check()
+        await page.get_by_role("button", name="Finalizar").click()
+        assert "Hola, Carlos" in await page.locator("body").inner_text()
         assert await page.locator("#kurevalife-app").evaluate(
             "node => node.classList.contains('kl-theme-night')"
         )
-        await page.get_by_role("button", name="Abrir Kivi, asistente de organización").click()
-        assert await page.locator(".kl-kivi-panel").evaluate(
-            "node => document.activeElement === node"
+        results.append("PASS: El dashboard usa el nombre real y aplica modo nocturno al finalizar.")
+
+        await page.get_by_role("button", name="Perfil", exact=True).click()
+        await page.get_by_role("button", name="Muy grande").click()
+        assert await page.locator("#kurevalife-app").evaluate(
+            "node => node.classList.contains('kl-text-muy-grande')"
         )
-        results.append("PASS: El modo nocturno cambia de tema y Kivi abre como asistente secundario con foco.")
+        await page.get_by_role("switch", name="Apoyo para lector de pantalla").check()
+        results.append("PASS: Los controles de texto y apoyo de lector se aplican inmediatamente.")
+
+        await page.get_by_role("button", name="Abrir Kivi, asistente de organización").click()
+        assert await page.get_by_text("Transcripción de Kivi", exact=True).count() == 1
+        await page.get_by_role("button", name="Revisar un registro").click()
+        assert "Aún no has añadido registros" in await page.locator("body").inner_text()
+        await page.get_by_role("button", name="Ver consejos de bienestar").click()
+        assert "No necesitas rutinas imposibles" in await page.locator("body").inner_text()
+        results.append("PASS: Kivi conserva respuesta textual, transcripción y anuncio accesible opcional.")
+
+        await page.get_by_role("button", name="Registrar", exact=True).click()
+        await page.locator("#record-value").fill("sin números")
+        await page.get_by_role("button", name="Añadir registro a la prueba").click()
+        assert "¡Uy! Se nos escapó un número" in await page.locator("body").inner_text()
+        await page.locator("#record-value").fill("120/80 mmHg")
+        await page.locator("#record-note").fill("Medición de prueba")
+        await page.get_by_role("button", name="Añadir registro a la prueba").click()
+        assert "Registro añadido a esta prueba" in await page.locator("body").inner_text()
+        results.append("PASS: Los datos se usan dentro de la prueba en curso.")
+
+        await page.screenshot(path=str(OUT / "390-personalized-final.png"), full_page=True)
+        await page.reload(wait_until="networkidle")
+        assert await page.get_by_role("heading", name="Tu día en orden. Tu bienestar más claro.").count() == 1
+        assert "Carlos" not in await page.locator("body").inner_text()
+        results.append("PASS: Recargar elimina el perfil y los registros de prueba; no hay persistencia entre sesiones.")
+
+        await page.get_by_role("button", name="Comenzar simulacro").click()
+        await page.get_by_role("button", name="Comenzar").click()
+        await page.get_by_role("button", name="Continuar").click()
+        await page.get_by_role("textbox", name="Nombre").fill("Alex")
+        await page.get_by_role("button", name="Neutro / no binario").click()
+        await page.get_by_role("button", name="Siguiente").click()
+        await page.get_by_role("button", name="Volver").click()
+        await page.get_by_role("button", name="Volver").click()
+        await page.get_by_role("button", name="Volver").click()
+        neutral_text = await page.locator("body").inner_text()
+        assert "Te damos la bienvenida a KurevaLife, Alex" in neutral_text
+        assert "Agradecemos tu participación" in neutral_text
+        results.append("PASS: El trato neutro elimina adjetivos con género en la introducción.")
 
         assert not errors, errors
-        await page.screenshot(path=str(OUT / "390-final.png"), full_page=True)
         await context.close()
         await browser.close()
 

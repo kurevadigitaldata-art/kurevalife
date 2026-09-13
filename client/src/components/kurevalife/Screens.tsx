@@ -89,7 +89,7 @@ export function TodayScreen({
       <SectionHeading
         eyebrow={todayLabel()}
         title={greeting}
-        description="Todo lo que decides guardar se queda en este dispositivo durante la prueba."
+        description="Los datos de ejemplo solo estarán disponibles mientras esta prueba esté abierta."
       />
 
       <KurevaCard className="kl-day-overview" labelledBy="progreso-hoy">
@@ -150,12 +150,12 @@ export function TodayScreen({
       </section>
 
       <KurevaCard className="kl-local-card" labelledBy="estado-local">
-        <LocalStatus />
+        <LocalStatus state="Solo esta sesión" />
         <div>
           <h2 id="estado-local">
-            Tus registros de prueba están guardados localmente.
+            Tus registros de prueba están disponibles durante esta sesión.
           </h2>
-          <p>No se crea una cuenta ni se envían datos de esta simulación.</p>
+          <p>No se crea una cuenta, no se envían datos y se eliminan al recargar.</p>
         </div>
       </KurevaCard>
 
@@ -254,6 +254,22 @@ export function RegisterScreen({
       );
       return;
     }
+    if (kind === "tension" && value.trim()) {
+      const numbers = value.match(/\d{2,3}/g)?.map(Number) ?? [];
+      const validPressure =
+        /^\s*\d{2,3}\s*\/\s*\d{2,3}\s*(mmhg)?\s*$/i.test(value) &&
+        numbers.length === 2 &&
+        numbers[0] >= 50 &&
+        numbers[0] <= 250 &&
+        numbers[1] >= 30 &&
+        numbers[1] <= 160;
+      if (!validPressure) {
+        setRecordMessage(
+          "¡Uy! Se nos escapó un número por ahí. Revisa bien el dato que ingresaste para que tu historial quede perfecto. No hay prisa, tómate tu tiempo."
+        );
+        return;
+      }
+    }
     onAddRecord({
       id: createLocalId("registro"),
       kind,
@@ -271,7 +287,7 @@ export function RegisterScreen({
     setNote("");
     setAttachments([]);
     setUsedDictation(false);
-    setRecordMessage("Registro guardado localmente. Lo verás en Informes.");
+    setRecordMessage("Registro añadido a esta prueba. Lo verás en Informes mientras la sesión siga abierta.");
   };
 
   const saveReminder = () => {
@@ -338,7 +354,7 @@ export function RegisterScreen({
               <h2 id="registro-titulo">
                 {section === "datos" ? "Nuevo registro" : "Nota y archivos"}
               </h2>
-              <p>Se guardará solamente en este dispositivo.</p>
+              <p>Solo estará disponible mientras esta prueba esté abierta.</p>
             </div>
           </div>
 
@@ -385,8 +401,8 @@ export function RegisterScreen({
             <div>
               <strong>Foto, captura, PDF o archivo</strong>
               <p>
-                La prueba registra el nombre del archivo localmente. No lo sube
-                a ningún servidor.
+                La prueba solo muestra el nombre del archivo durante esta sesión.
+                No lo sube ni lo conserva en ningún servidor.
               </p>
             </div>
             <input
@@ -449,7 +465,7 @@ export function RegisterScreen({
             className="kl-full-action"
             onClick={saveRecord}
           >
-            <Check size={18} aria-hidden="true" /> Guardar registro local
+            <Check size={18} aria-hidden="true" /> Añadir registro a la prueba
           </KurevaButton>
         </KurevaCard>
       ) : null}
@@ -541,9 +557,9 @@ export function RegisterScreen({
       ) : null}
 
       <KurevaCard className="kl-local-card" labelledBy="registro-local-status">
-        <LocalStatus />
+        <LocalStatus state="Solo esta sesión" />
         <div>
-          <h2 id="registro-local-status">Guardado localmente</h2>
+          <h2 id="registro-local-status">Disponible durante esta sesión</h2>
           <p>
             Podrás revisar estos datos y preparar un resumen desde Informes.
           </p>
@@ -553,8 +569,8 @@ export function RegisterScreen({
       {records.length ? (
         <p className="kl-muted-summary">
           <ClipboardList size={16} aria-hidden="true" /> {records.length}{" "}
-          {records.length === 1 ? "registro guardado" : "registros guardados"}{" "}
-          en este dispositivo.
+          {records.length === 1 ? "registro de prueba" : "registros de prueba"}{" "}
+          disponibles durante esta sesión.
         </p>
       ) : null}
     </div>
@@ -989,7 +1005,7 @@ export function ProfileScreen({
       <SectionHeading
         eyebrow="PERFIL"
         title="Tu app, a tu manera."
-        description="Los cambios se aplican ahora mismo y se guardan localmente."
+        description="Los cambios se aplican ahora mismo durante esta prueba."
       />
       <KurevaCard className="kl-profile-card" labelledBy="cuenta-titulo">
         <div className="kl-card-heading">
@@ -1021,12 +1037,25 @@ export function ProfileScreen({
             checked={preferences.nightMode}
             onChange={checked => onUpdatePreferences({ nightMode: checked })}
           />
-          <SettingSwitch
-            label="Texto ampliado"
-            detail="Aumenta el tamaño de lectura sin cambiar el orden."
-            checked={preferences.largeText}
-            onChange={checked => onUpdatePreferences({ largeText: checked })}
-          />
+          <fieldset className="kl-text-scale">
+            <legend>Tamaño de texto</legend>
+            <p>La interfaz se reorganiza para mantener el texto visible.</p>
+            <div>
+              {(["normal", "grande", "muy-grande"] as const).map(scale => (
+                <button
+                  key={scale}
+                  type="button"
+                  className={preferences.textScale === scale ? "is-active" : ""}
+                  onClick={() => onUpdatePreferences({ textScale: scale })}
+                  aria-pressed={preferences.textScale === scale}
+                >
+                  {scale === "muy-grande"
+                    ? "Muy grande"
+                    : scale[0].toUpperCase() + scale.slice(1)}
+                </button>
+              ))}
+            </div>
+          </fieldset>
           <SettingSwitch
             label="Alto contraste"
             detail="Refuerza bordes y legibilidad de los controles."
@@ -1056,6 +1085,14 @@ export function ProfileScreen({
             detail="Opcional; ninguna acción importante depende del sonido."
             checked={preferences.soundEnabled}
             onChange={checked => onUpdatePreferences({ soundEnabled: checked })}
+          />
+          <SettingSwitch
+            label="Apoyo para lector de pantalla"
+            detail="Anuncia los cambios de pantalla y las respuestas de Kivi de forma breve."
+            checked={preferences.screenReaderSupport}
+            onChange={checked =>
+              onUpdatePreferences({ screenReaderSupport: checked })
+            }
           />
           <div className="kl-access-list">
             <span>Compatibilidad con lector de pantalla</span>
@@ -1140,11 +1177,13 @@ function SettingSwitch({
 export function KiviPanel({
   onClose,
   state,
-  onOpenTab,
+  subtitlesEnabled,
+  onAnnounce,
 }: {
   onClose: () => void;
   state: KurevaLifeState;
-  onOpenTab: (tab: "registrar" | "informes") => void;
+  subtitlesEnabled: boolean;
+  onAnnounce: (message: string) => void;
 }) {
   const panelRef = useRef<HTMLElement>(null);
   const [message, setMessage] = useState("");
@@ -1159,24 +1198,19 @@ export function KiviPanel({
   }, []);
   const respond = (prompt: string) => {
     setMessage(prompt);
-    if (prompt.toLowerCase().includes("consulta"))
-      setReply(
-        "Puedes seleccionar preguntas habituales desde Perfil y generar un resumen local desde Informes."
-      );
-    else if (prompt.toLowerCase().includes("registro"))
-      setReply(
-        state.records.length
-          ? `Tienes ${state.records.length} registro(s) local(es). Puedes verlos en Informes.`
-          : "Aún no has guardado registros. Puedes crear el primero desde Registrar."
-      );
-    else if (prompt.toLowerCase().includes("rutina"))
-      setReply(
-        "En Hoy puedes marcar las rutinas una a una. El progreso se guarda localmente."
-      );
-    else
-      setReply(
-        "No interpreto datos ni sustituyo a un profesional sanitario. Puedo ayudarte a encontrar una sección de KurevaLife o a ordenar tu información."
-      );
+    const nextReply = prompt.toLowerCase().includes("consejo")
+      ? `El mejor consejo de bienestar es el que se adapta a tu realidad hoy, ${state.preferences.displayName || "amiga"}. No necesitas rutinas imposibles de internet. Si hoy lograste tomarte tu medicación a tiempo o registrar tu tensión, ya es una victoria. Vamos un día a la vez.`
+      : prompt.toLowerCase().includes("consulta")
+      ? "Puedes seleccionar preguntas habituales desde Perfil y generar un resumen solo durante esta prueba desde Informes."
+      : prompt.toLowerCase().includes("registro")
+        ? state.records.length
+          ? `Tienes ${state.records.length} registro(s) en esta sesión. Puedes verlos en Informes.`
+          : "Aún no has añadido registros en esta sesión. Puedes crear el primero desde Registrar."
+        : prompt.toLowerCase().includes("rutina")
+          ? "En Hoy puedes marcar las rutinas una a una. El progreso permanece disponible mientras esta prueba está abierta."
+          : "No interpreto datos ni sustituyo a un profesional sanitario. Puedo ayudarte a encontrar una sección de KurevaLife o a ordenar tu información.";
+    setReply(nextReply);
+    onAnnounce(`Kivi responde: ${nextReply}`);
   };
   return (
     <section
@@ -1202,6 +1236,7 @@ export function KiviPanel({
           "Preparar mi consulta",
           "Revisar un registro",
           "Organizar mis rutinas",
+          "Ver consejos de bienestar",
           "Resolver una duda",
         ].map(option => (
           <button
@@ -1209,7 +1244,6 @@ export function KiviPanel({
             type="button"
             onClick={() => {
               respond(option);
-              if (option.includes("registro")) onOpenTab("informes");
             }}
           >
             {option}
@@ -1222,6 +1256,12 @@ export function KiviPanel({
         </span>
         {reply}
       </div>
+      {subtitlesEnabled ? (
+        <div className="kl-kivi-transcript" aria-label="Transcripción de Kivi">
+          <strong>Transcripción de Kivi</strong>
+          <span>{reply}</span>
+        </div>
+      ) : null}
       <label className="kl-field" htmlFor="kivi-message">
         <span>Escribe tu consulta</span>
         <textarea

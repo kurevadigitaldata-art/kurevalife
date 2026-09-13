@@ -53,11 +53,15 @@ async def run():
             await page.screenshot(path=str(OUT / f"landing-{name}.png"), full_page=True)
 
             await page.goto(f"{BASE_URL}/vida", wait_until="networkidle")
-            await page.get_by_role("button", name="Empezar simulacro").click()
+            await page.get_by_role("button", name="Comenzar simulacro").click()
             app_rotation = await page.locator(".kl-mark__image").first.evaluate(
                 "node => getComputedStyle(node).animationName"
             )
             assert app_rotation == "kl-rotate", (name, app_rotation)
+            await page.get_by_role("button", name="Comenzar").click()
+            await page.get_by_role("button", name="Continuar").click()
+            await page.get_by_role("button", name="Siguiente").click()
+            await page.get_by_role("button", name="Finalizar").click()
             nav_labels = await page.locator(".kl-bottom-nav__item").all_inner_texts()
             assert nav_labels == ["Hoy", "Registrar", "Informes", "Perfil"], nav_labels
             await assert_no_horizontal_overflow(page, f"simulacro-{name}")
@@ -71,7 +75,6 @@ async def run():
         )
         reduced_page = await reduced_context.new_page()
         await reduced_page.goto(f"{BASE_URL}/vida", wait_until="networkidle")
-        await reduced_page.get_by_role("button", name="Empezar simulacro").click()
         reduced_rotation = await reduced_page.locator(".kl-mark__image").first.evaluate(
             "node => getComputedStyle(node).animationName"
         )
