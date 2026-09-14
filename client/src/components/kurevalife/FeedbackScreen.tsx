@@ -37,7 +37,7 @@ export function FeedbackScreen({
     ? displayName.trim()
     : `Participante anónimo · ${participantCode}`;
 
-  const submitFeedback = async (event: React.FormEvent) => {
+const submitFeedback = async (event: React.FormEvent) => {
   event.preventDefault();
 
   if (!rating || !comment.trim()) {
@@ -86,17 +86,6 @@ export function FeedbackScreen({
     );
   }
 };
-    event.preventDefault();
-    if (!rating || !comment.trim()) {
-      setStatus(
-        "Elige una valoración y escribe una sugerencia para completar la prueba."
-      );
-      return;
-    }
-    setStatus("");
-    setFinished(true);
-  };
-
   if (finished) {
     return (
       <div className="kl-screen-stack">
