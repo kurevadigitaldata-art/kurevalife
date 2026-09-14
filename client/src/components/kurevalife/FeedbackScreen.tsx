@@ -2,6 +2,10 @@ import { useState } from "react";
 import { Check, ExternalLink, MessageSquareText, Star } from "lucide-react";
 import { KurevaButton, KurevaCard, SectionHeading } from "./ui";
 
+const SUPABASE_URL = "https://ixnlckxlmlfaqhsambrt.supabase.co";
+const SUPABASE_ANON_KEY =
+  "sb_publishable_rNB00PrghiUWKbseEWACJw_UilszPpw";
+
 type Attribution = "name" | "anonymous";
 
 function makeParticipantCode() {
