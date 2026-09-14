@@ -55,7 +55,7 @@ export function FeedbackScreen({
         <SectionHeading
           eyebrow="RECORRIDO COMPLETADO"
           title="Gracias por ser parte de este simulacro."
-          description="Tu valoración se ha guardado correctamente y ayudará a mejorar KurevaLife.
+         description="Tu valoración se ha guardado correctamente y ayudará a mejorar KurevaLife."
         />
         <KurevaCard className="kl-closing-card" labelledBy="closing-title">
           <div className="kl-closing-mark" aria-hidden="true">
@@ -148,7 +148,7 @@ export function FeedbackScreen({
               rows={5}
               value={comment}
               onChange={event => setComment(event.target.value)}
-              placeholder="Escribe una sugerencia para esta demostración
+              placeholder="Escribe una sugerencia para esta demostración"
               maxLength={500}
             />
           </label>
