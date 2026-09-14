@@ -111,7 +111,13 @@ export function KurevaLifeApp() {
   }
 
   const page = () => {
-    if (feedbackOpen) return <FeedbackScreen onFinish={finishSimulation} />;
+    if (feedbackOpen)
+      return (
+        <FeedbackScreen
+          displayName={state.preferences.displayName}
+          onFinish={finishSimulation}
+        />
+      );
     if (activeTab === "hoy")
       return (
         <TodayScreen
@@ -221,7 +227,7 @@ export function KurevaLifeApp() {
             state.preferences.screenReaderSupport
         );
       }}
-      userName={state.preferences.displayName}
+      userName={feedbackOpen ? "" : state.preferences.displayName}
       nightMode={state.preferences.nightMode}
       textScale={state.preferences.textScale}
       highContrast={state.preferences.highContrast}

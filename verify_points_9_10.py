@@ -72,7 +72,7 @@ async def run():
         await page.get_by_role("button", name="Dejar valoración").click()
         closing = await page.locator("body").inner_text()
         assert "¡Has completado el recorrido por el simulacro!" in closing
-        assert "no se publica ni se envía" in closing
+        assert "no publica ni envía información" in closing
         await page.get_by_role("radio", name="4 estrellas").click()
         await page.get_by_role("textbox", name="Comentarios o sugerencias").fill(
             "La experiencia de prueba es clara y ordenada."

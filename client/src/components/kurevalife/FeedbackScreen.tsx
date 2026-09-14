@@ -2,17 +2,42 @@ import { useState } from "react";
 import { Check, ExternalLink, MessageSquareText, Star } from "lucide-react";
 import { KurevaButton, KurevaCard, SectionHeading } from "./ui";
 
-export function FeedbackScreen({ onFinish }: { onFinish: () => void }) {
+type Attribution = "name" | "anonymous";
+
+function makeParticipantCode() {
+  const uniquePart =
+    typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID().slice(0, 8)
+      : `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  return `KLV-${uniquePart.toUpperCase()}`;
+}
+
+export function FeedbackScreen({
+  displayName,
+  onFinish,
+}: {
+  displayName: string;
+  onFinish: () => void;
+}) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [attribution, setAttribution] = useState<Attribution>(
+    displayName.trim() ? "name" : "anonymous"
+  );
+  const [participantCode] = useState(makeParticipantCode);
   const [finished, setFinished] = useState(false);
   const [status, setStatus] = useState("");
 
+  const publishWithName = attribution === "name" && Boolean(displayName.trim());
+  const participantLabel = publishWithName
+    ? displayName.trim()
+    : `Participante anónimo · ${participantCode}`;
+
   const submitFeedback = (event: React.FormEvent) => {
     event.preventDefault();
-    if (!rating) {
+    if (!rating || !comment.trim()) {
       setStatus(
-        "Elige una valoración de una a cinco estrellas para completar la prueba."
+        "Elige una valoración y escribe una sugerencia para completar la prueba."
       );
       return;
     }
@@ -37,11 +62,23 @@ export function FeedbackScreen({ onFinish }: { onFinish: () => void }) {
               Tu experiencia ayuda a mejorar KurevaLife.
             </h2>
             <p>
-              El recorrido ha terminado. La versión online requerirá opciones de
-              consentimiento claras antes de recibir cualquier opinión, dato o
-              solicitud de contacto.
+              Así quedaría tu aportación en el entorno de prueba. No se ha
+              almacenado, publicado ni transmitido ningún dato.
             </p>
           </div>
+          <div
+            className="kl-notice"
+            aria-label="Resumen de tu valoración de prueba"
+          >
+            <strong>{participantLabel}</strong>
+            <span>Valoración: {rating} de 5 estrellas.</span>
+            <span>Tu sugerencia: “{comment.trim()}”</span>
+          </div>
+          <p className="kl-notice">
+            {publishWithName
+              ? "El nombre o alias procede únicamente de esta sesión. En una versión online, la publicación requerirá consentimiento explícito."
+              : `La aportación se muestra de forma anónima con el código temporal ${participantCode}.`}
+          </p>
           <a
             className="kl-closing-link"
             href="https://kurevadigitaldata-art.github.io/kurevalife/"
@@ -75,8 +112,8 @@ export function FeedbackScreen({ onFinish }: { onFinish: () => void }) {
           <p className="kl-card-label">VALORACIÓN DE PRUEBA</p>
           <h2 id="closing-feedback-title">¿Cómo ha sido tu experiencia?</h2>
           <p>
-            Esta valoración no se publica ni se envía. Sirve para completar el
-            recorrido de forma segura dentro de esta sesión.
+            La valoración se muestra al final de esta demostración y desaparece
+            al cerrar o recargar la sesión.
           </p>
         </div>
         <form onSubmit={submitFeedback} className="kl-form-stack">
@@ -113,9 +150,46 @@ export function FeedbackScreen({ onFinish }: { onFinish: () => void }) {
               maxLength={500}
             />
           </label>
+          <fieldset className="kl-form-stack">
+            <legend>¿Cómo deseas identificar tu aportación?</legend>
+            <label className="kl-check-row">
+              <input
+                type="radio"
+                name="feedback-attribution"
+                value="name"
+                checked={attribution === "name"}
+                disabled={!displayName.trim()}
+                onChange={() => setAttribution("name")}
+              />
+              <span>
+                <strong>Publicar con mi nombre o alias</strong>
+                <small>
+                  {displayName.trim()
+                    ? `Se asociará a ${displayName.trim()} solo en la vista final de esta prueba.`
+                    : "Esta opción está disponible si indicaste un nombre o alias al inicio."}
+                </small>
+              </span>
+            </label>
+            <label className="kl-check-row">
+              <input
+                type="radio"
+                name="feedback-attribution"
+                value="anonymous"
+                checked={attribution === "anonymous"}
+                onChange={() => setAttribution("anonymous")}
+              />
+              <span>
+                <strong>Publicar de forma anónima</strong>
+                <small>
+                  Se ocultará tu nombre o alias y se generará un código único de
+                  participante para esta demostración.
+                </small>
+              </span>
+            </label>
+          </fieldset>
           <p className="kl-notice">
-            La comunidad real no está activa. Este texto es temporal y se
-            elimina al recargar o cerrar la prueba.
+            La comunidad real no está activa. El botón final solo muestra tu
+            aportación dentro de esta sesión; no publica ni envía información.
           </p>
           {status ? (
             <p className="kl-inline-status" role="status" aria-live="polite">

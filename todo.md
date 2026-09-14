@@ -6,6 +6,9 @@ El proyecto canónico activo es **`/home/ubuntu/workspaces/kurevalife`** y corre
 
 ## Cambios de esta iteración
 
+- [x] Añadir únicamente al cierre del simulacro la elección entre publicar con nombre o alias y publicar de forma anónima con código de participante temporal.
+- [x] Mostrar en la confirmación la valoración y sugerencia introducidas, con la identidad elegida, sin enviar ni almacenar datos fuera de la sesión actual.
+- [x] Verificar ambos recorridos de atribución, el reinicio y la ausencia de solicitudes de escritura antes de publicar el checkpoint.
 - [x] Integrar Entorno Social y Ciencia dentro de la cuarta pestaña obligatoria, sin abrir una quinta pestaña ni una comunidad real.
 - [x] Incorporar comentarios de ejemplo, fichas estacionales y nota de rigor científico como contenido estático e informativo, sin afirmar publicación, moderación o recomendación personalizada.
 - [x] Convertir el cierre de valoración en un final local de simulacro con escala de estrellas, comentario temporal, aviso de privacidad y enlace público de Kureva.
