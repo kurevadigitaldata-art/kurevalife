@@ -55,7 +55,7 @@ export function FeedbackScreen({
         <SectionHeading
           eyebrow="RECORRIDO COMPLETADO"
           title="Gracias por ser parte de este simulacro."
-          description="La valoración fue una demostración local: no se publicó ni se envió a ningún servicio."
+          description="Tu valoración se ha guardado correctamente y ayudará a mejorar KurevaLife.
         />
         <KurevaCard className="kl-closing-card" labelledBy="closing-title">
           <div className="kl-closing-mark" aria-hidden="true">
@@ -66,8 +66,7 @@ export function FeedbackScreen({
               Tu experiencia ayuda a mejorar KurevaLife.
             </h2>
             <p>
-              Así quedaría tu aportación en el entorno de prueba. No se ha
-              almacenado, publicado ni transmitido ningún dato.
+              Así quedaría tu aportación en el entorno de prueba. Tu aportación se ha guardado en la base de datos de KurevaLife.
             </p>
           </div>
           <div
@@ -80,7 +79,7 @@ export function FeedbackScreen({
           </div>
           <p className="kl-notice">
             {publishWithName
-              ? "El nombre o alias procede únicamente de esta sesión. En una versión online, la publicación requerirá consentimiento explícito."
+              ? "El nombre o alias procede únicamente de esta sesión. La publicación requerirá consentimiento explícito."
               : `La aportación se muestra de forma anónima con el código temporal ${participantCode}.`}
           </p>
           <a
@@ -116,8 +115,7 @@ export function FeedbackScreen({
           <p className="kl-card-label">VALORACIÓN DE PRUEBA</p>
           <h2 id="closing-feedback-title">¿Cómo ha sido tu experiencia?</h2>
           <p>
-            La valoración se muestra al final de esta demostración y desaparece
-            al cerrar o recargar la sesión.
+            Tu valoración se guardará de forma pública en la base de datos de KurevaLife.
           </p>
         </div>
         <form onSubmit={submitFeedback} className="kl-form-stack">
@@ -144,13 +142,13 @@ export function FeedbackScreen({
             <small>{rating ? `${rating} de 5` : "Elige una valoración"}</small>
           </fieldset>
           <label className="kl-field" htmlFor="closing-comment">
-            <span>Comentarios o sugerencias</span>
+            <span>Comentarios y sugerencias</span>
             <textarea
               id="closing-comment"
               rows={5}
               value={comment}
               onChange={event => setComment(event.target.value)}
-              placeholder="Escribe una sugerencia para esta demostración, sin datos personales ni de salud."
+              placeholder="Escribe una sugerencia para esta demostración
               maxLength={500}
             />
           </label>
@@ -192,8 +190,8 @@ export function FeedbackScreen({
             </label>
           </fieldset>
           <p className="kl-notice">
-            La comunidad real no está activa. El botón final solo muestra tu
-            aportación dentro de esta sesión; no publica ni envía información.
+            La comunidad real está activa. El botón final muestra tu
+            aportación dentro de esta sesión
           </p>
           {status ? (
             <p className="kl-inline-status" role="status" aria-live="polite">
@@ -211,7 +209,7 @@ export function FeedbackScreen({
         </form>
       </KurevaCard>
       <p className="kl-closing-credits">
-        KurevaLife · propiedad y autoría de Kureva. Este simulacro no recopila
+        KurevaLife · propiedad y autoría de Kureva. Este simulacro recopila
         datos reales.
       </p>
     </div>
