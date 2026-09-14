@@ -37,7 +37,55 @@ export function FeedbackScreen({
     ? displayName.trim()
     : `Participante anónimo · ${participantCode}`;
 
-  const submitFeedback = (event: React.FormEvent) => {
+  const submitFeedback = async (event: React.FormEvent) => {
+  event.preventDefault();
+
+  if (!rating || !comment.trim()) {
+    setStatus(
+      "Elige una valoración y escribe una sugerencia para completar la prueba."
+    );
+    return;
+  }
+
+  setStatus("Guardando tu valoración...");
+
+  try {
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/pilot_feedback`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify({
+          rating,
+          message: comment.trim(),
+          public_display_name: publishWithName
+            ? displayName.trim()
+            : null,
+          participant_code: publishWithName ? null : participantCode,
+          is_anonymous: !publishWithName,
+          session_id: participantCode,
+          consent_privacy: true,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("No se pudo guardar la valoración.");
+    }
+
+    setStatus("");
+    setFinished(true);
+  } catch {
+    setStatus(
+      "No se ha podido guardar la valoración. Inténtalo de nuevo."
+    );
+  }
+};
     event.preventDefault();
     if (!rating || !comment.trim()) {
       setStatus(
