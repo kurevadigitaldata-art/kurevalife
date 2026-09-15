@@ -34,44 +34,18 @@ function AppRouter() {
           <Route path={"/calculadora"} component={Calculator} />
           <Route path={"/recursos"} component={Resources} />
           <Route path={"/kurevalife"} component={KurevaLife} />
-          <Route path={"/vida"} component={KurevaLife} />
-          <Route
-            path={"/functions/v1/kurevalife-piloto"}
-            component={KurevaLife}
-          />
-          <Route
-            path={"/functions/v1/kurevalife-piloto/vida"}
-            component={KurevaLife}
-          />
           <Route path={"/404"} component={NotFound} />
-          {/* A static CDN URL can include the GitHub folder path before /vida. */}
-          <Route
-            component={() =>
-              window.location.pathname.includes("/vida") ? (
-                <KurevaLife />
-              ) : (
-                <NotFound />
-              )
-            }
-          />
+          <Route component={NotFound} />
         </Switch>
       </Suspense>
     </Router>
   );
 }
 
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
-
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
+      <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
           <AppRouter />
